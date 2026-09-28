@@ -162,10 +162,11 @@ def main_probe():
     hk = k()
     s, j, _ = correct(ta, "p4", 1, 550, T2, key=hk)
     revs_after = call("GET", "/payments/p4/revisions", token=ta)[1]
+    dd_after_reject = me(td)[1]["balance"]          # read BEFORE the successful retry (which legitimately moves 50)
     s2, j2, _ = correct(ta, "p4", 1, 650, T2, key=hk)
     record("S3-049/D3-11", "backdated decrease making dd negative at T3 -> 409 historical_overdraft; nothing changes; key reusable",
-           (s, code(j)) == (409, "historical_overdraft") and revs_before == revs_after and me(td)[1]["balance"] == 1100 and s2 == 201,
-           {"s": s, "c": code(j), "retry_ok": s2})
+           (s, code(j)) == (409, "historical_overdraft") and revs_before == revs_after and dd_after_reject == 1100 and s2 == 201,
+           {"s": s, "c": code(j), "revs_unchanged": revs_before == revs_after, "dd_after_reject": dd_after_reject, "retry_ok": s2})
     s, j, _ = correct(ta, "p4", 2, 650, T2)
     record("D3-03", "same-amount correction appends revision (201)", s == 201 and j.get("revision") == 3, {"s": s})
     s, z, _ = correct(tk["ff"], [p for p in call("GET", "/activity?limit=200", token=tk["ff"])[1]["payments"] if p["to_handle"] == "dd"][0]["payment_id"], 1, 0,
