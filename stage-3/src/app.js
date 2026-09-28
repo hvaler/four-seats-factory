@@ -10,6 +10,8 @@ const { JNum, parse, isObject, canonical, stringify } = require('./json');
 const { ApiError, malformed, invalid, notFound, forbidden, unauthenticated, conflict } = require('./errors');
 const { hashPassword, verifyPassword, dummyHash } = require('./password');
 const ui = require('./ui');
+const ledger = require('./ledger');
+const crypto = require('node:crypto');
 
 const MAX_AMOUNT = 1000000000n;
 const MAX_NOTE = 200;
@@ -190,6 +192,7 @@ function authorizationView(s, a) {
     payment_id: a.paymentIds.length ? a.paymentIds[a.paymentIds.length - 1] : null,
     payment_ids: a.paymentIds,
     created_at: a.createdAt,
+    closed_at: a.closedAt,
   };
 }
 
@@ -315,9 +318,40 @@ async function login(ctx) {
 // ---------------------------------------------------------------------------
 // Wallet API (§8)
 
+// An optional RFC 3339 instant query parameter (stage 3): present-but-invalid
+// or empty is 422. Returns { text, ns } or null when absent.
+function instantParam(query, name) {
+  if (!query.has(name)) return null;
+  const text = query.get(name);
+  const value = ledger.parseInstant(text);
+  if (value === null) throw invalid(`${name} must be an RFC 3339 instant with an offset`);
+  return { text, ns: value };
+}
+
 function me(ctx) {
   const user = authenticate(ctx);
   const s = store.current();
+  const asOf = instantParam(ctx.query, 'as_of');
+  const knownAt = instantParam(ctx.query, 'known_at');
+  if (asOf || knownAt) {
+    const A = asOf ? asOf.ns : ctx.startNs;
+    const K = knownAt ? knownAt.ns : ctx.startNs;
+    const total = ledger.totalAt(user, A, K);
+    const heldThen = ledger.heldAt(s, user, A, K);
+    return reply(200, {
+      user_id: user.id,
+      display_name: user.displayName,
+      handle: user.handle,
+      balance: total,
+      total,
+      available: total - heldThen,
+      held: heldThen,
+      currency: s.currency,
+      minor_units: s.minorUnits,
+      as_of: asOf ? asOf.text : undefined,
+      known_at: knownAt ? knownAt.text : undefined,
+    });
+  }
   const holds = store.held(s, user);
   return reply(200, {
     user_id: user.id,
@@ -511,7 +545,8 @@ function activity(ctx) {
   const s = store.current();
   // §4 feed contract: public, or the caller is the sender or the receiver.
   const keep = (p) => p.visibility === 'public' || p.fromId === user.id || p.toId === user.id;
-  const { items, hasMore } = newestFirst(s.payments, keep, paging);
+  const ordered = s.payments.filter(keep).sort((x, y) => (x.createdNs < y.createdNs ? -1 : x.createdNs > y.createdNs ? 1 : 0));
+  const { items, hasMore } = newestFirst(ordered, () => true, paging);
   return reply(200, { payments: items.map((p) => paymentView(s, p)), has_more: hasMore });
 }
 
@@ -673,7 +708,7 @@ function captureAuthorization(ctx) {
   });
   auth.captured += amount;
   auth.paymentIds.push(payment.id);
-  if (final || auth.captured === auth.amount) store.close(s, auth, 'captured');
+  if (final || auth.captured === auth.amount) store.close(s, auth, 'captured', payment.createdAt);
   return idem.commit(paymentView(s, payment));
 }
 
@@ -684,7 +719,7 @@ function voidAuthorization(ctx) {
   const auth = findAuthorization(ctx);
   if (auth.fromId !== user.id) throw forbidden('only the payer may void this authorization');
   store.sweep(s, auth);
-  if (auth.status === 'open') store.close(s, auth, 'voided');
+  if (auth.status === 'open') store.close(s, auth, 'voided', store.timestamp());
   else if (auth.status !== 'voided') throw conflict('authorization_not_open', `the authorization is ${auth.status}`);
   return reply(200, authorizationView(s, auth));
 }
@@ -708,6 +743,152 @@ function listAuthorizations(ctx) {
   };
   const { items, hasMore } = newestFirst(s.authorizations, keep, paging);
   return reply(200, { authorizations: items.map((a) => authorizationView(s, a)), has_more: hasMore });
+}
+
+// ---------------------------------------------------------------------------
+// Statements, corrections and revisions (stage 3)
+
+// The statement of a user over [from, to) under known_at: every payment they
+// sent or received with its selected revision effective in the window, ordered
+// by effective_at then payment id (code-unit order), with running balances.
+function buildStatement(s, user, fromNs, toNs, K) {
+  const moves = ledger.paymentEvents(user, K)
+    .sort((x, y) => (x.t < y.t ? -1 : x.t > y.t ? 1 : x.payment.id < y.payment.id ? -1 : x.payment.id > y.payment.id ? 1 : 0));
+  let balance = user.opening;
+  for (const m of moves) if (fromNs !== null && m.t < fromNs) balance += m.delta;
+  const opening = balance;
+  const entries = [];
+  for (const m of moves) {
+    if ((fromNs !== null && m.t < fromNs) || m.t >= toNs) continue;
+    balance += m.delta;
+    entries.push({
+      payment: { ...paymentView(s, m.payment), amount: m.revision.amount },
+      delta: m.delta,
+      balance_after: balance,
+      revision: m.revision.revision,
+      effective_at: m.revision.effectiveAt,
+      recorded_at: m.revision.recordedAt,
+    });
+  }
+  return { opening_balance: opening, entries, closing_balance: balance };
+}
+
+function statementPage(result, paging, token, extra) {
+  const entries = result.entries.slice(paging.offset, paging.offset + paging.limit);
+  return reply(200, {
+    ...extra,
+    opening_balance: result.opening_balance,
+    entries,
+    closing_balance: result.closing_balance,
+    has_more: paging.offset + entries.length < result.entries.length,
+    snapshot: token,
+  });
+}
+
+function statement(ctx) {
+  const user = authenticate(ctx);
+  const q = ctx.query;
+  const s = store.current();
+  if (q.has('snapshot')) {
+    if (q.has('from') || q.has('to') || q.has('known_at')) {
+      throw invalid('only limit and offset may accompany a snapshot');
+    }
+    const token = q.get('snapshot');
+    const snap = s.snapshots.get(token);
+    if (!snap || snap.userId !== user.id) throw notFound('no such statement snapshot');
+    const paging = page(q);
+    const frozen = JSON.parse(snap.text);
+    return statementPage(frozen, paging, token, frozen.known_at !== undefined ? { known_at: frozen.known_at } : {});
+  }
+  const from = instantParam(q, 'from');
+  const to = instantParam(q, 'to');
+  const knownAt = instantParam(q, 'known_at');
+  if (from && to && from.ns > to.ns) throw invalid('from must not be after to');
+  const paging = page(q);
+  const result = buildStatement(s, user, from ? from.ns : null, to ? to.ns : ctx.startNs, knownAt ? knownAt.ns : ctx.startNs);
+  const extra = knownAt ? { known_at: knownAt.text } : {};
+  const token = `st_${crypto.randomBytes(18).toString('base64url')}`;
+  s.snapshots.set(token, { userId: user.id, text: stringify({ ...extra, ...result }) });
+  return statementPage(JSON.parse(stringify(result)), paging, token, extra);
+}
+
+function revisionView(p, v) {
+  return {
+    payment_id: p.id,
+    revision: v.revision,
+    amount: v.amount,
+    effective_at: v.effectiveAt,
+    recorded_at: v.recordedAt,
+    reason: v.reason,
+  };
+}
+
+// Field rules for a correction (D3-02: every invalid field, including a wrong
+// JSON type, is 422).
+function correctionFields(body, nowNs) {
+  const rev = body.expected_revision instanceof JNum ? body.expected_revision.toBigInt() : null;
+  if (rev === null || rev < 1n) throw invalid('expected_revision must be a positive integer');
+  const amount = body.amount instanceof JNum ? body.amount.toBigInt() : null;
+  if (amount === null || amount < 0n || amount > MAX_AMOUNT) throw invalid(`amount must be an integer from 0 to ${MAX_AMOUNT}`);
+  const effNs = ledger.parseInstant(body.effective_at);
+  if (effNs === null) throw invalid('effective_at must be an RFC 3339 instant with an offset');
+  if (effNs > nowNs) throw invalid('effective_at must not be in the future');
+  if (typeof body.reason !== 'string' || codePoints(body.reason) < 1 || codePoints(body.reason) > MAX_NOTE) {
+    throw invalid(`reason must be 1 to ${MAX_NOTE} characters`);
+  }
+  return { expected: rev, amount, effectiveAt: body.effective_at, reason: body.reason };
+}
+
+function createCorrection(ctx) {
+  const user = authenticate(ctx);
+  const body = bodyObject(ctx);
+  const idem = idempotency(ctx, user, body);
+  if (idem.replay) return idem.replay;
+
+  // D3-01: fields, 404, 403, linked, stale, insufficient, historical overdraft.
+  const nowMs = Date.now();
+  const nowNs = ledger.nowNs(nowMs);
+  const f = correctionFields(body, nowNs);
+  const s = store.current();
+  const p = s.paymentById.get(ctx.params[0]);
+  if (!p) throw notFound('no such payment');
+  if (p.fromId !== user.id) throw forbidden('only the original sender may correct this payment');
+  if (p.settlementId !== null || p.authorizationId !== null) {
+    throw new ApiError(422, 'linked_payment_immutable', 'settlement members and captures cannot be corrected');
+  }
+  const current = ledger.currentRevision(p);
+  if (f.expected !== BigInt(current.revision)) {
+    throw conflict('stale_revision', `the current revision is ${current.revision}`);
+  }
+  const sender = s.users.get(p.fromId);
+  const receiver = s.users.get(p.toId);
+  const diff = f.amount - current.amount;
+  const debtor = diff > 0n ? sender : receiver;
+  const debit = diff > 0n ? diff : -diff;
+  if (debit > 0n && store.available(s, debtor, nowMs) < debit) {
+    throw conflict('insufficient_funds', 'the wallet to debit cannot afford the difference now');
+  }
+
+  // Recorded times strictly increase per payment, as instants and as strings.
+  let recMs = nowMs;
+  const lastRecMs = Number(current.recNs / ledger.NS_PER_MS);
+  if (recMs <= lastRecMs) recMs = lastRecMs + 1;
+  const proposed = store.revision(current.revision + 1, f.amount, f.effectiveAt, store.timestamp(new Date(recMs)), f.reason);
+  if (ledger.overdraws(s, sender, p, proposed, nowNs) || ledger.overdraws(s, receiver, p, proposed, nowNs)) {
+    throw conflict('historical_overdraft', 'the correction would make a balance negative at a past instant');
+  }
+
+  sender.balance -= diff;
+  receiver.balance += diff;
+  p.revisions.push(proposed);
+  return idem.commit(revisionView(p, proposed));
+}
+
+function listRevisions(ctx) {
+  const user = authenticate(ctx);
+  const p = store.current().paymentById.get(ctx.params[0]);
+  if (!p || (p.fromId !== user.id && p.toId !== user.id)) throw notFound('no such payment');
+  return reply(200, { revisions: p.revisions.map((v) => revisionView(p, v)) });
 }
 
 // ---------------------------------------------------------------------------
@@ -755,6 +936,9 @@ const ROUTES = [
   ['POST', /^\/auth\/login$/, login],
   ['GET', /^\/me$/, me],
   ['POST', /^\/payments$/, createPayment],
+  ['POST', /^\/payments\/([^/]+)\/corrections$/, createCorrection],
+  ['GET', /^\/payments\/([^/]+)\/revisions$/, listRevisions],
+  ['GET', /^\/statement$/, statement],
   ['POST', /^\/requests$/, createRequest],
   ['GET', /^\/requests$/, negotiated(listRequests)],
   ['POST', /^\/requests\/([^/]+)\/pay$/, payRequest],
@@ -786,6 +970,7 @@ function route(method, path) {
 
 async function handle(ctx) {
   try {
+    ctx.startNs = ledger.nowNs();
     const { handler, params } = route(ctx.method, ctx.path);
     ctx.params = params;
     return await handler(ctx);

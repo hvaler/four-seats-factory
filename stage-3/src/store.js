@@ -14,6 +14,7 @@ const crypto = require('node:crypto');
 const { JNum, isObject } = require('./json');
 const { invalid, malformed } = require('./errors');
 const { hashPassword, isValidHash } = require('./password');
+const ledger = require('./ledger');
 
 const HANDLE_RE = /^[a-z0-9_]{1,20}$/;
 const STATUSES = new Set(['pending', 'paid', 'declined', 'cancelled']);
@@ -22,7 +23,7 @@ const VISIBILITIES = new Set(['public', 'private']);
 const MINOR_UNITS = new Set([0, 2, 3]);
 const MAX_ID = 64;
 const DEFAULT_TTL = 600;
-const SCHEMA = 2;
+const SCHEMA = 3;
 const RFC3339 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)$/i;
 
 function newState(currency = 'EUR', minorUnits = 2) {
@@ -45,6 +46,7 @@ function newState(currency = 'EUR', minorUnits = 2) {
     settlements: new Map(),
     operators: new Set(),
     idem: new Map(),
+    snapshots: new Map(),
   };
 }
 
@@ -76,14 +78,35 @@ function newToken(s) {
 
 function addUser(s, user) {
   user.openAuths = new Set();
+  user.payments = [];
+  user.authsOut = [];
+  if (user.opening === undefined) user.opening = 0n;
   s.users.set(user.id, user);
   s.byHandle.set(user.handle, user);
   s.byEmail.set(user.email, user);
 }
 
+// Every payment has an immutable revision history; revision 1 is the original
+// amount with effective_at = recorded_at = created_at.
+function revision(number, amount, effectiveAt, recordedAt, reason) {
+  return {
+    revision: number,
+    amount,
+    effectiveAt,
+    effNs: ledger.ns(effectiveAt),
+    recordedAt,
+    recNs: ledger.ns(recordedAt),
+    reason,
+  };
+}
+
 function addPayment(s, payment) {
+  payment.createdNs = ledger.ns(payment.createdAt);
+  if (!payment.revisions) payment.revisions = [revision(1, payment.amount, payment.createdAt, payment.createdAt, '')];
   s.payments.push(payment);
   s.paymentById.set(payment.id, payment);
+  s.users.get(payment.fromId).payments.push(payment);
+  s.users.get(payment.toId).payments.push(payment);
 }
 
 function addRequest(s, request) {
@@ -92,8 +115,15 @@ function addRequest(s, request) {
 }
 
 function addAuthorization(s, auth) {
+  auth.createdNs = ledger.ns(auth.createdAt);
+  auth.expiresNs = ledger.ns(auth.expiresAt);
+  if (auth.closedAt === undefined) auth.closedAt = null;
+  auth.closedNs = auth.closedAt === null ? null : ledger.ns(auth.closedAt);
+  if (auth.lifecycle === undefined) auth.lifecycle = true;
+  if (auth.createHold === undefined) auth.createHold = auth.amount;
   s.authorizations.push(auth);
   s.authById.set(auth.id, auth);
+  s.users.get(auth.fromId).authsOut.push(auth);
   if (auth.status === 'open') s.users.get(auth.fromId).openAuths.add(auth);
 }
 
@@ -105,14 +135,18 @@ function addAuthorization(s, auth) {
 function sweep(s, auth, now = Date.now()) {
   if (auth.status === 'open' && now >= auth.expiresMs) {
     auth.status = 'expired';
+    auth.closedAt = auth.expiresAt;
+    auth.closedNs = auth.expiresNs;
     s.users.get(auth.fromId).openAuths.delete(auth);
   }
   return auth;
 }
 
-// Releases an open hold with a final status (captured or voided).
-function close(s, auth, status) {
+// Releases an open hold with a final status (captured or voided) at an event time.
+function close(s, auth, status, at) {
   auth.status = status;
+  auth.closedAt = at;
+  auth.closedNs = ledger.ns(at);
   s.users.get(auth.fromId).openAuths.delete(auth);
 }
 
@@ -209,6 +243,13 @@ function unique(map, key, what) {
   need(!map.has(key), `duplicate ${what}: ${key}`);
 }
 
+function setOpenings(s) {
+  for (const user of s.users.values()) {
+    user.opening = user.balance;
+    for (const p of user.payments) user.opening += p.fromId === user.id ? p.amount : -p.amount;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Reset (§3.3, §4, §11; stage 2 Model)
 
@@ -262,8 +303,9 @@ async function stateFromFixture(fx) {
       requestId: nullableId(p.request_id, `payments[${i}].request_id`),
       settlementId: nullableId(p.settlement_id, `payments[${i}].settlement_id`),
       authorizationId: nullableId(p.authorization_id, `payments[${i}].authorization_id`),
-      createdAt: created,
+      createdAt: p.created_at === undefined ? created : rfc3339(p.created_at, `payments[${i}].created_at`),
     };
+    need(ledger.ns(payment.createdAt) <= ledger.msToNs(now), `payments[${i}].created_at is in the future`);
     need(s.users.has(payment.fromId) && s.users.has(payment.toId), `payments[${i}] refers to an unknown user`);
     need(payment.fromId !== payment.toId, `payments[${i}] must be between two different users`);
     need(payment.amount >= 1n, `payments[${i}].amount must be positive`);
@@ -306,8 +348,9 @@ async function stateFromFixture(fx) {
       expiresAt,
       expiresMs: Date.parse(expiresAt),
       paymentIds: [],
-      createdAt: created,
+      createdAt: a.created_at === undefined ? created : rfc3339(a.created_at, `${what}.created_at`),
     };
+    need(ledger.ns(auth.createdAt) <= ledger.msToNs(now), `${what}.created_at is in the future`);
     need(s.users.has(auth.fromId) && s.users.has(auth.toId), `${what} refers to an unknown user`);
     need(auth.fromId !== auth.toId, `${what} must be between two different users`);
     need(auth.amount >= 1n && auth.amount <= 1000000000n, `${what}.amount must be from 1 to 1000000000`);
@@ -316,10 +359,19 @@ async function stateFromFixture(fx) {
     need(auth.captured >= 0n && auth.captured <= auth.amount, `${what}.captured_amount is out of range`);
     need(auth.status !== 'open' || auth.captured < auth.amount, `${what} is open with nothing left to capture`);
     if (a.payment_id !== undefined && a.payment_id !== null) auth.paymentIds.push(id(a.payment_id, `${what}.payment_id`));
+    // D3-17: only a seeded open hold that can still be open after its creation
+    // has a history; seeded closed holds have none.
+    auth.createHold = auth.amount - auth.captured;
+    auth.lifecycle = auth.status === 'open' && Date.parse(auth.expiresAt) > Date.parse(auth.createdAt);
+    if (auth.status === 'expired') auth.closedAt = auth.expiresAt;
+    else if (auth.status === 'captured' || auth.status === 'voided') auth.closedAt = auth.createdAt;
     unique(s.authById, auth.id, 'authorization id');
     addAuthorization(s, auth);
     sweep(s, auth, now);
   });
+
+  // Opening balance = seeded ending balance minus the net of the original seeded payments.
+  setOpenings(s);
 
   // The seeded unexpired open holds must fit inside each payer's balance.
   for (const user of s.users.values()) {
@@ -357,6 +409,7 @@ function exportState(s) {
       display_name: u.displayName,
       handle: u.handle,
       balance: u.balance.toString(),
+      opening: u.opening.toString(),
     })),
     tokens: [...s.tokens].map(([token, userId]) => ({ token, user_id: userId })),
     settlement_operator_ids: [...s.operators],
@@ -371,6 +424,13 @@ function exportState(s) {
       settlement_id: p.settlementId,
       authorization_id: p.authorizationId,
       created_at: p.createdAt,
+      revisions: p.revisions.map((v) => ({
+        revision: v.revision,
+        amount: v.amount.toString(),
+        effective_at: v.effectiveAt,
+        recorded_at: v.recordedAt,
+        reason: v.reason,
+      })),
     })),
     requests: s.requests.map((r) => ({
       id: r.id,
@@ -394,6 +454,9 @@ function exportState(s) {
       expires_at: a.expiresAt,
       payment_ids: a.paymentIds,
       created_at: a.createdAt,
+      closed_at: a.closedAt,
+      create_hold: a.createHold.toString(),
+      lifecycle: a.lifecycle,
     })),
     splits: [...s.splits.values()].map((sp) => ({
       id: sp.id,
@@ -418,6 +481,7 @@ function exportState(s) {
       body: r.canon,
       response: r.response,
     })),
+    snapshots: [...s.snapshots].map(([token, snap]) => ({ token, user_id: snap.userId, result: snap.text })),
   };
 }
 
@@ -428,17 +492,18 @@ function stateFromExport(doc) {
   const st = obj(doc.state, 'state');
 
   const schema = st.schema === undefined ? 1n : jint(st.schema, 'state.schema');
-  need(schema === 1n || schema === 2n, 'state.schema is not supported');
+  need(schema >= 1n && schema <= 3n, 'state.schema is not supported');
   const currency = str(st.currency, 'state.currency');
   need(currency.length > 0, 'state.currency must not be empty');
   const minorUnits = Number(jint(st.minor_units, 'state.minor_units'));
   need(MINOR_UNITS.has(minorUnits), 'state.minor_units must be 0, 2 or 3');
   const s = newState(currency, minorUnits);
-  if (schema === 2n) {
+  if (schema >= 2n) {
     const ttl = jint(st.authorization_ttl_seconds, 'state.authorization_ttl_seconds');
     need(ttl >= 1n && ttl <= 10n ** 12n, 'state.authorization_ttl_seconds must be positive');
     s.ttlSeconds = Number(ttl);
   }
+  const importedAt = timestamp();
   const ts = (v, what) => {
     need(typeof v === 'string' && !Number.isNaN(Date.parse(v)), `${what} must be a timestamp`);
     return v;
@@ -454,6 +519,7 @@ function stateFromExport(doc) {
       handle: str(u.handle, 'user handle'),
       balance: sint(u.balance, 'user balance'),
     };
+    if (schema >= 3n) user.opening = sint(u.opening, 'user opening');
     need(isValidHash(user.pwHash), 'user password_hash is not a supported hash');
     need(HANDLE_RE.test(user.handle), 'user handle is invalid');
     need(user.balance >= 0n, 'user balance must not be negative');
@@ -493,6 +559,17 @@ function stateFromExport(doc) {
       authorizationId: nullableId(p.authorization_id, 'payment authorization_id'),
       createdAt: ts(p.created_at, 'payment created_at'),
     };
+    if (schema >= 3n) {
+      payment.revisions = arr(p.revisions, 'payment revisions').map((v, n) => {
+        obj(v, 'payment revision');
+        need(v.revision instanceof JNum && v.revision.toBigInt() === BigInt(n + 1), 'payment revisions are out of order');
+        const rev = revision(n + 1, sint(v.amount, 'revision amount'), ts(v.effective_at, 'revision effective_at'),
+          ts(v.recorded_at, 'revision recorded_at'), str(v.reason, 'revision reason'));
+        need(rev.amount >= 0n, 'revision amount must not be negative');
+        return rev;
+      });
+      need(payment.revisions.length >= 1, 'a payment needs revision 1');
+    }
     need(s.users.has(payment.fromId) && s.users.has(payment.toId), 'payment refers to an unknown user');
     need(payment.amount >= 0n, 'payment amount must not be negative');
     unique(s.paymentById, payment.id, 'payment id');
@@ -537,6 +614,24 @@ function stateFromExport(doc) {
       }),
       createdAt: ts(a.created_at, 'authorization created_at'),
     };
+    if (schema >= 3n) {
+      auth.closedAt = a.closed_at === null ? null : ts(a.closed_at, 'authorization closed_at');
+      auth.createHold = sint(a.create_hold, 'authorization create_hold');
+      need(typeof a.lifecycle === 'boolean', 'authorization lifecycle must be a boolean');
+      auth.lifecycle = a.lifecycle;
+    } else {
+      // D3-13 / D3-18: a stage-2 export has no close times. A capture closes at
+      // its last capture payment, an expiry at expires_at, and a void at the
+      // import time, which never accepts a real overdraft.
+      let capturedByPayments = 0n;
+      for (const pid of auth.paymentIds) capturedByPayments += s.paymentById.get(pid).amount;
+      auth.createHold = auth.amount - (auth.captured - capturedByPayments);
+      const last = auth.paymentIds.length ? s.paymentById.get(auth.paymentIds[auth.paymentIds.length - 1]).createdAt : null;
+      if (auth.status === 'captured') auth.closedAt = last || auth.createdAt;
+      else if (auth.status === 'expired') auth.closedAt = auth.expiresAt;
+      else if (auth.status === 'voided') auth.closedAt = importedAt;
+      else auth.closedAt = null;
+    }
     need(s.users.has(auth.fromId) && s.users.has(auth.toId), 'authorization refers to an unknown user');
     need(auth.amount >= 1n && auth.captured >= 0n && auth.captured <= auth.amount, 'authorization amounts are inconsistent');
     unique(s.authById, auth.id, 'authorization id');
@@ -545,6 +640,7 @@ function stateFromExport(doc) {
   for (const user of s.users.values()) {
     need(held(s, user) <= user.balance, 'open holds exceed a balance');
   }
+  if (schema < 3n) setOpenings(s);
 
   arr(st.splits, 'state.splits').forEach((sp, i) => {
     obj(sp, `state.splits[${i}]`);
@@ -599,6 +695,14 @@ function stateFromExport(doc) {
     s.idem.set(k, rec);
   });
 
+  arr(st.snapshots, 'state.snapshots', []).forEach((x, i) => {
+    obj(x, `state.snapshots[${i}]`);
+    const token = str(x.token, 'snapshot token');
+    need(s.users.has(x.user_id), 'snapshot refers to an unknown user');
+    unique(s.snapshots, token, 'snapshot token');
+    s.snapshots.set(token, { userId: x.user_id, text: str(x.result, 'snapshot result') });
+  });
+
   return s;
 }
 
@@ -614,6 +718,7 @@ module.exports = {
   addPayment,
   addRequest,
   addAuthorization,
+  revision,
   sweep,
   close,
   remaining,
