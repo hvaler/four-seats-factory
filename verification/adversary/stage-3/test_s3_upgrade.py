@@ -60,9 +60,14 @@ def run(src, dst, stage):
     p = rec["pay"].json
     revs = w.revisions("ada", p["payment_id"]).json["revisions"]
     assert len(revs) == 1 and revs[0]["amount"] == 321 and parse_ts(revs[0]["effective_at"]) == parse_ts(p["created_at"])
-    m = dst.call("GET", "/me", token=tok["ada"], params={"as_of": plus_ms(p["created_at"], -1)}).json
-    open_ada = rec["fx"]["users"][0]["balance"]
-    assert m["balance"] == open_ada, m
+    as_of = plus_ms(p["created_at"], -1)
+    m = dst.call("GET", "/me", token=tok["ada"], params={"as_of": as_of}).json
+    # v2: stage-1 timestamps have 1-second precision, so the seeded p_1 (ada->bob 500 at reset time) may share
+    # a second with p. Expected = opening (seeded balance + 500) minus p_1 only if p_1 is at or before as_of.
+    seeded = [x for x in dst.activity(tok["ada"], limit=200).json["payments"] if x["payment_id"] == "p_1"][0]
+    opening = rec["fx"]["users"][0]["balance"] + 500
+    want = opening - (500 if parse_ts(seeded["created_at"]) <= parse_ts(as_of) else 0)
+    assert m["balance"] == want, (m, seeded["created_at"], as_of)
     first, entries = w.full_statement("cy")
     assert first["opening_balance"] + sum(e["delta"] for e in entries) == first["closing_balance"]
     assert first["closing_balance"] == dst.balance(tok["cy"])   # default `to` = now
