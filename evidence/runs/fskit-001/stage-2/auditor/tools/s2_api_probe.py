@@ -242,7 +242,9 @@ def p_concurrency():
     record("S2-051/S2-070/S2-071", "mixed concurrent captures/void/payments/authorizations/settlements", ok,
            {"total": tot, "caps201": caps, "auth": {x: au.get(x) for x in ("status", "captured_amount", "remaining_amount")},
             "reads": len(reads), "outcomes": sorted(set(str((r[0], code(r[1]))) for r in rs))})
-    # same-key concurrent capture and authorize
+    # same-key concurrent capture and authorize (fresh state: the mixed load above may have exhausted bb's available)
+    ap.reset(fx([("bb", 3000), ("cc", 0)]))
+    tb, tc = ap.login("bb"), ap.login("cc")
     s, b, _ = auth(tb, "cc", 50)
     key = k()
     with ThreadPoolExecutor(15) as ex:
@@ -279,9 +281,9 @@ def p_r2_rows():
     s, b, _ = auth(ta, "bb", 100)
     fk = k()
     f1 = cap(tb, b["authorization_id"], {"amount": 101}, key=fk)
-    f2 = cap(tb, b["authorization_id"], {"amount": 50}, key=fk)
+    f2 = cap(tb, b["authorization_id"], {"amount": 50, "final": False}, key=fk)   # non-final so the later void is legal
     v = call("POST", "/authorizations/%s/void" % b["authorization_id"], None, token=ta)
-    f3 = cap(tb, b["authorization_id"], {"amount": 50}, key=fk)
+    f3 = cap(tb, b["authorization_id"], {"amount": 50, "final": False}, key=fk)
     record("S2-073", "failed capture key reusable; replay after void -> 200 original payment",
            (f1[0], code(f1[1])) == (422, "capture_exceeds_authorization") and f2[0] == 201 and v[0] == 200 and f3[0] == 200 and f3[1] == f2[1],
            {"s": [f1[0], f2[0], v[0], f3[0]]})
