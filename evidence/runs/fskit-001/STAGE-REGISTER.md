@@ -16,7 +16,7 @@ Total deadline: 2026-09-29T20:40:47Z. Stop new work at 2026-09-29T20:10:47Z.
 |---|---|---|---|---|---|---|---|---|---|
 | 1 | ACCEPTED (ACTIVE 20:40:47Z → accepted about 21:36Z) | beeaec72ff53fa75469c5f09236a786632f21fd8 | 347efba502629e5b5bbd730f35c34bdfe208c478 | ACCEPTED, 72be202b, auditor@fe7d0663 VERDICT-c1.md | 1 | fskit-001-s1-audit-2: 147/147, report fb03079c…a47b | same stage (XC export/import A→B reproduced by adversary and auditor) | about 55 min; tokens unknown | 72be202b |
 | 2 | ACCEPTED (c1 f1f0847d REJECTED 4fc4757a; c2 accepted) | 68583038e7ea52429b062af0f775d3cbfd96b7c3 | a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 | ACCEPTED 4ced8436, auditor@fa5f5186 VERDICT-c2.md | 1–2 | fskit-001-s2-audit-4: 147/147 + 35/35, report 36164d38…d2b9 | 1→2 PASS (auditor UPGRADE-1to2.md) | about 68 min; 1 of 5 repairs; tokens unknown | 4ced8436 |
-| 3 | NOT_STARTED | | | | 1–3 | | 1→3, 2→3 | | |
+| 3 | ACTIVE since 2026-09-28T22:47:28Z (deadline 2026-09-29T04:47:28Z) | | | | 1–3 | | 1→3, 2→3 | | |
 | 4 | NOT_STARTED | | | | 1–4 | | 1→4, 2→4, 3→4 | | |
 
 ## Event log (append only)
@@ -41,3 +41,4 @@ Total deadline: 2026-09-29T20:40:47Z. Stop new work at 2026-09-29T20:10:47Z.
 - 2026-09-28T22:23:23Z **stage-2 candidate 1 f1f0847d REJECTED** by auditor-thgx (4fc4757a; auditor@44303cde VERDICT-c1.md). The only unmet condition is F2-01/D2-19 (low severity, no spec-row failure); everything else was reproduced and passes (isolated 147/147 + 35/35). Repair already routed and delivered as candidate 2 68583038.
 - 2026-09-28T22:32:40Z adversary bundle c2 171e457b (test rev bdb21efc, evidence adversary@4abc62a9): harness 147/147 + 35/35; stage-1 suite on stage-2 325/325; stage-2 suite v3 148/148 (F2-01 fixed; display-name XSS; capture after expires_at → 409); CONC 45/45; repair diff clean. The analyst flagged to the auditor a judgement point on S2-031 (a lost capture response is shown as a refusal).
 - 2026-09-28T22:46:20Z **STAGE 2 ACCEPTED** by auditor-thgx (4ced8436; auditor@fa5f5186e76d57d9e81594165e7e9f20a9bf8adb VERDICT-c2.md + UPGRADE-1to2.md): candidate 68583038, stage-2 tree a8e6178d, stage-1 still 347efba5; isolated harness 147/147 + 35/35 (fskit-001-s2-audit-4); 1 of 5 repair cycles; about 68 of 360 stage min and about 125 of 1440 run min. The auditor judged S2-031 satisfied and recorded the lost-capture display as a limitation. Stage 3 starts next.
+- 2026-09-28T22:47:28Z stage 3 ACTIVE. Specs 1–3 were re-read in full (stage-3 CRLF 2255d3f2…6e54 / LF 70a42853…bf94). The evidence branches were merged into main at 095cb06c; stage-1 is still 347efba5 and stage-2 a8e6178d. Stage-3 register r1 was written.
