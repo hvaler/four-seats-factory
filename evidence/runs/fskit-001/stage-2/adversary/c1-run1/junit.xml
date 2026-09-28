@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="139" time="221.524" timestamp="2026-09-29T00:01:16.086784+02:00" hostname="HugoValer"><testcase classname="test_s2_api" name="test_me_fields_without_holds" time="0.236" /><testcase classname="test_s2_api" name="test_hold_moves_no_money" time="0.174" /><testcase classname="test_s2_api" name="test_authorization_shape_and_expiry_arithmetic" time="0.171" /><testcase classname="test_s2_api" name="test_authorization_defaults" time="0.140" /><testcase classname="test_s2_api" name="test_authorization_errors" time="0.141" /><testcase classname="test_s2_api" name="test_held_funds_fund_nothing_else" time="0.113" /><testcase classname="test_s2_api" name="test_authorizations_not_in_feed" time="0.131" /><testcase classname="test_s2_api" name="test_default_final_capture_releases_rest" time="0.109" /><testcase classname="test_s2_api" name="test_capture_amount_defaults_to_remainder" time="0.109" /><testcase classname="test_s2_api" name="test_extended_capture_700_700_600" time="0.120" /><testcase classname="test_s2_api" name="test_final_after_partial_releases_rest" time="0.109" /><testcase classname="test_s2_api" name="test_void_after_partial_keeps_records" time="0.103" /><testcase classname="test_s2_api" name="test_capture_errors" time="0.105" /><testcase classname="test_s2_api" name="test_final_wrong_type" time="0.103" /><testcase classname="test_s2_api" name="test_void_rules" time="0.097" /><testcase classname="test_s2_api" name="test_capture_spends_own_reservation_at_zero_available" time="0.106" /><testcase classname="test_s2_api" name="test_capture_idempotency" time="0.096" /><testcase classname="test_s2_api" name="test_replays_after_closure" time="0.153" /><testcase classname="test_s2_api" name="test_failed_capture_key_reusable" time="0.159" /><testcase classname="test_s2_api" name="test_expiry_without_a_request_at_the_deadline" time="3.356" /><testcase classname="test_s2_api" name="test_seeded_authorizations" time="0.072" /><testcase classname="test_s2_api" name="test_seeded_holds_exceed_or_equal_balance" time="0.119" /><testcase classname="test_s2_api" name="test_bad_ttl[0]" time="0.068" /><testcase classname="test_s2_api" name="test_bad_ttl[-1]" time="0.077" /><testcase classname="test_s2_api" name="test_bad_ttl[1.5]" time="0.075" /><testcase classname="test_s2_api" name="test_bad_ttl[600]" time="0.078" /><testcase classname="test_s2_api" name="test_bad_ttl[True]" time="0.083" /><testcase classname="test_s2_api" name="test_bad_ttl[None]" time="0.076" /><testcase classname="test_s2_api" name="test_ttl_default_600" time="0.090" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[unknown_from]" time="0.077" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[self]" time="0.076" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[amount0]" time="0.074" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[amount_big]" time="0.079" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[amount_frac]" time="0.083" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[status]" time="0.093" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[no_expiry]" time="0.088" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[bad_expiry]" time="0.132" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[no_offset]" time="0.106" /><testcase classname="test_s2_api" name="test_bad_seeded_authorization[dup_id]" time="0.158" /><testcase classname="test_s2_api" name="test_list_scope_filters_pagination" time="0.198" /><testcase classname="test_s2_api" name="test_every_payment_has_authorization_id" time="0.145" /><testcase classname="test_s2_api" name="test_split_unchanged_and_requests_can_exceed_available" time="0.161" /><testcase classname="test_s2_api" name="test_content_negotiation[/requests]" time="0.155" /><testcase classname="test_s2_api" name="test_content_negotiation[/authorizations]" time="0.151" /><testcase classname="test_s2_api" name="test_ui_routes_serve_html[/]" time="0.124" /><testcase classname="test_s2_api" name="test_ui_routes_serve_html[/split]" time="0.108" /><testcase classname="test_s2_api" name="test_ui_routes_serve_html[/signup]" time="0.106" /><testcase classname="test_s2_api" name="test_ui_routes_serve_html[/login]" time="0.104" /><testcase classname="test_s2_api" name="test_export_import_keeps_holds_and_retries" time="0.143" /><testcase classname="test_s2_api" name="test_hold_exported_before_expiry_imported_after" time="3.351" /><testcase classname="test_s2_conc" name="test_concurrent_partial_captures_never_exceed" time="0.455" /><testcase classname="test_s2_conc" name="test_concurrent_final_captures_one_wins" time="0.517" /><testcase classname="test_s2_conc" name="test_concurrent_same_capture_key" time="0.496" /><testcase classname="test_s2_conc" name="test_concurrent_same_authorization_key" time="0.524" /><testcase classname="test_s2_conc" name="test_capture_races_void[0]" time="0.560" /><testcase classname="test_s2_conc" name="test_capture_races_void[1]" time="0.587" /><testcase classname="test_s2_conc" name="test_capture_races_void[2]" time="0.588" /><testcase classname="test_s2_conc" name="test_authorizations_and_payments_compete_for_available" time="1.294" /><testcase classname="test_s2_conc" name="test_mixed_load_conserves_and_never_negative" time="4.515" /><testcase classname="test_s2_ui" name="test_routes_deep_link_signed_in[w375]" time="5.266" /><testcase classname="test_s2_ui" name="test_routes_deep_link_signed_in[w1280]" time="6.501" /><testcase classname="test_s2_ui" name="test_login_error_logout_and_signed_out[w375]" time="4.444" /><testcase classname="test_s2_ui" name="test_login_error_logout_and_signed_out[w1280]" time="3.772" /><testcase classname="test_s2_ui" name="test_signup_ui[w375]" time="0.934" /><testcase classname="test_s2_ui" name="test_signup_ui[w1280]" time="0.933" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w375-EUR-2-10000-100.00 EUR]" time="1.332" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w375-JPY-0-1200-1200 JPY]" time="1.487" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w375-BHD-3-1500-1.500 BHD]" time="1.377" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w375-EUR-2-123456789-1234567.89 EUR]" time="1.367" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w1280-EUR-2-10000-100.00 EUR]" time="1.341" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w1280-JPY-0-1200-1200 JPY]" time="1.426" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w1280-BHD-3-1500-1.500 BHD]" time="1.349" /><testcase classname="test_s2_ui" name="test_wallet_formatting[w1280-EUR-2-123456789-1234567.89 EUR]" time="1.474" /><testcase classname="test_s2_ui" name="test_pay_decimal_keep_values_no_duplicate[w375]" time="3.083" /><testcase classname="test_s2_ui" name="test_pay_decimal_keep_values_no_duplicate[w1280]" time="3.059" /><testcase classname="test_s2_ui" name="test_double_click_one_payment[w375]" time="3.540" /><testcase classname="test_s2_ui" name="test_double_click_one_payment[w1280]" time="3.853" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375-15.005]" time="1.940" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375-abc]" time="1.850" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375--5]" time="1.982" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375-1e3]" time="2.106" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375-]" time="1.939" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375-1,000.00]" time="1.972" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w375-12.3.4]" time="1.948" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280-15.005]" time="1.872" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280-abc]" time="1.830" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280--5]" time="1.901" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280-1e3]" time="2.032" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280-]" time="2.064" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280-1,000.00]" time="2.120" /><testcase classname="test_s2_ui" name="test_pay_bad_decimal_sends_nothing[w1280-12.3.4]" time="1.908" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w375-JPY-0-15-15]" time="1.371" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w375-BHD-3-1.5-1500]" time="1.481" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w375-EUR-2-15-1500]" time="1.377" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w375-EUR-2- 2.50 -250]" time="1.468" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w1280-JPY-0-15-15]" time="1.576" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w1280-BHD-3-1.5-1500]" time="1.541" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w1280-EUR-2-15-1500]" time="1.646" /><testcase classname="test_s2_ui" name="test_decimal_conversion[w1280-EUR-2- 2.50 -250]" time="1.509" /><testcase classname="test_s2_ui" name="test_jpy_rejects_decimal_point[w375]" time="1.406" /><testcase classname="test_s2_ui" name="test_jpy_rejects_decimal_point[w1280]" time="1.361" /><testcase classname="test_s2_ui" name="test_refused_payment_other_client_spent[w375]" time="1.396" /><testcase classname="test_s2_ui" name="test_refused_payment_other_client_spent[w1280]" time="1.499" /><testcase classname="test_s2_ui" name="test_request_form[w375]" time="3.930" /><testcase classname="test_s2_ui" name="test_request_form[w1280]" time="3.172" /><testcase classname="test_s2_ui" name="test_feed_items[w375]" time="1.359" /><testcase classname="test_s2_ui" name="test_feed_items[w1280]" time="1.301" /><testcase classname="test_s2_ui" name="test_empty_activity[w375]" time="2.340" /><testcase classname="test_s2_ui" name="test_empty_activity[w1280]" time="2.426" /><testcase classname="test_s2_ui" name="test_notes_render_as_text[w375]" time="3.251" /><testcase classname="test_s2_ui" name="test_notes_render_as_text[w1280]" time="3.377" /><testcase classname="test_s2_ui" name="test_requests_screen[w375]" time="1.646" /><testcase classname="test_s2_ui" name="test_requests_screen[w1280]" time="1.517" /><testcase classname="test_s2_ui" name="test_stale_request_pay_button[w375]" time="1.381" /><testcase classname="test_s2_ui" name="test_stale_request_pay_button[w1280]" time="2.407" /><testcase classname="test_s2_ui" name="test_split_preview_matches_server[w375-10.00-bob, ada ,cy-expect_shares0]" time="4.634" /><testcase classname="test_s2_ui" name="test_split_preview_matches_server[w375-10.00-cy,bob,ada-expect_shares1]" time="4.902" /><testcase classname="test_s2_ui" name="test_split_preview_matches_server[w375-0.01-bob,cy,dee-expect_shares2]" time="2.897" /><testcase classname="test_s2_ui" name="test_split_preview_matches_server[w1280-10.00-bob, ada ,cy-expect_shares0]" time="2.868" /><testcase classname="test_s2_ui" name="test_split_preview_matches_server[w1280-10.00-cy,bob,ada-expect_shares1]" time="2.863" /><testcase classname="test_s2_ui" name="test_split_preview_matches_server[w1280-0.01-bob,cy,dee-expect_shares2]" time="2.885" /><testcase classname="test_s2_ui" name="test_split_errors[w375]" time="1.554" /><testcase classname="test_s2_ui" name="test_split_errors[w1280]" time="1.429" /><testcase classname="test_s2_ui" name="test_latest_refresh_wins[w375]" time="4.094" /><testcase classname="test_s2_ui" name="test_latest_refresh_wins[w1280]" time="3.721" /><testcase classname="test_s2_ui" name="test_lost_payment_response_after_commit[w375]" time="1.696" /><testcase classname="test_s2_ui" name="test_lost_payment_response_after_commit[w1280]" time="1.524" /><testcase classname="test_s2_ui" name="test_seeded_hold_headline[w375]" time="1.398" /><testcase classname="test_s2_ui" name="test_seeded_hold_headline[w1280]" time="1.442" /><testcase classname="test_s2_ui" name="test_authorize_capture_void_ui[w375]" time="5.040"><failure message="AssertionError">api = &lt;advlib.Api object at 0x7a618124f890&gt;
+page = &lt;Page url='http://127.0.0.1:62589/authorizations'&gt;
+base = 'http://127.0.0.1:62589'
+
+    @pytest.mark.obl("S2-026", "S2-027", "S2-020")
+    def test_authorize_capture_void_ui(api, page, base):
+        w = world(api)
+        login(page, base, "ada@example.com")
+        goto(page, base, "/authorizations")
+        if tid(page, "authorize-handle").count() == 0:
+            goto(page, base, "/")
+        tid(page, "authorize-handle").fill("bob")
+        fill_amount(page, "authorize-amount", "20.00")
+        tid(page, "authorize-note").fill("deposit")
+        tid(page, "authorize-visibility").select_option("private")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        expect(tid(page, "wallet-available")).to_have_attribute("data-amount", "8000")
+        a1 = w.auths("ada").json["authorizations"][0]
+        fill_amount(page, "authorize-amount", "30.01")
+        tid(page, "authorize-handle").fill("cy")
+        tid(page, "authorize-submit").click()
+        page.wait_for_timeout(1500)
+        a2 = [x for x in w.auths("ada").json["authorizations"] if x["to_handle"] == "cy"][0]
+        fill_amount(page, "authorize-amount", "999.00")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "authorize-error")).to_be_visible(timeout=T)
+        goto(page, base, "/authorizations")
+        item = tid(page, f"authorization-item-{a1['authorization_id']}")
+        expect(item).to_have_attribute("data-status", "open", timeout=T)
+        assert tid(page, f"authorization-amount-{a1['authorization_id']}").inner_text().strip() == "20.00 EUR"
+        assert tid(page, f"authorization-expires-{a1['authorization_id']}").inner_text().strip() == a1["expires_at"]
+        expect(tid(page, f"authorization-void-{a1['authorization_id']}")).to_be_visible()
+        expect(tid(page, f"authorization-capture-{a1['authorization_id']}")).to_have_count(0)
+        tid(page, f"authorization-void-{a2['authorization_id']}").click()
+        expect(tid(page, f"authorization-item-{a2['authorization_id']}")).to_have_attribute("data-status", "voided", timeout=T)
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        # the receiver captures part of it
+        tid(page, "logout-button").click()
+        login(page, base, "bob@example.com")
+        goto(page, base, "/authorizations")
+        aid = a1["authorization_id"]
+        pre = tid(page, f"authorization-capture-amount-{aid}")
+        expect(pre).to_have_value("20.00", timeout=T)
+        expect(tid(page, f"authorization-void-{aid}")).to_have_count(0)
+        fill_amount(page, f"authorization-capture-amount-{aid}", "25.00")
+        tid(page, f"authorization-capture-{aid}").click()
+        expect(tid(page, "authorization-error")).to_be_visible(timeout=T)
+&gt;       assert pre.input_value() == "25.00"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s2_ui.py:535: AssertionError</failure></testcase><testcase classname="test_s2_ui" name="test_authorize_capture_void_ui[w1280]" time="5.273"><failure message="AssertionError">api = &lt;advlib.Api object at 0x7a6181272420&gt;
+page = &lt;Page url='http://127.0.0.1:62589/authorizations'&gt;
+base = 'http://127.0.0.1:62589'
+
+    @pytest.mark.obl("S2-026", "S2-027", "S2-020")
+    def test_authorize_capture_void_ui(api, page, base):
+        w = world(api)
+        login(page, base, "ada@example.com")
+        goto(page, base, "/authorizations")
+        if tid(page, "authorize-handle").count() == 0:
+            goto(page, base, "/")
+        tid(page, "authorize-handle").fill("bob")
+        fill_amount(page, "authorize-amount", "20.00")
+        tid(page, "authorize-note").fill("deposit")
+        tid(page, "authorize-visibility").select_option("private")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        expect(tid(page, "wallet-available")).to_have_attribute("data-amount", "8000")
+        a1 = w.auths("ada").json["authorizations"][0]
+        fill_amount(page, "authorize-amount", "30.01")
+        tid(page, "authorize-handle").fill("cy")
+        tid(page, "authorize-submit").click()
+        page.wait_for_timeout(1500)
+        a2 = [x for x in w.auths("ada").json["authorizations"] if x["to_handle"] == "cy"][0]
+        fill_amount(page, "authorize-amount", "999.00")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "authorize-error")).to_be_visible(timeout=T)
+        goto(page, base, "/authorizations")
+        item = tid(page, f"authorization-item-{a1['authorization_id']}")
+        expect(item).to_have_attribute("data-status", "open", timeout=T)
+        assert tid(page, f"authorization-amount-{a1['authorization_id']}").inner_text().strip() == "20.00 EUR"
+        assert tid(page, f"authorization-expires-{a1['authorization_id']}").inner_text().strip() == a1["expires_at"]
+        expect(tid(page, f"authorization-void-{a1['authorization_id']}")).to_be_visible()
+        expect(tid(page, f"authorization-capture-{a1['authorization_id']}")).to_have_count(0)
+        tid(page, f"authorization-void-{a2['authorization_id']}").click()
+        expect(tid(page, f"authorization-item-{a2['authorization_id']}")).to_have_attribute("data-status", "voided", timeout=T)
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        # the receiver captures part of it
+        tid(page, "logout-button").click()
+        login(page, base, "bob@example.com")
+        goto(page, base, "/authorizations")
+        aid = a1["authorization_id"]
+        pre = tid(page, f"authorization-capture-amount-{aid}")
+        expect(pre).to_have_value("20.00", timeout=T)
+        expect(tid(page, f"authorization-void-{aid}")).to_have_count(0)
+        fill_amount(page, f"authorization-capture-amount-{aid}", "25.00")
+        tid(page, f"authorization-capture-{aid}").click()
+        expect(tid(page, "authorization-error")).to_be_visible(timeout=T)
+&gt;       assert pre.input_value() == "25.00"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s2_ui.py:535: AssertionError</failure></testcase><testcase classname="test_s2_ui" name="test_partial_capture_prefill_follows_remainder[w375]" time="1.295" /><testcase classname="test_s2_ui" name="test_partial_capture_prefill_follows_remainder[w1280]" time="1.311" /><testcase classname="test_s2_ui" name="test_inputs_have_visible_labels_and_focus_ring[w375]" time="3.126" /><testcase classname="test_s2_ui" name="test_inputs_have_visible_labels_and_focus_ring[w1280]" time="3.193" /><testcase classname="test_s2_ui" name="test_no_horizontal_scroll_worst_case[w375]" time="8.839" /><testcase classname="test_s2_ui" name="test_no_horizontal_scroll_worst_case[w1280]" time="7.529" /><testcase classname="test_s2_upgrade" name="test_upgrade_1_to_2_from_stage1_container" time="2.590" /><testcase classname="test_s2_upgrade" name="test_upgrade_2_to_2_after_stage1_import" time="2.233" /></testsuite></testsuites>
