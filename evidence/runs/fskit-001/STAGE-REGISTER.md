@@ -14,7 +14,7 @@ Total deadline: 2026-09-29T20:40:47Z. Stop new work at 2026-09-29T20:10:47Z.
 
 | Stage | State | Candidate commit | stage-N tree | Auditor decision | Specs/suites | Isolated report | Upgrades | Time / usage | Room checkpoint |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | ACTIVE since 2026-09-28T20:40:47Z (deadline 2026-09-29T02:40:47Z) | | | | 1 | | same stage | | |
+| 1 | ACCEPTED (ACTIVE 20:40:47Z → accepted about 21:36Z) | beeaec72ff53fa75469c5f09236a786632f21fd8 | 347efba502629e5b5bbd730f35c34bdfe208c478 | ACCEPTED, 72be202b, auditor@fe7d0663 VERDICT-c1.md | 1 | fskit-001-s1-audit-2: 147/147, report fb03079c…a47b | same stage (XC export/import A→B reproduced by adversary and auditor) | about 55 min; tokens unknown | 72be202b |
 | 2 | NOT_STARTED | | | | 1–2 | | 1→2 | | |
 | 3 | NOT_STARTED | | | | 1–3 | | 1→3, 2→3 | | |
 | 4 | NOT_STARTED | | | | 1–4 | | 1→4, 2→4, 3→4 | | |
@@ -30,3 +30,4 @@ Total deadline: 2026-09-29T20:40:47Z. Stop new work at 2026-09-29T20:10:47Z.
 - 2026-09-28T21:07:00Z stage-1 CANDIDATE 1 posted by implementer-thgt (messages 3d6a464f, 408b641f, fc3c5582, a993bc4e): commit beeaec72ff53fa75469c5f09236a786632f21fd8, stage-1 tree 347efba502629e5b5bbd730f35c34bdfe208c478. The implementer's own harness run (host mode) reports stage 1: pass 147/147 and claimed stage: 1. This is a claim only. Frozen for review; adversary and auditor review next.
 - 2026-09-28T21:24:18Z auditor interim record 4827f0a2 (auditor@3b14c88c): isolated harness 147/147, probes 61/61, no verdict yet. Adversary bundle c1, b2c7fb5d (test rev 63c6adbb, evidence adversary@6012a101): suite 301/301, CONC 200/200 over 10 reps, harness 147/147; no product defect found. The analyst routed spec-row coverage gaps (S1-174, S1-175, S1-047/D-24, S1-017/019 on all endpoints, D-09, and a risk probe on non-ASCII keys) to the adversary as v3, in 4837ffaf.
 - 2026-09-28T21:30:43Z adversary addendum 9de21f5f: test rev v3 d815d96b3a556ceb1a5ce1fee2577f133c2dfe89, evidence adversary@7eed1b73; 325/325 on beeaec72 (279 requirement, 37 decision, 9 risk). The routed gaps S1-174, S1-175, S1-047/D-24, S1-017, S1-019 and D-09 now have tests; the non-ASCII key was an observation only. The auditor committed to its own probes for the same rows (82c20567). Waiting for the auditor verdict.
+- 2026-09-28T21:35:23Z **STAGE 1 ACCEPTED** by auditor-thgx (verdict 72be202b-5971-4232-8b65-4ee8aec221a7; record auditor@fe7d0663fc570203e09d48e277954a01eb9efed1 VERDICT-c1.md): candidate beeaec72ff53fa75469c5f09236a786632f21fd8, stage-1 tree 347efba502629e5b5bbd730f35c34bdfe208c478; isolated harness 147/147 (fskit-001-s1-audit-2, report.json fb03079c…a47b); 0 of 5 repair cycles and 0 infrastructure retries used; about 55 of 360 min used. Stage 2 starts now.
