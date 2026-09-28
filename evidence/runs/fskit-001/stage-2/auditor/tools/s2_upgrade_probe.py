@@ -84,10 +84,13 @@ def api_part(s1, s2):
     feed = call("GET", "/activity?limit=200", token=t["aa"], base=s2)[1]["payments"]
     mem = [p for p in feed if p.get("settlement_id")]
     tot = sum(call("GET", "/me", token=t[h], base=s2)[1]["total"] for h in t)
+    # both settlement members are public, so aa's feed shows 2 members (bb->cc and aa->bb)
+    conds = {"diff_body_409": (d[0], code(d[1])) == (409, "idempotency_key_reuse"), "failed_key_201": f[0] == 201,
+             "pending_paid_201": pay[0] == 201, "pay_auth_id_null": pay[0] == 201 and pay[1].get("authorization_id", "MISSING") is None,
+             "feed_all_have_auth_id": all("authorization_id" in p for p in feed), "settlement_members_2": len(mem) == 2,
+             "members_same_settlement": len({p["settlement_id"] for p in mem}) == 1, "conservation": tot == 15000}
     rec("S2-040/S2-042/S2-044", "imported state exercised: key reuse 409, failed key reusable, pending request payable, feed has authorization_id, conservation",
-        (d[0], code(d[1])) == (409, "idempotency_key_reuse") and f[0] == 201 and pay[0] == 201 and pay[1]["authorization_id"] is None
-        and all("authorization_id" in p for p in feed) and len(mem) == 1 and tot == 15000,
-        {"diff_body": d[0], "failed_key": f[0], "pay_pending": pay[0], "feed": len(feed), "total": tot})
+        all(conds.values()), {"conds": conds, "feed": len(feed), "members": len(mem), "total": tot})
 
 
 async def ui_part(s1, s2a, s2b, out):
