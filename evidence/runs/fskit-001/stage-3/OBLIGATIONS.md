@@ -1,4 +1,4 @@
-# Obligation register — fskit-001 · Stage 3 (ACTIVE) · revision r1
+# Obligation register — fskit-001 · Stage 3 (ACTIVE) · revision r2 (the r2 section is at the end)
 
 Run: fskit-001 · Track: pocketful · Active stage: 3 · Register owner: analyst (hugo.valer/analyst-thgs)
 Kickoff: C:\nexus\dev\dark-factory-wearedevs @ 803560d2a678ace1414465c098eb0ab5380ffade
@@ -146,3 +146,48 @@ Every stage-1 row (S1-*, stage-1 register r2) and every stage-2 row (S2-*, stage
 | D3-14 | Historical balance view when known_at excludes a payment | The excluded payment contributes to neither party, so conservation still holds | S3-050 |
 | D3-15 | Timestamp precision | Millisecond precision (D2-17). Instants in query params are parsed with any valid RFC 3339 fraction and compared exactly | D2-17 |
 | D3-16 | The seeded authorization created_at field | Accepted if supplied (RFC 3339 with offset; a future one → 422); otherwise the reset time | Holds ¶2 |
+
+
+---
+
+# Stage-3 register revision r2 (2026-09-28): additions, restatements and decisions
+
+Sources: auditor coverage review 90404c89-3acd-4738-90ac-d647d26943a9 (C1–C7), answered in 7b44ca24; adversary R3 findings 593f5bfd-c2a6-4e9d-8ef3-251d1673989c (R3-01 … R3-16); implementer reading I3-1 (51789bb2), accepted in 42638d32. All r1 rows stay in force unless restated. Every row is OPEN.
+
+## New rows
+
+| ID | Source | Obligation | Method → expected | Origin |
+|---|---|---|---|---|
+| S3-055 | Corrections ¶3 + known_at ¶ | The whole selected amount takes effect at the selected effective_at, not at the original created_at plus a delta. A same-amount revision with an earlier effective_at leaves current balances unchanged, but an as_of between the new and old instants shows the payment as already applied, and the statement entry moves (including into or out of a window) | API | R3-01 |
+| S3-056 | C6 | Combined statement row: a settlement member appears at committed_at, once, with settlement_id; a capture appears once, at the capture time, with authorization_id; correcting either → 422 linked_payment_immutable | API | C6, R3-06 |
+| S3-057 | S3-081 + known_at | as_of > expires_at > now → the open hold is released in the view at expires_at, even though no request occurred; a void recorded at t3 is invisible to known_at < t3 | API | R3-14 |
+| S3-058 | D3-18 | After a 2→3 import, a stage-2 voided hold releases at the import time (tested as decision D3-18; historical available between the imported void and the import is not asserted as spec) | XC | C1 |
+
+## Restated rows (the r1 text is kept above)
+
+| ID | Restatement | Origin |
+|---|---|---|
+| S3-021 / S3-031 / S3-053 | Exact-instant boundaries, using the server's own returned strings: a correction whose effective_at equals as_of counts; effective_at equal to the statement `to` → excluded; equal to `from` → included; a known_at exactly equal to a recorded_at selects that revision | R3-04 |
+| S3-030 | An invalid or empty `from` or `to` (a naive time, a bare date, empty) → 422, as for as_of | C2 |
+| S3-041 | Named case: a user with only seeded payments that lack created_at (reset time), followed by API payments. A default `from` includes the seeded entries, and opening = seeded balance − the net of the seeded payments | R3-11 |
+| S3-045 | Returned recorded_at strings strictly increase per payment, both as instants and as strings, even for two corrections within one millisecond | R3-13 |
+| S3-049 | Adds the time-move case: A has 0; B pays A 500 at t1; A pays C 500 at t2; correcting A→C to an effective_at < t1 (same amount) → 409 historical_overdraft | R3-02 |
+| S3-050 | Method: the sum over all users of /me?as_of=T&known_at=K equals the seeded total over a T×K grid (before any payment, each effective instant, each recorded_at, between them, and the future), after corrections that move amounts and times | R3-05 |
+| S3-051 / D3-05 | Correcting a request payment leaves the request's status and payment_id and the original pay receipt unchanged; both parties' revisions reads work; a zero-amount request payment corrected upward debits the payer, with insufficient_funds judged against the payer's available | C4, R3-06 |
+| S3-052 | Every /revisions entry has the correction-response shape {payment_id, revision, amount, effective_at, recorded_at, reason}; revision 1 has reason "" and effective_at = recorded_at = created_at; a failed correction or a replay appends nothing | C3, R3-07 |
+| S3-053 / D3-14 | Boundary: with known_at between a payment's creation and a later correction, both parties' views show revision 1 only; with known_at before the creation, the payment is absent for BOTH parties | C5 |
+| S3-054 / D3-06 / D3-12 | **Expected by design, not an inconsistency:** after a correction, /activity (and every other payment representation) shows revision 1's amount, while a statement entry's payment.amount shows the selected revision's amount | R3-08 |
+| S3-072 / D2-13 | Stage-1 and stage-2 receipts replay byte-identical after 1→3 and 2→3, even though stage 3 adds fields such as closed_at. Source exports contain no snapshot tokens | C7 |
+| S3-083 | Names the holds-only case: B receives 1000 at t1, authorizes 800 at t2 and voids at t3; correcting the t1 payment down to 100 effective t1 → 409 historical_overdraft, because historical available in [t2, t3) is negative, while current available is fine | R3-03 |
+| S3-904 | The stage-2 suite on stage-3/ may need superset adaptations (for example, closed_at on authorizations), made in a separate test revision | R3-16 |
+
+## Decisions added or revised in r2 (NOT source requirements)
+
+| ID | Decision | Origin |
+|---|---|---|
+| D3-03 (extended) | A same-amount revision is valid and moves no money now, but may change history by moving effective_at (S3-055) | R3-01 |
+| D3-11 (clarified) | historical_overdraft is evaluated at PAST boundaries only (instants ≤ now): every distinct effective_at, including both the proposed and the replaced revision's effective_at, every hold event time and every created_at. Movements at one instant are netted together first. Future expiries are not boundaries | R3-12 |
+| D3-17 | A seeded open hold whose expires_at is at or before its created_at (the default reset time) produces no hold events, so it never held anything in history. Seeded closed holds produce no historical hold events either. closed_at: a seeded expired hold uses expires_at, and a seeded captured or voided hold uses its created_at | I3-1 |
+| D3-18 | 2→3 import: a stage-2 export records no void time, so a stage-2 voided hold releases at the IMPORT time. This errs on the safe side for money, because it never accepts a real overdraft, at the cost of possibly rejecting a legitimate backdated correction. Captures on imported holds release at their capture payment's created_at, and expiries at expires_at. Recorded as a known limitation of 2→3 imports | C1 |
+| D3-19 | Statement tie order "payment id ascending" = plain code-unit (byte) lexicographic order of the id string | R3-09 |
+| D3-20 | Query instants: only the percent-decoded value is used. A decoded space where the offset should be (an unencoded `+`) is not RFC 3339 → 422. The echo returns the decoded string exactly. The suites send `%2B`; the literal `+` is tested only as this decision | R3-10 |
