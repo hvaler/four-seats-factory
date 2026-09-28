@@ -33,7 +33,7 @@ function client(base) {
     return {
       status: res.status,
       text,
-      json: text ? JSON.parse(text) : null,
+      json: text && /json/.test(res.headers.get('content-type') || '') ? JSON.parse(text) : null,
       contentType: res.headers.get('content-type'),
     };
   }
