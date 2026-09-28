@@ -1,0 +1,3 @@
+[{"width": 375, "prefill": "20.00", "error_shown": true, "input_after": "25.00", "payer_held": 2000, "payer_total": 5000, "partial_keep_control": true, "status_after_partial": "open", "prefill_after_partial": "13.00", "error_after_partial": 0, "payer_after_partial": [4300, 1300]}, {"width": 1280, "prefill": "20.00", "error_shown": true, "input_after": "25.00", "payer_held": 2000, "payer_total": 5000, "partial_keep_control": true, "status_after_partial": "open", "prefill_after_partial": "13.00", "error_after_partial": 0, "payer_after_partial": [4300, 1300]}]
+NOT_REPRODUCED
+FIXED

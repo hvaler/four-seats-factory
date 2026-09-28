@@ -1,0 +1,73 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-007",
+ "sequence": 7,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:04:45Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-010,S2-012..S2-024,S2-026..S2-028,S2-032,S2-033,S2-035",
+  "section": null,
+  "obligation": "S2-010,S2-012..S2-024,S2-026..S2-028,S2-032,S2-033,S2-035"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "s2_ui_probe run 2 (375 and 1280 px)",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "auditor@9adf0051 tools/s2_ui_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/aud-venv/bin/python s2_ui_probe.py --base :9201 --out-dir ../c1/ui-run2",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:52766657ce1f7bccaf1bcd6cd193bdd3c3781eb2a0ba999663fe71712e5c2508",
+  "mode": "Chromium 375x800 and 1280x800",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:03:43Z",
+  "finished_utc": "2026-09-28T22:04:45Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 44,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 44
+  }
+ },
+ "expected": "all pass",
+ "observed": "44/44 at both widths: deep links; testids; formats (EUR, JPY, no grouping); decimal rules with no request sent; double submit once; refused pay keeps inputs; latest refresh wins with delayed reads; lost response -> pay-uncertain -> same key+body retry, money once; stale pay button; split preview; authorize/capture/void UI; auth-error/logout; worst-case content no horizontal scroll; XSS as text; contrast 6.25-16.5:1; visible labels; 3px focus ring",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/ui-run2/ui-results.json",
+   "sha256": "e1f2666d92d0623e18393bbc1bf394d50de42ee4690b9c6d025dd91a8bc2444b"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Screenshots are evidence for the S2-030/031 judgement; the 375 px full-page captures show the sticky header over the card (capture artefact)."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s2-auditor-006"
+ ],
+ "reason": null
+}

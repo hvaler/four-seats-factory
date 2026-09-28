@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-004",
+ "sequence": 4,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:01:34Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "stage-2 API",
+  "section": null,
+  "obligation": "stage-2 API"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "s2_api_probe run 1",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "auditor@7c60182a tools/s2_api_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/aud-venv/bin/python s2_api_probe.py --base :9201 --base-b :9202 --out ../c1/s2-api-results.json",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:52766657ce1f7bccaf1bcd6cd193bdd3c3781eb2a0ba999663fe71712e5c2508",
+  "mode": "containers s2a/s2b --cpus 2 --memory 2g",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:01:26Z",
+  "finished_utc": "2026-09-28T22:01:34Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": 29,
+   "failed": 2,
+   "skipped": 0,
+   "collected": 31
+  }
+ },
+ "expected": "all pass",
+ "observed": "29/31; both failures are auditor TOOL BUGS: (a) follow-up authorization assumed funds the mixed load had exhausted (KeyError); (b) default final capture closed the hold so a later void was legitimately 409",
+ "result": "FAIL_TOOL",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/s2-api-results.json",
+   "sha256": "2e83d47c01b3e7c8b6a682ef64985ab624781e9cc4184d21369bab1143eec200"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Preserved; superseded by 005."
+ },
+ "state": "OPEN",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

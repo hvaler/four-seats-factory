@@ -1,0 +1,73 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-005",
+ "sequence": 5,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:02:05Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-011,S2-050..S2-074,S1-002/070/078/092/112/196(sup),D2-02,D2-03,D2-04,D2-08,D2-15",
+  "section": null,
+  "obligation": "S2-011,S2-050..S2-074,S1-002/070/078/092/112/196(sup),D2-02,D2-03,D2-04,D2-08,D2-15"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "s2_api_probe run 2",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "auditor@c66eae37 tools/s2_api_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/aud-venv/bin/python s2_api_probe.py --base :9201 --base-b :9202 --out ../c1/s2-api-results-2.json",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:52766657ce1f7bccaf1bcd6cd193bdd3c3781eb2a0ba999663fe71712e5c2508",
+  "mode": "as 004",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:01:58Z",
+  "finished_utc": "2026-09-28T22:02:05Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 31,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 31
+  }
+ },
+ "expected": "all pass",
+ "observed": "31/31: holds move no money; held funds fund nothing; capture spends its own reservation at available 0; 700/700/600; void after partial; clock expiry with no request at deadline (TTL 2 s, exact +2 s strings); D2-02 codes; D2-15; settlement vs held 409; D2-14 negotiation; mixed 50-way concurrency conserves total with available = total - held >= 0 at every read; same-key capture/authorize; replays after capture/void; S2-074 across two containers",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/s2-api-results-2.json",
+   "sha256": "6a1eb653cabbb597ccbc25f57eb5699576c9d5ee5c433807e9993f1db52fd515"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s2-auditor-004"
+ ],
+ "reason": null
+}

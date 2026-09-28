@@ -1,0 +1,101 @@
+{
+ "started_utc": "2026-09-28T22:29:14Z",
+ "finished_utc": "2026-09-28T22:29:25Z",
+ "passed": 7,
+ "failed": 0,
+ "total": 7,
+ "results": [
+  {
+   "obligation": "S2-040/S2-041",
+   "probe": "stage-1 export imports into stage-2; old tokens valid; balances kept; no holds",
+   "pass": true,
+   "detail": {
+    "export": 200,
+    "import": 204,
+    "export_sha256": "8ee6586eab202705e7b7076a99ac5e390271a4b5b41109ddbf266aa7b779f809"
+   }
+  },
+  {
+   "obligation": "S2-043/D2-13/S1-176",
+   "probe": "stage-1 receipts replay on stage-2 as 200 with the ORIGINAL bytes",
+   "pass": true,
+   "detail": {
+    "s": [
+     200,
+     200,
+     200
+    ]
+   }
+  },
+  {
+   "obligation": "S2-040/S2-042/S2-044",
+   "probe": "imported state exercised: key reuse 409, failed key reusable, pending request payable, feed has authorization_id, conservation",
+   "pass": true,
+   "detail": {
+    "conds": {
+     "diff_body_409": true,
+     "failed_key_201": true,
+     "pending_paid_201": true,
+     "pay_auth_id_null": true,
+     "feed_all_have_auth_id": true,
+     "settlement_members_2": true,
+     "members_same_settlement": true,
+     "conservation": true
+    },
+    "feed": 6,
+    "members": 2,
+    "total": 15000
+   }
+  },
+  {
+   "obligation": "S2-041/S2-043/D2-18",
+   "probe": "browser signed in on stage-1 data stays signed in after import; lost pay retried with same key+body recovers original; money once @375",
+   "pass": true,
+   "detail": {
+    "login": true,
+    "uncertain": true,
+    "import": 204,
+    "cleared": true,
+    "same_key_body": true,
+    "signed_in": true,
+    "s1_balance_after_lost": 8701,
+    "s2_balance": 8701,
+    "shown": "8701"
+   }
+  },
+  {
+   "obligation": "S2-042/D2-18",
+   "probe": "stage-1 pending request paid from /requests after upgrade @375",
+   "pass": true,
+   "detail": {
+    "ui_status": "paid",
+    "api_status": "paid"
+   }
+  },
+  {
+   "obligation": "S2-041/S2-043/D2-18",
+   "probe": "browser signed in on stage-1 data stays signed in after import; lost pay retried with same key+body recovers original; money once @1280",
+   "pass": true,
+   "detail": {
+    "login": true,
+    "uncertain": true,
+    "import": 204,
+    "cleared": true,
+    "same_key_body": true,
+    "signed_in": true,
+    "s1_balance_after_lost": 8701,
+    "s2_balance": 8701,
+    "shown": "8701"
+   }
+  },
+  {
+   "obligation": "S2-042/D2-18",
+   "probe": "stage-1 pending request paid from /requests after upgrade @1280",
+   "pass": true,
+   "detail": {
+    "ui_status": "paid",
+    "api_status": "paid"
+   }
+  }
+ ]
+}
