@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-adversary-013",
+ "sequence": 13,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:20:00Z",
+ "event_type": "INSPECTION",
+ "requirement": {
+  "id": "S2-001,S1-900,S1-901",
+  "spec_path": "pocketful/spec/stage-2.md",
+  "spec_sha256": "39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "section": null,
+  "obligation": "S2-001,S1-900,S1-901"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "inspection of the repair diff f1f0847d..68583038",
+ "candidate_commit": "68583038e7ea52429b062af0f775d3cbfd96b7c3",
+ "candidate_product_tree": "a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "git diff --stat f1f0847d 68583038; git diff f1f0847d 68583038 -- stage-2/src; git rev-parse 68583038:stage-1",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s2-2 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:19:00Z",
+  "finished_utc": "2026-09-28T22:20:00Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 1,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 1
+  }
+ },
+ "expected": "only the F2-01 fix and its test changed; stage-1 unchanged",
+ "observed": "3 files: src/ui/app.js +17/-4 (per-authorization draft, cleared on successful capture only), test/browser/capture_draft_test.py +110, RUN.md +7; 2 commits by implementer-thgt; stage-1 tree 347efba5; no server/API change",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "times approximate to the minute"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "3e8e190d-03e4-4330-a801-461619500c4f",
+  "00f0ba70-50d6-45a6-aaa6-db44721baa20"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
