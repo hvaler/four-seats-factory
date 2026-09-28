@@ -1,0 +1,73 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-009",
+ "sequence": 9,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:05:45Z",
+ "event_type": "UPGRADE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-040,S2-041,S2-042,S2-043,S2-044,S2-902,D2-13,D2-18",
+  "section": null,
+  "obligation": "S2-040,S2-041,S2-042,S2-043,S2-044,S2-902,D2-13,D2-18"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "1->2 upgrade run 2 (fresh containers)",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "auditor@9a035d4b tools/s2_upgrade_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/aud-venv/bin/python s2_upgrade_probe.py --s1 :9203 --s2a :9201 --s2b :9202 --out-dir ../c1/upgrade-run2",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:52766657ce1f7bccaf1bcd6cd193bdd3c3781eb2a0ba999663fe71712e5c2508",
+  "mode": "fresh containers: s1u = ACCEPTED stage-1 image sha256:cfb657fd5893f82a37da3a4bc2fb9d64f5c822fbc72f981a7cf9d69b04293583 built --no-cache from clone @beeaec72; s2a, s2b = candidate image",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:05:38Z",
+  "finished_utc": "2026-09-28T22:05:45Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 7,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 7
+  }
+ },
+ "expected": "all pass",
+ "observed": "7/7: populated stage-1 export (tokens, payments, pending request, settlement, completed retry, lost-response retry, failed key) imports into stage-2; old tokens valid; balances kept, no holds; stage-1 payment and settlement receipts replay 200 byte-identical; different body 409; failed key reusable; pending request payable; conservation; browser (D2-18 routing) signed in before stays signed in, lost pay retried with same key+body recovers original, money once, request paid from /requests, at 375 and 1280",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/upgrade-run2/upgrade-results.json",
+   "sha256": "ea0a7894ebaea44c5e0ca19618fffd03895231f93e0beead3aecc4b653432f7e"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Export contents never stored; only SHA-256 recorded in results. D2-18 routing via Playwright, not a network proxy."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s2-auditor-008"
+ ],
+ "reason": null
+}

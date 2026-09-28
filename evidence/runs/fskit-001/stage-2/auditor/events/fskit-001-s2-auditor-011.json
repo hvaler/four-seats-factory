@@ -1,0 +1,73 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-011",
+ "sequence": 11,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:07:40Z",
+ "event_type": "FINDING_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-027 (r2 restated) / D2-19 (r3) / S2-034",
+  "section": null,
+  "obligation": "S2-027 (r2 restated) / D2-19 (r3) / S2-034"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Independent reproduction of adversary F2-01",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "auditor@8f1ed926 tools/repro_f2_01.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/aud-venv/bin/python repro_f2_01.py http://127.0.0.1:9201",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:52766657ce1f7bccaf1bcd6cd193bdd3c3781eb2a0ba999663fe71712e5c2508",
+  "mode": "Chromium 375 and 1280",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:07:36Z",
+  "finished_utc": "2026-09-28T22:07:40Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "after a refused over-remainder capture the typed amount is kept",
+ "observed": "REPRODUCED at 375 and 1280: prefill 20.00, typed 25.00, authorization-error shown, input reset to 20.00; payer held 2000 / total 5000 unchanged (no money effect)",
+ "result": "FAIL",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/repro-f2-01.log",
+   "sha256": "26ec443f54b2d1f36014196dca196e0d59fb730ec2e534a9dd536f74366ad52d"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Low severity; decision-row (D2-19) failure, not a stage-2.md text failure."
+ },
+ "state": "REJECTED",
+ "room_message_ids": [
+  "e3876ae7-71ad-4241-8b71-d6c7647edf64",
+  "50c67d05-5a90-4c6c-bf1d-78eec0d7801f",
+  "b88cb4aa-e275-4a5a-9a96-ef42b7d9e96b"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
