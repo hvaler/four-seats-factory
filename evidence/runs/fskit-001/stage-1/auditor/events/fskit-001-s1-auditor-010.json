@@ -1,0 +1,110 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-010",
+ "sequence": 10,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:32:12Z",
+ "event_type": "CHALLENGE_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "adversary suite v3 (all obligation marks incl. S1-017,019,047,060,174,175)",
+  "section": null,
+  "obligation": "adversary suite v3 (all obligation marks incl. S1-017,019,047,060,174,175)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor re-run of adversary suite v3 (addendum 9de21f5f)",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "adversary@d815d96b3a556ceb1a5ce1fee2577f133c2dfe89 suite tree ec553aa33283a2501d4e44a4648ec50676feb7f8",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "/mnt/c/nexus/dev/band-kit/clones/auditor-advsuite-2 (clean detached checkout; suite diff vs v2 = test_coverage_v3.py only)",
+  "command": "ADV_PY=$HOME/aud-venv/bin/python ADV_TEST_REV=d815d96b3a556ceb1a5ce1fee2577f133c2dfe89 ADV_TEST_TREE=ec553aa33283a2501d4e44a4648ec50676feb7f8 ADV_TEST_DIRTY=clean-detached-auditor-checkout bash /mnt/c/nexus/dev/band-kit/clones/auditor-advsuite-2/verification/adversary/stage-1/run.sh /mnt/c/nexus/dev/band-kit/clones/auditor-s1-1 beeaec72ff53fa75469c5f09236a786632f21fd8 /mnt/c/nexus/dev/band-kit/checks/fskit-001-s1-audit-advsuite-2",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; Python 3.12.3",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1"
+  },
+  "container_image_digest": "sha256:9d28288aab745ec88d6e0e9f82e66e185a24d5bd61b1f732a3db590aaa066684",
+  "mode": "as event 007",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:31:01Z",
+  "finished_utc": "2026-09-28T21:32:12Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 325,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 325
+  }
+ },
+ "expected": "325/325 as in adversary event 006",
+ "observed": "325 passed (279 requirement, 37 decision, 9 risk), 1 PytestWarning (record_property vs xunit2; reporting only); no restart/OOM",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/build.log",
+   "sha256": "09417b62a3a515432461df7262e1647eed91b8b8a0e1d33c57610323ffe964f6"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/container-adv-s1-a.log",
+   "sha256": "99cdbc9ce1e48db9c0e5a55e3ec70703ba9f7e949822be50bdc25dcc60bee5f3"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/container-adv-s1-b.log",
+   "sha256": "11980b07e0b4c93400dd99f10c00edcbeaa7dc51606ab1e93d9e21f2b979a508"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/container-adv-s1-c.log",
+   "sha256": "b7d47f4805075fde5aa53e4f3a4c35ccf4a3244963b19e3df06eb9b11b28a88c"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/pytest.log",
+   "sha256": "6c144ee178da80bb6e51f6eaa8274339b0f6574ea6a6ef33d651ad3ecd5e8ebc"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/runner.log",
+   "sha256": "1aabf8fa49733969542f25e50ac8913b7d50bd52657ed0c452d13c45bd3af7bb"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/junit.xml",
+   "sha256": "694170ea1ca0ef6fda3ab4bd1fa3fce80dc53a98d93fb862c744beaaa5b31dee"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/results.json",
+   "sha256": "0bb69af02db0ac5f585585ea3244b5796b8148d64a16b405e23f382edda55ffc"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/summary.md",
+   "sha256": "f5f89295f84d5da991aad3aca4174765bf205e6d583a5faf0e5cc7e8aa2bb89e"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-2/SHA256SUMS",
+   "sha256": "c97aec020a613c66b6516bf2955d6e61e2240f7f46428f6f5af05c136965be6a"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Same host and daemon as the other runs."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "9de21f5f-cc7d-4dd7-9adf-f997f7eafa57"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s1-auditor-007"
+ ],
+ "reason": null
+}

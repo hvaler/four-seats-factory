@@ -1,0 +1,88 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-003",
+ "sequence": 3,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:11:37Z",
+ "event_type": "HARNESS_RUN",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "S1-011,S1-012,S1-902",
+  "section": null,
+  "obligation": "S1-011,S1-012,S1-902"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Official harness stage 1, ISOLATED mode (final)",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "kickoff@803560d2 suite_digest a768110ba977f89ccdb5c993e5a4e7440dd3219dbf8d8c0993721749f68b07fd",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "/mnt/c/nexus/dev/dark-factory-wearedevs",
+  "command": "~/df-venv/bin/python -m harness run --track pocketful --repo /mnt/c/nexus/dev/band-kit/clones/auditor-s1-1 --stage 1 --mode isolated --out /mnt/c/nexus/dev/band-kit/checks/fskit-001-s1-audit-2",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; harness venv Python 3.12.3; kickoff 803560d2 (clean modulo CRLF; untracked .venv only)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": null,
+  "mode": "isolated",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:10:52Z",
+  "finished_utc": "2026-09-28T21:11:37Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 147,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 147
+  }
+ },
+ "expected": "stage 1 pass in isolated (no outbound) mode with no skips; stage-2 probe expected to fail",
+ "observed": "stage 1 pass 147/147, 0 skipped (1 benign PytestCacheWarning: read-only mount); stage-2 probe fail as expected; report.revision beeaec72, mode isolated, state completed",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s1-audit-2/report.json",
+   "sha256": "fb03079c4f363ca7ee8c56546d0670bbc01263d25da0a4ae8f88af156465a47b"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-2/stage-1.counts.json",
+   "sha256": "6250f0fd1251afe620a1f77f720deecc44479bd1466308da32a9204809c34546"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-2/stage-1.log",
+   "sha256": "7cebe52590f6644dc1be0a80609f4dfeefe1f3d58a3b3f995afcd4dd7b3e2505"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-2/stage-2.counts.json",
+   "sha256": "90b4dc218af51de9881738903b587a49bc5b2cb8b8c9e3d162ad24e034c956cd"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-2/stage-2.log",
+   "sha256": "20a88fc04c97c0f4079b2318c4b277c55282ae669169c1d9566f6c27d2c9524c"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Partial public sample only."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "3d6a464f-0ae0-4942-a11e-f788c2793e68"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s1-auditor-002"
+ ],
+ "reason": null
+}

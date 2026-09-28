@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-005",
+ "sequence": 5,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:10:07Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "S1-001,002,003,020,021,031,039,040,050-057,069,071-080,095,098,111-113,120,121,140-145,160,170-179,191-203",
+  "section": null,
+  "obligation": "S1-001,002,003,020,021,031,039,040,050-057,069,071-080,095,098,111-113,120,121,140-145,160,170-179,191-203"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor probe run 2",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "auditor@9eeeae1d tools/audit_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "/mnt/c/nexus/dev/band-kit/wt/auditor/evidence/runs/fskit-001/stage-1/auditor/",
+  "command": "~/df-venv/bin/python tools/audit_probe.py --base http://127.0.0.1:9101 --base-b http://127.0.0.1:9102 --out c1/probe-results-2.json",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; harness venv Python 3.12.3; kickoff 803560d2 (clean modulo CRLF; untracked .venv only)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:12d1a0f842c02a91bdb8050042e67566a70cf6c607aefdc0bf669686cd706b74",
+  "mode": "containers aud-a (PORT=9101) / aud-b (PORT=9102), --cpus 2 --memory 2g",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:10:04Z",
+  "finished_utc": "2026-09-28T21:10:07Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 61,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 61
+  }
+ },
+ "expected": "all probes pass",
+ "observed": "61/61 pass: 50-way conservation and non-negativity; 20-way pay race with decline/cancel; 15-way same-key on all 5 paths; claimed-key precedence; integral numeric forms; splits table; settlement netting, rollback, D-28 precedence, 0/32/33 entries; visibility; XC A->B import continuity (old tokens, replays, failed keys, dest credentials removed)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-1/auditor/c1/probe-results-2.json",
+   "sha256": "f5fe71ef8f7f8c9cc3068403184d274e0debf38ea6e2d56ea7fb03f6ba884eec"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Transient negativity observable only through proxies (S1-001/002 stated gap)."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "3d6a464f-0ae0-4942-a11e-f788c2793e68"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s1-auditor-004"
+ ],
+ "reason": null
+}
