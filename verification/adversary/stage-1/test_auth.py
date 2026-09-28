@@ -121,7 +121,9 @@ AUTH_ROUTES = [
 
 @pytest.mark.obl("S1-053", "S1-067", "S1-016")
 @pytest.mark.parametrize("method,path", AUTH_ROUTES)
-@pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+# "Bearer " (trailing space) is not sendable: httpx rejects it client-side and HTTP strips
+# trailing whitespace, so it is the same case as "Bearer" (test revision v2, see c1-run1).
+@pytest.mark.parametrize("hdr", [None, "Bearer", "Token abc", "Basic YWRhOnB3",
                                  "Bearer not-a-real-token", "PRE-RESET"])
 def test_unauthenticated(api, method, path, hdr):
     if hdr == "PRE-RESET":

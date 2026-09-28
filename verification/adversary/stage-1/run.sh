@@ -18,8 +18,9 @@ echo "candidate_sha=$SHA"
 echo "clone_head=$(git -C "$CLONE" rev-parse HEAD)"
 echo "clone_stage1_tree=$(git -C "$CLONE" rev-parse HEAD:stage-1)"
 echo "clone_status_porcelain_begin"; git -C "$CLONE" status --porcelain; echo "clone_status_porcelain_end"
-echo "test_rev=$(git -C "$HERE" rev-parse HEAD) test_tree=$(git -C "$HERE" rev-parse HEAD:verification/adversary/stage-1)"
-echo "test_dirty_begin"; git -C "$HERE" status --porcelain -- .; echo "test_dirty_end"
+# WSL git cannot follow a worktree created from Windows, so the caller records the test
+# revision on the Windows side and passes it in.
+echo "test_rev=${ADV_TEST_REV:-unrecorded} test_tree=${ADV_TEST_TREE:-unrecorded} test_dirty=${ADV_TEST_DIRTY:-unrecorded}"
 [ "$(git -C "$CLONE" rev-parse HEAD)" = "$SHA" ] || { echo "clone HEAD != candidate"; exit 2; }
 docker version --format 'docker client={{.Client.Version}} server={{.Server.Version}}'
 "$PY" -V; "$PY" -m pip freeze | tr '\n' ' '; echo
