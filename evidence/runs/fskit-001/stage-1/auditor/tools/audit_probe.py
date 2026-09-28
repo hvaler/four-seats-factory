@@ -432,9 +432,12 @@ def p_export_import(base_b):
     rs = call("POST", "/settlements", {"transfers": [{"from_handle": "aa", "to_handle": "bb", "amount": 5}]}, token=to, key=sk, base=base_b)
     lg = call("POST", "/auth/login", {"email": "aa@audit.invalid", "password": "pw-aa-12345"}, base=base_b)
     feed = call("GET", "/activity?limit=200", token=ta, base=base_b)[1]["payments"]
+    # feed on B = the two exported payments (p1, settlement member) + the new payment made above with the failed key (rf)
+    exp_ids = {p1["payment_id"], st1["payments"][0]["payment_id"], (rf[1] or {}).get("payment_id")}
     record("S1-172/S1-176/S1-177/S1-178/S1-202", "A->B import continuity",
            ok and r_old[0] == 200 and r_old[1]["balance"] == 1000 - 15 and r_z[0] == 401 and rp[0] == 200 and rp[1] == p1
-           and rd[0] == 409 and rf[0] == 201 and rs[0] == 200 and rs[1] == st1 and lg[0] == 200 and len(feed) == 2,
+           and rd[0] == 409 and rf[0] == 201 and rs[0] == 200 and rs[1] == st1 and lg[0] == 200
+           and {p["payment_id"] for p in feed} == exp_ids and len(feed) == 3,
            {"import": s, "old_tok": r_old[0], "dest_tok": r_z[0], "replay": rp[0], "diff": rd[0], "failed_key": rf[0],
             "settle_replay": rs[0], "login": lg[0], "feed_len": len(feed)})
     reset(fixture([("aa", 1)]), base=base_b)
