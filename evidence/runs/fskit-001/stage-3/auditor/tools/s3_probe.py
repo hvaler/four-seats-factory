@@ -261,6 +261,32 @@ def holds_probe():
            {"s": s, "c": code(j), "ee_now": me(te)[1]})
 
 
+def time_move_probe():
+    """R3-01/R3-02/R3-04: same-amount correction moving effective_at; exact-instant boundaries with server strings."""
+    ap.reset(fixture())
+    tk = {h: ap.login(h) for h in ("aa", "bb", "cc", "dd")}
+    ta = tk["aa"]
+    # move p3 (cc->aa 500 at T3) to effective T2 with the same amount
+    s, c, _ = correct(tk["cc"], "p3", 1, 500, T2, reason="moved")
+    cur = me(ta)[1]["balance"]
+    mid = me(ta, as_of=iso_shift(T2, 1000))[1]["balance"]         # between new (T2) and old (T3)
+    s2, st, _ = stmt(ta, **{"from": T1, "to": T3})
+    ids = [e["payment"]["payment_id"] for e in st["entries"]]
+    record("S3-055/R3-01", "same-amount time move: current unchanged, history shifted, entry enters window", s == 201 and cur == 10000 and mid == 10000
+           and ids == ["p1", "p2", "p3", "p4"] and st["closing_balance"] == 10000, {"s": s, "cur": cur, "mid": mid, "ids": ids})
+    rec_at = c["recorded_at"]
+    kn_eq = me(ta, as_of=iso_shift(T2, 1000), known_at=rec_at)[1]["balance"]
+    kn_before = me(ta, as_of=iso_shift(T2, 1000), known_at=iso_shift(rec_at, -1))[1]["balance"]
+    at_eq = me(ta, as_of=T2)[1]["balance"]
+    s3, st2, _ = stmt(ta, **{"from": T1, "to": T2})
+    ids2 = [e["payment"]["payment_id"] for e in st2["entries"]]
+    record("S3-053/S3-021/S3-031/R3-04", "known_at == recorded_at selects it; as_of == effective_at counts; to == effective_at excludes",
+           kn_eq == 10000 and kn_before == 9500 and at_eq == 10000 and ids2 == ["p1"], {"kn_eq": kn_eq, "kn_before": kn_before, "as_of_eq": at_eq, "ids_to_T2": ids2})
+    # R3-02: move dd->cc 600 (T3) to before dd was funded (T2) -> dd negative in [T1, T2)
+    s, j, _ = correct(tk["dd"], "p5", 1, 600, T1)
+    record("S3-049/R3-02", "backdated time move before funding -> 409 historical_overdraft", (s, code(j)) == (409, "historical_overdraft"), {"s": s, "c": code(j)})
+
+
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--base", required=True)
@@ -268,7 +294,7 @@ def main():
     x = a.parse_args()
     ap.BASE = x.base
     started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    for f in (main_probe, holds_probe):
+    for f in (main_probe, holds_probe, time_move_probe):
         try:
             f()
         except Exception as e:
