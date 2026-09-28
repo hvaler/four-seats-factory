@@ -1,0 +1,2 @@
+run_id,stage,role,seat_id,harness,model,started_utc,finished_utc,wall_seconds,input_tokens,output_tokens,cached_tokens,cost,currency,cost_is_estimate,measurement_source,limitations
+fskit-001,1,adversary,f603ac21-88ea-434a-844e-bb621f8da63e,Claude Code,claude-opus-5-5,2026-09-28T20:49:24Z,2026-09-28T21:22:50Z,2006,unknown,unknown,unknown,unknown,,true,wall clock from shell timestamps (handoff read to bundle),token counts are not exposed to this seat at run time; start is the first timestamp taken after reading the stage-1 handoff
