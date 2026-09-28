@@ -1,0 +1,73 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-016",
+ "sequence": 16,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:27:31Z",
+ "event_type": "FINDING_RECHECK",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-027,D2-19,S2-034",
+  "section": null,
+  "obligation": "S2-027,D2-19,S2-034"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "F2-01 fixed + prefill follows remainder",
+ "candidate_commit": "68583038e7ea52429b062af0f775d3cbfd96b7c3",
+ "candidate_product_tree": "a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2",
+ "test_commit": "auditor@0455775b24d3832ae8e883c9b4dff1f4c169767a tools/repro_f2_01.py (extended; file committed right after the run, unmodified)",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/aud-venv/bin/python repro_f2_01.py http://127.0.0.1:9201",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:eb155dc98f37b747797f9b1878f346dec9e9b7e1bc541a37d20c2f0d8894cf97",
+  "mode": "Chromium 375 and 1280, image built --no-cache from clones/auditor-s2-2",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:27:21Z",
+  "finished_utc": "2026-09-28T22:27:31Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "typed 25.00 kept after refusal; after partial non-final 7.00 the item stays open and prefill = 13.00; payer total 4300 held 1300",
+ "observed": "Both widths: input_after 25.00, error shown; partial 7.00 with keep -> status open, prefill 13.00, no error, payer [4300, 1300]. NOT_REPRODUCED / FIXED",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c2/repro-f2-01.log",
+   "sha256": "5d2989eb1e27d39ba291cea443fade69c33f93b5f8e5ca4ef86bae50791a8ad1"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Browser-level check."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "f0fbb7e1-cf4a-48a2-a573-6c0735b5bf9f"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s2-auditor-011"
+ ],
+ "reason": null
+}

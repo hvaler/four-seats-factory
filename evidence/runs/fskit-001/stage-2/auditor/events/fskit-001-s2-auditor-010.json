@@ -1,0 +1,79 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-010",
+ "sequence": 10,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:06:07Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-904 (stage-1 rows on stage-2/)",
+  "section": null,
+  "obligation": "S2-904 (stage-1 rows on stage-2/)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Stage-1 auditor probes against stage-2/",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "auditor@9eeeae1d audit_probe.py, @236ecf35 audit_probe2.py, @31ba973b timing_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "audit_probe.py / audit_probe2.py / timing_probe.py against s2a/s2b/s2c(PORT unset)",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:52766657ce1f7bccaf1bcd6cd193bdd3c3781eb2a0ba999663fe71712e5c2508",
+  "mode": "candidate containers",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:06:02Z",
+  "finished_utc": "2026-09-28T22:06:07Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 75,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 75
+  }
+ },
+ "expected": "all pass",
+ "observed": "61/61, 10/10, 4/4",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/s1-probe-on-s2.json",
+   "sha256": "9ae54a71d7a2df64deb3ec1885d5873d3d40fde82023d8c5331d649f6dcd2aac"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/s1-probe2-on-s2.json",
+   "sha256": "d71a67e54473a8da02e2d7c72d224b5cd52f56e0d845249c2376ed9132abc6cc"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-2/auditor/c1/s1-timing-on-s2.json",
+   "sha256": "d112d96b6df89a0d2f28234c85a256538c04f0ed400275b60abce9aa557c19a2"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

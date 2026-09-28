@@ -1,0 +1,163 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-020",
+ "sequence": 20,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:44:00Z",
+ "event_type": "CHALLENGE_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-051,S2-070,S2-071,S1-078(sup)",
+  "section": null,
+  "obligation": "S2-051,S2-070,S2-071,S1-078(sup)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Adversary CONC tests x2 on fresh images",
+ "candidate_commit": "68583038e7ea52429b062af0f775d3cbfd96b7c3",
+ "candidate_product_tree": "a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2",
+ "test_commit": "adversary@bdb21efc",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "ADV_SKIP_S1SUITE=1 ADV_PYTEST_ARGS=-ks2_conc run.sh ... checks/fskit-001-s2-audit-advconc-{1,2}",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:eb155dc98f37b747797f9b1878f346dec9e9b7e1bc541a37d20c2f0d8894cf97",
+  "mode": "fresh --no-cache image per repetition",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:42:30Z",
+  "finished_utc": "2026-09-28T22:44:00Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 18,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 18
+  }
+ },
+ "expected": "9/9 each",
+ "observed": "2 x 9 passed; images c4c735da, fdcef4d8",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/SHA256SUMS",
+   "sha256": "191f12c62fd5e41ecbe93a07ac99cf96554d45e6777ecc3949dd58b237bc730d"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/build-stage1.log",
+   "sha256": "89c193bb7633f9e026365c4d5b4bd89be03609e8dcad726d6f01252df99e45d7"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/build-stage2.log",
+   "sha256": "901c723a3c1ea076091485112f44a2bfcc58942d28d268263c1857333323db3c"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/container-adv2-a.log",
+   "sha256": "c12c910e573e8a07b6a60037f83beb67e7bdd37dcf11cb1e5e162441f9b7a002"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/container-adv2-b.log",
+   "sha256": "44644200d55501e702f2b584ec59d6d91ea8512e15f25649f2b45601543697ea"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/container-adv2-c.log",
+   "sha256": "535b103be461c18eb03a6cdf85877b7d6bed8466056ce21765626491410feb12"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/container-adv2-s1.log",
+   "sha256": "4351b48d321bcfeee03dbc5d6ad68d1e6a82a9681153c275665671ecf08a506a"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/junit.xml",
+   "sha256": "b7ceeebe14c80237503159a3d78f13bba8488c44621803de9ccc8057ddbb273f"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/pytest.log",
+   "sha256": "ee5c6589145c34df88219d9027ffc60925643a18b4588925ca2a0cd4d7808238"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/results.json",
+   "sha256": "ee5efe1c6a255198759283da1e0ebf0888d3b5bc76ea9f21cf92ae4562b4dce5"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/runner.log",
+   "sha256": "a91803d8f9f98ff400deef59e7cfaff8264ea63baea2d27fc071aeaa0fc610a0"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-1/summary.md",
+   "sha256": "352825e6ada17be9489dd447d6f5ab509a39875eaff4ee22085afead66b5e03b"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/SHA256SUMS",
+   "sha256": "da71e51d45a28ce9ac3dd81dba0bf95094f1492b6146d9e06b2fb55c5cea4dd5"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/build-stage1.log",
+   "sha256": "2417d597b94dd5bf4bea8fedd74a9445dbab545c76ead315ecee94e9dd2eed42"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/build-stage2.log",
+   "sha256": "6bdb4dbc7f028bd8add57718599b0eb3453e6ac2b9aa9210bb0d5c77d3a9f555"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/container-adv2-a.log",
+   "sha256": "c12c910e573e8a07b6a60037f83beb67e7bdd37dcf11cb1e5e162441f9b7a002"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/container-adv2-b.log",
+   "sha256": "44644200d55501e702f2b584ec59d6d91ea8512e15f25649f2b45601543697ea"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/container-adv2-c.log",
+   "sha256": "ecce25b951b119c3da47e4bd2b1382eef0d1888eb50bbeb6b575f5d3225949a2"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/container-adv2-s1.log",
+   "sha256": "4351b48d321bcfeee03dbc5d6ad68d1e6a82a9681153c275665671ecf08a506a"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/junit.xml",
+   "sha256": "84d29869f924eefc59ca8449283ed03013432e0ef050015a913cf20e6733eeae"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/pytest.log",
+   "sha256": "3486d8200eaef43eae052faaa618d772f00b84c3086bb259f3ca623a4ccad73b"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/results.json",
+   "sha256": "0da097a9ea33db1b07bddbe748da356a229fe51e1251fecba1e1a834b5351ca0"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/runner.log",
+   "sha256": "ce4a076ea103d17302466ff47450d9968b564f9d0eb3f340ba1b771220a69200"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advconc-2/summary.md",
+   "sha256": "352825e6ada17be9489dd447d6f5ab509a39875eaff4ee22085afead66b5e03b"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "2 auditor repetitions + 5 adversary; rare races could be missed."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "f0fbb7e1-cf4a-48a2-a573-6c0735b5bf9f"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

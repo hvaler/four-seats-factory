@@ -1,0 +1,66 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-013",
+ "sequence": 13,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:24:30Z",
+ "event_type": "PROVENANCE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "S2-001,S2-002,S1-900,S1-901",
+  "section": null,
+  "obligation": "S2-001,S2-002,S1-900,S1-901"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Candidate 2 provenance",
+ "candidate_commit": "68583038e7ea52429b062af0f775d3cbfd96b7c3",
+ "candidate_product_tree": "a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "git clone; checkout --detach 68583038; rev-parse HEAD:stage-2 HEAD:stage-1; diff --stat f1f0847d HEAD; status",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:eb155dc98f37b747797f9b1878f346dec9e9b7e1bc541a37d20c2f0d8894cf97",
+  "mode": null,
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:24:00Z",
+  "finished_utc": "2026-09-28T22:24:30Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "stage-1 unchanged; repair confined to stage-2/",
+ "observed": "stage-2 a8e6178d, stage-1 347efba5; diff vs rejected f1f0847d: stage-2/src/ui/app.js +17/-4, stage-2/test/browser/capture_draft_test.py +110, stage-2/RUN.md +7; clean; rejected candidate preserved as ancestor",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Inspection."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "f0fbb7e1-cf4a-48a2-a573-6c0735b5bf9f"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
