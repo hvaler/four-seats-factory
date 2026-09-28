@@ -121,12 +121,16 @@ async def routes_and_layout(ctx, base, out, w, h):
     contrast = await page.evaluate("""() => {
       function rgb(s){const m=s.match(/[\\d.]+/g).map(Number);return m;}
       function lum(c){const a=c.slice(0,3).map(v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4)});return 0.2126*a[0]+0.7152*a[1]+0.0722*a[2];}
-      function bg(e){while(e){const c=rgb(getComputedStyle(e).backgroundColor);if(c.length<4||c[3]>0.5)return c;e=e.parentElement;}return [255,255,255,1];}
+      // background candidates: the first ancestor with an opaque colour OR a gradient image (every gradient stop counts; worst case wins)
+      function bgs(e){while(e){const s=getComputedStyle(e);
+          if(s.backgroundImage && s.backgroundImage.includes('gradient')){const st=s.backgroundImage.match(/rgba?\\([^)]*\\)/g)||[];if(st.length)return st.map(rgb);}
+          const c=rgb(s.backgroundColor);if(c.length<4||c[3]>0.5)return [c];e=e.parentElement;}return [[255,255,255,1]];}
       const out=[];
-      for (const t of ['wallet-available','wallet-balance','pay-submit','current-user','activity-list']) {
+      for (const t of ['wallet-available','wallet-balance','wallet-held','pay-submit','current-user','activity-list']) {
         const e=document.querySelector(`[data-testid="${t}"]`); if(!e) continue;
-        const f=rgb(getComputedStyle(e).color), b=bg(e); const L1=lum(f),L2=lum(b);
-        out.push([t,(Math.max(L1,L2)+0.05)/(Math.min(L1,L2)+0.05)]);
+        const f=rgb(getComputedStyle(e).color); const L1=lum(f);
+        const r=Math.min(...bgs(e).map(b=>{const L2=lum(b);return (Math.max(L1,L2)+0.05)/(Math.min(L1,L2)+0.05);}));
+        out.push([t,r]);
       } return out; }""")
     rec("S2-033/D2-07", "sampled text contrast >= 4.5:1 @%d" % w, contrast and all(c[1] >= 4.5 for c in contrast), {"ratios": [[c[0], round(c[1], 2)] for c in contrast]})
     await page.close()
