@@ -37,10 +37,26 @@ async def run(w):
         await pg.wait_for_timeout(800)
         after = await pg.input_value(sel)
         m = call("GET", "/me", token=ta)[1]
+        # second half of S2-027: a successful partial NON-final capture -> prefill follows the new remainder
+        await pg.fill(sel, "7.00")
+        keep = pg.locator("[data-testid=authorization-item-%s] input[type=checkbox]" % aid)
+        has_keep = await keep.count() > 0
+        if has_keep:
+            await keep.first.check()
+        await pg.click("[data-testid=authorization-capture-%s]" % aid)
+        await pg.wait_for_timeout(1500)
+        st = await pg.get_attribute("[data-testid=authorization-item-%s]" % aid, "data-status")
+        after2 = await pg.input_value(sel) if await pg.locator(sel).count() else None
+        err2 = await pg.locator("[data-testid=authorization-error]").count()
+        m2 = call("GET", "/me", token=ta)[1]
         await b.close()
-    return {"width": w, "prefill": pre, "error_shown": err, "input_after": after, "payer_held": m["held"], "payer_total": m["total"]}
+    return {"width": w, "prefill": pre, "error_shown": err, "input_after": after, "payer_held": m["held"], "payer_total": m["total"],
+            "partial_keep_control": has_keep, "status_after_partial": st, "prefill_after_partial": after2, "error_after_partial": err2,
+            "payer_after_partial": [m2["total"], m2["held"]]}
 
 
 out = [asyncio.run(run(w)) for w in (375, 1280)]
 print(json.dumps(out))
 print("REPRODUCED" if all(o["error_shown"] and o["input_after"] != "25.00" for o in out) else "NOT_REPRODUCED")
+print("FIXED" if all(o["error_shown"] and o["input_after"] == "25.00" and o["status_after_partial"] == "open"
+                     and o["prefill_after_partial"] == "13.00" and o["payer_after_partial"] == [4300, 1300] for o in out) else "NOT_FIXED")
