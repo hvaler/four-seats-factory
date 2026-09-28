@@ -603,6 +603,10 @@
     var fb = slot();
     var listWrap = h('div', null, h('p', { class: 'loading', text: 'Loading holds…' }));
     var captureKeys = identity();
+    // Unsent capture edits per authorization (D2-19): a re-render after a
+    // refused capture restores what was typed; only a successful capture of
+    // that authorization clears it, so the prefill then follows the remainder.
+    var drafts = {};
 
     function load() {
       var seq = beginRead('authorizations');
@@ -626,8 +630,12 @@
       var open = a.status === 'open';
       var actions = [];
       if (open && incoming) {
-        var amt = h('input', { testid: 'authorization-capture-amount-' + a.authorization_id, inputmode: 'decimal', autocomplete: 'off', value: decimalOf(a.remaining_amount) });
-        var keep = h('input', { type: 'checkbox' });
+        var draft = drafts[a.authorization_id];
+        var amt = h('input', { testid: 'authorization-capture-amount-' + a.authorization_id, inputmode: 'decimal', autocomplete: 'off', value: draft ? draft.amount : decimalOf(a.remaining_amount) });
+        var keep = h('input', { type: 'checkbox', checked: draft ? draft.keep : false });
+        var remember = function () { drafts[a.authorization_id] = { amount: amt.value, keep: keep.checked }; };
+        amt.addEventListener('input', remember);
+        keep.addEventListener('change', remember);
         var btn = h('button', { class: 'btn btn-sm', type: 'button', testid: 'authorization-capture-' + a.authorization_id, text: 'Collect' });
         btn.addEventListener('click', function () {
           var value = parseAmount(amt.value);
@@ -643,8 +651,13 @@
           api('POST', '/authorizations/' + encodeURIComponent(a.authorization_id) + '/capture', { body: text, key: captureKeys.keyFor(a.authorization_id + text) })
             .then(function (res) {
               busy(btn, false);
-              if (res.kind === 'ok') fb.show('authorization-success', 'ok', 'Collected ' + fmt(res.data.amount) + ' from @' + a.from_handle + '.');
-              else fb.show('authorization-error', 'error', explain(res, 'The capture was refused.'));
+              if (res.kind === 'ok') {
+                delete drafts[a.authorization_id];
+                fb.show('authorization-success', 'ok', 'Collected ' + fmt(res.data.amount) + ' from @' + a.from_handle + '.');
+              } else {
+                remember();
+                fb.show('authorization-error', 'error', explain(res, 'The capture was refused.'));
+              }
               refresh();
             });
         });
