@@ -42,7 +42,10 @@ def common_checks(tag, src, tgt, st, extra_receipts=()):
     tot = sum(call("GET", "/me", token=t[h], base=tgt)[1]["balance"] for h in t)
     tot_past = sum(call("GET", "/me?as_of=2000-01-01T00:00:00%2B00:00", token=t[h], base=tgt)[1]["balance"] for h in t)
     s, sta, _ = call("GET", "/statement?limit=200", token=t["aa"], base=tgt)
-    ok_stmt = s == 200 and sta["opening_balance"] + sum(e["delta"] for e in sta["entries"]) == sta["closing_balance"] == src_bal["aa"] and len(sta["entries"]) >= 4
+    # aa's payments: K1 (-700), settlement member (-100), lost K2 (-55); stage-2 source adds the partial capture (-100)
+    exp_entries = 3 if tag == "1->3" else 4
+    ok_stmt = (s == 200 and sta["opening_balance"] == 10000 and sta["opening_balance"] + sum(e["delta"] for e in sta["entries"]) == sta["closing_balance"] == src_bal["aa"]
+               and len(sta["entries"]) == exp_entries)
     record("S3-072/D3-13 " + tag, "historical /me and /statement over imported history; conservation now and at opening",
            tot == 15000 and tot_past == 15000 and ok_stmt, {"total": tot, "total_opening": tot_past, "entries": len(sta.get("entries", [])),
                                                             "opening": sta.get("opening_balance"), "closing": sta.get("closing_balance")})
