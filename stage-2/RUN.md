@@ -48,6 +48,13 @@ npm test                                   # starts the service in-process
 BASE_URL=http://127.0.0.1:8080 npm test    # against a running container
 ```
 
+A browser regression test (Python 3.12+ with Playwright and Chromium) runs
+against a running container and resets its state:
+
+```sh
+python test/browser/capture_draft_test.py http://127.0.0.1:8080
+```
+
 ## Design
 
 - **Runtime:** Node.js 22 (`node:22-alpine`, pinned by digest) using only the
