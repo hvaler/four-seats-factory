@@ -1,0 +1,1542 @@
+...........................................FFFFFFFFFFFFF................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 95%]
+.............                                                            [100%]
+=================================== FAILURES ===================================
+____________________ test_unauthenticated[Bearer -GET-/me] _____________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086d8ec0>, method = 'GET', path = '/me'
+hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_________________ test_unauthenticated[Bearer -GET-/activity] __________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086c6d20>, method = 'GET', path = '/activity'
+hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_________________ test_unauthenticated[Bearer -GET-/requests] __________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086c62a0>, method = 'GET', path = '/requests'
+hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_________________ test_unauthenticated[Bearer -POST-/payments] _________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086c7980>, method = 'POST', path = '/payments'
+hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_________________ test_unauthenticated[Bearer -POST-/requests] _________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086d3b30>, method = 'POST', path = '/requests'
+hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+__________________ test_unauthenticated[Bearer -POST-/splits] __________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086d98e0>, method = 'POST', path = '/splits'
+hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_______________ test_unauthenticated[Bearer -POST-/settlements] ________________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086d8740>, method = 'POST'
+path = '/settlements', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+____________ test_unauthenticated[Bearer -POST-/requests/rq_1/pay] _____________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c27086b43e0>, method = 'POST'
+path = '/requests/rq_1/pay', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+__________ test_unauthenticated[Bearer -POST-/requests/rq_1/decline] ___________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c270896ede0>, method = 'POST'
+path = '/requests/rq_1/decline', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+___________ test_unauthenticated[Bearer -POST-/requests/rq_1/cancel] ___________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c270896caa0>, method = 'POST'
+path = '/requests/rq_1/cancel', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_________ test_unauthenticated[Bearer -POST-/requests/no_such_rq/pay] __________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c270872a780>, method = 'POST'
+path = '/requests/no_such_rq/pay', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+_______ test_unauthenticated[Bearer -POST-/requests/no_such_rq/decline] ________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c270873cce0>, method = 'POST'
+path = '/requests/no_such_rq/decline', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+________ test_unauthenticated[Bearer -POST-/requests/no_such_rq/cancel] ________
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+>           yield
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:250: in handle_request
+    resp = self._pool.handle_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:256: in handle_request
+    raise exc from None
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py:236: in handle_request
+    response = connection.handle_request(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/connection.py:103: in handle_request
+    return self._connection.handle_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:136: in handle_request
+    raise exc
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:86: in handle_request
+    self._send_request_headers(**kwargs)
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_sync/http11.py:144: in _send_request_headers
+    with map_exceptions({h11.LocalProtocolError: LocalProtocolError}):
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+map = {<class 'h11._util.LocalProtocolError'>: <class 'httpcore.LocalProtocolError'>}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -> typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+>                   raise to_exc(exc) from exc
+E                   httpcore.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpcore/_exceptions.py:14: LocalProtocolError
+
+The above exception was the direct cause of the following exception:
+
+api = <advlib.Api object at 0x7c270873e240>, method = 'POST'
+path = '/requests/no_such_rq/cancel', hdr = 'Bearer '
+
+    @pytest.mark.obl("S1-053", "S1-067", "S1-016")
+    @pytest.mark.parametrize("method,path", AUTH_ROUTES)
+    @pytest.mark.parametrize("hdr", [None, "Bearer", "Bearer ", "Basic YWRhOnB3",
+                                     "Bearer not-a-real-token", "PRE-RESET"])
+    def test_unauthenticated(api, method, path, hdr):
+        if hdr == "PRE-RESET":
+            old = World(api, fixture()).tok["ada"]
+            api.reset(fixture())
+            hdr = f"Bearer {old}"
+        else:
+            api.reset(fixture())
+        headers = {"Authorization": hdr} if hdr is not None else {}
+        body = NO_BODY if method == "GET" else {"amount": 1}
+>       r = api.call(method, path, body,
+                     headers={**headers, "Idempotency-Key": new_key()})
+
+test_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+advlib.py:81: in call
+    r = self.client.request(method, path, content=content, headers=h,
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:249: in handle_request
+    with map_httpcore_exceptions():
+/usr/lib/python3.12/contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -> typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+    
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+    
+            if mapped_exc is None:  # pragma: no cover
+                raise
+    
+            message = str(exc)
+>           raise mapped_exc(message) from exc
+E           httpx.LocalProtocolError: Illegal header value b'Bearer '
+
+/home/hvaler/adv-venv/lib/python3.12/site-packages/httpx/_transports/default.py:118: LocalProtocolError
+=========================== short test summary info ============================
+FAILED test_auth.py::test_unauthenticated[Bearer -GET-/me] - httpx.LocalProto...
+FAILED test_auth.py::test_unauthenticated[Bearer -GET-/activity] - httpx.Loca...
+FAILED test_auth.py::test_unauthenticated[Bearer -GET-/requests] - httpx.Loca...
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/payments] - httpx.Loc...
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests] - httpx.Loc...
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/splits] - httpx.Local...
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/settlements] - httpx....
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/rq_1/pay] - ...
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/rq_1/decline]
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/rq_1/cancel]
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/no_such_rq/pay]
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/no_such_rq/decline]
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/no_such_rq/cancel]
+13 failed, 288 passed in 54.07s

@@ -1,0 +1,69 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-adversary-005",
+ "sequence": 5,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:19:58Z",
+ "event_type": "INSPECTION",
+ "requirement": {
+  "id": "S1-004,S1-010,S1-069,S1-900,S1-901",
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "section": null,
+  "obligation": "S1-004,S1-010,S1-069,S1-900,S1-901"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "inspection of delivered stage-1/ files at the candidate",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "Get-ChildItem -Recurse -Force stage-1; grep src/ for harness/test/fixture/stage-2 strings; read route table, password.js, async handlers",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s1-1 (fresh clone, detached at candidate)",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:13:36Z",
+  "finished_utc": "2026-09-28T21:19:58Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 5,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 5
+  }
+ },
+ "expected": "no deposit/withdraw surface; Dockerfile+RUN.md+lock; hashed passwords; no stage-2 code; no test/fixture detection",
+ "observed": "route table = exactly the 16 spec routes; no symlinks/submodules/.git; node:22-alpine pinned by digest, zero deps, empty lockfile; scrypt N=2^12 r=8 p=1 16-byte salt; grep of src for harness|pytest|playwright|u_ada|correct horse|example.com|stage2 terms: no hits; only async handlers are reset/signup/login and each re-validates after its await (a signup in flight across reset/import linearizes after the swap: not a violation)",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "inspection is by the adversary, not independent of reading; auditor inspected separately (auditor-001)"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "3d6a464f-0ae0-4942-a11e-f788c2793e68",
+  "c54b2566-53a4-4b97-81bb-caaa3484dc64"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

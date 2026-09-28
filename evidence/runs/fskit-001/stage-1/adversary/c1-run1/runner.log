@@ -1,0 +1,29 @@
+== adversary stage-1 run 2026-09-28T21:09:18Z
+candidate_sha=beeaec72ff53fa75469c5f09236a786632f21fd8
+clone_head=beeaec72ff53fa75469c5f09236a786632f21fd8
+clone_stage1_tree=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_porcelain_begin
+clone_status_porcelain_end
+fatal: not a git repository: /mnt/c/nexus/dev/band-kit/wt/adversary/C:/nexus/dev/band-kit/result/.git/worktrees/adversary
+fatal: not a git repository: /mnt/c/nexus/dev/band-kit/wt/adversary/C:/nexus/dev/band-kit/result/.git/worktrees/adversary
+test_rev= test_tree=
+test_dirty_begin
+fatal: not a git repository: /mnt/c/nexus/dev/band-kit/wt/adversary/C:/nexus/dev/band-kit/result/.git/worktrees/adversary
+test_dirty_end
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+anyio==4.15.1 certifi==2026.7.22 h11==0.16.0 httpcore==1.0.9 httpx==0.28.1 idna==3.20 iniconfig==2.3.0 packaging==26.3 pluggy==1.6.0 Pygments==2.21.0 pytest==9.1.1 typing_extensions==4.16.0 
+build_exit=0 build_seconds=3 image=adv-s1-beeaec72ff53-598297
+image_id=sha256:206a73c6a65376dac81866ece0a22c2e5a06482f6b1ecda55790d2d7ab6e2443 size=240855911
+container_a port=62996 health_s=1
+container_b port=63000 health_s=1
+container_c(PORT unset) port=63004 health_s=1
+S1-014 default_port_health_body={"status":"ok"}
+pytest_exit=1 pytest_seconds=63
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/no_such_rq/decline]
+FAILED test_auth.py::test_unauthenticated[Bearer -POST-/requests/no_such_rq/cancel]
+13 failed, 288 passed in 54.07s
+stats adv-s1-a-598297 cpu=0.04% mem=23.51MiB / 2GiB
+stats adv-s1-b-598297 cpu=0.01% mem=12.07MiB / 2GiB
+container_a restarts=0 oom=false running=true
+== done 2026-09-28T21:10:32Z
