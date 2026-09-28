@@ -1,0 +1,118 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-adversary-007",
+ "sequence": 7,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:15:33Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S2-035,S2-021,S2-027/D2-19",
+  "spec_path": "pocketful/spec/stage-2.md",
+  "spec_sha256": "39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "section": null,
+  "obligation": "S2-035,S2-021,S2-027/D2-19"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "suite v2 additions shaken down against candidate 1",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "f1ffa7133204d7406f0cfc9818b9efb71ea877ba",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "ADV_SKIP_S1SUITE=1 ADV_PYTEST_ARGS=-ks2_v2 run.sh <clone> f1f0847d <s1clone> .../c1-run2-v2",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s2-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:14:07Z",
+  "finished_utc": "2026-09-28T22:15:33Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": 4,
+   "failed": 2,
+   "skipped": 0,
+   "collected": 6
+  }
+ },
+ "expected": "display-name XSS and /authorizations latest-refresh pass; the new F2-01 regression FAILS on candidate 1 (it must detect the known defect)",
+ "observed": "4/6 passed; the 2 failures are test_refused_capture_keeps_input_then_success_resets_prefill at both widths (input reads 20.00, expected 25.00), i.e. the regression detects F2-01",
+ "result": "FAIL",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/build-stage1.log",
+   "sha256": "6359ac8479e4b4995f0ab950a720901e682ef1bd704e99fb2dbdf9f4ed471925"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/build-stage2.log",
+   "sha256": "79191b25a2d35ce98177665db6c5a13b5a5ba9b6aba270d36da03a8182c370fc"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/container-adv2-a.log",
+   "sha256": "c12c910e573e8a07b6a60037f83beb67e7bdd37dcf11cb1e5e162441f9b7a002"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/container-adv2-b.log",
+   "sha256": "44644200d55501e702f2b584ec59d6d91ea8512e15f25649f2b45601543697ea"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/container-adv2-c.log",
+   "sha256": "0be4604f3037d6a53403c477cbc07a45bdc2e7b0a79e6274c23855f7e1525d88"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/container-adv2-s1.log",
+   "sha256": "4351b48d321bcfeee03dbc5d6ad68d1e6a82a9681153c275665671ecf08a506a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/junit.xml",
+   "sha256": "75ee56c7e66073e93c9b34332a8c5f2312cb58574db42f515c70a2875fae0f85"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/pytest.log",
+   "sha256": "cc3d0651aebbb6dab28f6734f7287a87e2cbb8e86b3c170cb10d79f25b97694d"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/results.json",
+   "sha256": "5860175fda851ba2aa6e4031647fa7a329203528e2711ff8fbf27297a2801a08"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/runner.log",
+   "sha256": "969cab4dc60bc8813caf9979adff4db07cc210ef3c249e07a4e09ebe017b9b57"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run2-v2/summary.md",
+   "sha256": "984c31a30e7a8cd0b848bda303d5d54abf12b96d0f07cd39a98135fa1cdaaf26"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "validation of new tests against a known-defective candidate"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e",
+  "99a2211d-f6b5-41ad-a130-54558e0d6f47"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s2-adversary-004"
+ ],
+ "reason": null
+}

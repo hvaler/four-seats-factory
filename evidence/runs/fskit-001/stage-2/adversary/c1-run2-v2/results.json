@@ -1,0 +1,82 @@
+[
+ {
+  "test": "test_s2_v2.py::test_display_name_renders_as_text[w375]",
+  "obligations": [
+   "S2-035",
+   "S2-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.826,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_display_name_renders_as_text[w1280]",
+  "obligations": [
+   "S2-035",
+   "S2-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 5.497,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_latest_refresh_wins_on_authorizations[w375]",
+  "obligations": [
+   "S2-021",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 8.411,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_latest_refresh_wins_on_authorizations[w1280]",
+  "obligations": [
+   "S2-021",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.723,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_refused_capture_keeps_input_then_success_resets_prefill[w375]",
+  "obligations": [
+   "S2-027"
+  ],
+  "decisions": [
+   "D2-19"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "failed",
+  "duration_s": 6.44,
+  "error": "Locator expected to have Value '25.00'\nActual value: 20.00 \nCall log:\n  - Expect \"to_have_value\" get_by_test_id(\"authorization-capture-amount-a_DrFCjjQGNh1VDsRj\") with timeout 5000ms\n  - waiting for get_by_test_id(\"authorization-capture-amount-a_DrFCjjQGNh1VDsRj\")\n    14 × locator resolved to <input value=\"20.00\" id=\"f-wzesea57fy\" autocomplete=\"off\" inputmode=\"decimal\" data-testid=\"authorization-capture-amount-a_DrFCjjQGNh1VDsRj\"/>\n       - unexpected value \"20.00\"\n\nAria snapshot:\n- textbox \"Amount to collect\": \"20.00\""
+ },
+ {
+  "test": "test_s2_v2.py::test_refused_capture_keeps_input_then_success_resets_prefill[w1280]",
+  "obligations": [
+   "S2-027"
+  ],
+  "decisions": [
+   "D2-19"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "failed",
+  "duration_s": 6.463,
+  "error": "Locator expected to have Value '25.00'\nActual value: 20.00 \nCall log:\n  - Expect \"to_have_value\" get_by_test_id(\"authorization-capture-amount-a_BFsdLZwb0sjHXAn0\") with timeout 5000ms\n  - waiting for get_by_test_id(\"authorization-capture-amount-a_BFsdLZwb0sjHXAn0\")\n    14 × locator resolved to <input value=\"20.00\" autocomplete=\"off\" id=\"f-h0pnotsab5i\" inputmode=\"decimal\" data-testid=\"authorization-capture-amount-a_BFsdLZwb0sjHXAn0\"/>\n       - unexpected value \"20.00\"\n\nAria snapshot:\n- textbox \"Amount to collect\": \"20.00\""
+ }
+]

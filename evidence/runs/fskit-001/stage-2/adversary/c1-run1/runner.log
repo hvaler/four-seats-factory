@@ -1,0 +1,34 @@
+== adversary stage-2 run 2026-09-28T21:59:38Z
+candidate_sha=f1f0847d23be4b7cee84fcc00436a26ff48a0915 clone_head=f1f0847d23be4b7cee84fcc00436a26ff48a0915
+stage2_tree=583b05637641c51decce4c7cac8e75847a8d77f6 stage1_tree_in_candidate=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_begin
+fatal: unable to get current working directory: No such file or directory
+clone_status_end
+s1_clone_head=beeaec72ff53fa75469c5f09236a786632f21fd8 s1_tree=347efba502629e5b5bbd730f35c34bdfe208c478
+test_rev=207536fae2da9a95df3509aaac5f1950b41cd524 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/hvaler/adv-venv/lib/python3.12/site-packages/pip/__main__.py", line 8, in <module>
+    if sys.path[0] in ("", os.getcwd()):
+                           ^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory
+
+chromium 153.0.8010.12
+build_stage2_exit=0 seconds=3
+build_stage1_exit=0 seconds=6
+image2_id=sha256:e43c41a569a056ace88a6c584d1cbcf279b5b45bade628b2926bc8e8ba87fabc size=240958947
+stage2_a port=62589 health_s=1
+stage2_b port=62591 health_s=1
+stage1_accepted port=62594 health_s=2
+stage2_c(PORT unset) port=62595 health_s=0 body={"status":"ok"}
+clock host=1790632800.583233846 container=1790632800
+stage1suite_exit=0 seconds=75 325 passed, 1 warning in 64.04s (0:01:04)
+stage2suite_exit=1 seconds=246 2 failed, 137 passed in 221.53s (0:03:41)
+stats adv2-a-631616 cpu=0.00% mem=25.83MiB / 2GiB
+stats adv2-b-631616 cpu=0.00% mem=18.99MiB / 2GiB
+stats adv2-s1-631616 cpu=0.00% mem=11.51MiB / 2GiB
+stage2_a restarts=0 oom=false running=true
+== done 2026-09-28T22:05:24Z

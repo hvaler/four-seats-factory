@@ -1,0 +1,4 @@
+Mon Sep 28 22:33:11 UTC 2026
+after lost capture: [['authorization-error', 'We couldn’t reach Pocketful. Please try again.', 'rgb(179, 38, 30)', 'notice notice-error']]
+server: bob total 3000 ada held 0 status ['captured']
+input now: absent

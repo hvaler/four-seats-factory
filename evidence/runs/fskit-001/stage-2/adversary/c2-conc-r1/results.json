@@ -1,0 +1,116 @@
+[
+ {
+  "test": "test_s2_conc.py::test_concurrent_partial_captures_never_exceed",
+  "obligations": [
+   "S2-051",
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.391,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_final_captures_one_wins",
+  "obligations": [
+   "S2-051"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.49,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_same_capture_key",
+  "obligations": [
+   "S2-051",
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.427,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_same_authorization_key",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.475,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_capture_races_void[0]",
+  "obligations": [
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.634,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_capture_races_void[1]",
+  "obligations": [
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.645,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_capture_races_void[2]",
+  "obligations": [
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.55,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_authorizations_and_payments_compete_for_available",
+  "obligations": [
+   "S2-070",
+   "S1-002"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.79,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_mixed_load_conserves_and_never_negative",
+  "obligations": [
+   "S2-071",
+   "S1-001",
+   "S1-002",
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.807,
+  "error": null
+ }
+]

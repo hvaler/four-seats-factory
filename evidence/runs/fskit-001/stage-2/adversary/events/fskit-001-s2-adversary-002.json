@@ -1,0 +1,88 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-adversary-002",
+ "sequence": 2,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:05:24Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S2-904",
+  "spec_path": "pocketful/spec/stage-2.md",
+  "spec_sha256": "39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "section": null,
+  "obligation": "S2-904"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "adversary stage-1 suite (ADV_STAGE=2) against stage-2/",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "207536fae2da9a95df3509aaac5f1950b41cd524",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "run.sh <clone> f1f0847d clones/adversary-s1-1 .../c1-run1 (stage-1 suite phase)",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s2-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:59:38Z",
+  "finished_utc": "2026-09-28T22:05:24Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 325,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 325
+  }
+ },
+ "expected": "all stage-1 tests pass on stage-2/ (only S1-090 superseded)",
+ "observed": "325/325 passed",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/junit-stage1suite.xml",
+   "sha256": "9cfd9f899deaab9e0472ad2ad7fcab7cac1285909ed9165b25e8ef0eab9ff6cc"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/pytest-stage1suite.log",
+   "sha256": "57bd6354ec9d9d4524eac38ed9531f8a3bfbbd9820821ca4a340c26ab2e79e5a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/results-stage1suite.json",
+   "sha256": "6dee0fb0bebf28c110a16cc05ee971b81bd5d3c000219fbfd8ecd37149c24337"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/summary-stage1suite.md",
+   "sha256": "f5f89295f84d5da991aad3aca4174765bf205e6d583a5faf0e5cc7e8aa2bb89e"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "one supersession: /me compared as a superset (S1-090)"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e",
+  "99a2211d-f6b5-41ad-a130-54558e0d6f47"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

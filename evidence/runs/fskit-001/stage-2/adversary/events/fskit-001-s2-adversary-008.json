@@ -1,0 +1,116 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-adversary-008",
+ "sequence": 8,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:17:48Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S2-057,S2-067",
+  "spec_path": "pocketful/spec/stage-2.md",
+  "spec_sha256": "39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "section": null,
+  "obligation": "S2-057,S2-067"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "suite v3 deadline capture against candidate 1",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "bdb21efc6e3ccdbc952f3f6bc24b56313e7a1266",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "ADV_SKIP_S1SUITE=1 ADV_PYTEST_ARGS=-ks2_v3 run.sh <clone> f1f0847d <s1clone> .../c1-run3-v3",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s2-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:17:25Z",
+  "finished_utc": "2026-09-28T22:17:48Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 3,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 3
+  }
+ },
+ "expected": "capture at or just after expires_at -> 409 authorization_expired, no money moves",
+ "observed": "3/3 passed; captures sent 3.3 ms, 52.9 ms and 251.3 ms after expires_at all gave 409 authorization_expired; host/container clocks agree to the second",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/build-stage1.log",
+   "sha256": "8fc59fadb2a53ea7f9fe5b65c9c1b0f19505b163888543e450b0e4e39e378c82"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/build-stage2.log",
+   "sha256": "19862bc659d7af1896c4d27881dc2d0f3787aed8b85a987e437470bba3977add"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/container-adv2-a.log",
+   "sha256": "c12c910e573e8a07b6a60037f83beb67e7bdd37dcf11cb1e5e162441f9b7a002"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/container-adv2-b.log",
+   "sha256": "44644200d55501e702f2b584ec59d6d91ea8512e15f25649f2b45601543697ea"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/container-adv2-c.log",
+   "sha256": "9c21991ffbba2cf576b3c54f897ab8c998e2eca2d56e6853a5eb9471234aeb22"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/container-adv2-s1.log",
+   "sha256": "4351b48d321bcfeee03dbc5d6ad68d1e6a82a9681153c275665671ecf08a506a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/junit.xml",
+   "sha256": "24b86579a864b222466dca8e8b38a34138d3a5dde4659e47d7c6979e35717322"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/pytest.log",
+   "sha256": "bf1d2917e7a30216385861a01ca30ac2255eedcc485e13f8484c7b7471d0aa4b"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/results.json",
+   "sha256": "392104d77d98bea92d9fd7ca4adced93220adc11648a94953c1bd2b7eefe60d7"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/runner.log",
+   "sha256": "633b037e06e9d941a5534dccbd26caf626cbf4566b857800859ab9a37c7ab847"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run3-v3/summary.md",
+   "sha256": "8009dbfe389eae7de0a78c4a876440eb977bcc37a6ef4f4783504a7370e2ee86"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "host-side send time; the exact server instant of evaluation is not observable"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e",
+  "99a2211d-f6b5-41ad-a130-54558e0d6f47"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
