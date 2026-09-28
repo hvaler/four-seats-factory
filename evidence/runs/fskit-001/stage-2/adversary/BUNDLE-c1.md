@@ -39,4 +39,4 @@ This is a challenge result, not a verdict. **One open finding: F2-01**, low seve
 
 ## Usage
 
-`fskit-001,2,adversary,f603ac21-88ea-434a-844e-bb621f8da63e,Claude Code,claude-opus-5-5,2026-09-28T21:45:00Z,2026-09-28T22:20:00Z,2100,unknown,unknown,unknown,unknown,,true,wall clock from shell and room timestamps (approximate to the minute),token counts are not exposed to this seat at run time`
+`fskit-001,2,adversary,f603ac21-88ea-434a-844e-bb621f8da63e,Claude Code,claude-opus-5-5,2026-09-28T21:45:00Z,2026-09-28T22:12:40Z,1660,unknown,unknown,unknown,unknown,,true,wall clock from shell and room timestamps (approximate to the minute),token counts are not exposed to this seat at run time`
