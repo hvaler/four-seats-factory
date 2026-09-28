@@ -19,10 +19,10 @@ Registrar antes del dispatch, sin inventar valores:
 
 | Nombre visible real | @handle real | Seat ID | Harness real | Modelo exacto |
 |---|---|---|---|---|
-| analyst | PENDIENTE | PENDIENTE | Claude Code | Opus |
-| implementer | PENDIENTE | PENDIENTE | Claude Code | Opus |
-| adversary | PENDIENTE | PENDIENTE | Claude Code | Opus |
-| auditor | PENDIENTE | PENDIENTE | Claude Code | Opus |
+| analyst | hugo.valer/analyst-thgs | fd5095ef-bafa-4039-b597-3f160b75cf21 | Claude Code | claude-opus-5 |
+| implementer | hugo.valer/implementer-thgt | 156a2fed-f92e-4453-8e6c-75ecdb48ef20 | Claude Code | claude-opus-5 |
+| adversary | hugo.valer/adversary-thgz | f603ac21-88ea-434a-844e-bb621f8da63e | Claude Code | claude-opus-5 |
+| auditor | hugo.valer/auditor-thgx | f6bf20d6-c769-4d36-bb79-47d5e384287a | Claude Code | claude-opus-5 |
 
 La identidad visible determina el nombre de su mandate. El handle real determina las menciones. No suponer que son iguales. Todo seat participante debe tener su mandate correspondiente.
 
