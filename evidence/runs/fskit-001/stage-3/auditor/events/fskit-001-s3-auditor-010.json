@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-010",
+ "sequence": 10,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:38:05Z",
+ "event_type": "FINDING_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-081,S3-057",
+  "section": null,
+  "obligation": "S3-081,S3-057"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "F3-01 (adversary 4c962548) reproduced",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "auditor tools/repro_f3_01.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "repro_f3_01.py http://127.0.0.1:9306",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "fresh container",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:38:05Z",
+  "finished_utc": "2026-09-28T23:38:06Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "held 0 for as_of past expires_at under a known_at before the void",
+ "observed": "held 1000 at expires_at+1ms and at 2099 with known_at=K (between creation and void); REPRODUCED",
+ "result": "FAIL",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/repro-f3-01.log",
+   "sha256": "3e7e49ab15fe815289b9301e65043c26b0ebd961db4393e4097db3f27dbcef82"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": ""
+ },
+ "state": "REJECTED",
+ "room_message_ids": [
+  "4c962548-65c9-4363-826a-05ae205281d6",
+  "52d6d177-4348-46f9-b810-a984eba47a2c"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

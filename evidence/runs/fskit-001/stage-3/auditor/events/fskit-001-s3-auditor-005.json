@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-005",
+ "sequence": 5,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:29:57Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-010..S3-084 (hand-computed)",
+  "section": null,
+  "obligation": "S3-010..S3-084 (hand-computed)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "s3_probe run 2",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "auditor@459189a7 tools/s3_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "s3_probe.py --base :9301 --out ../c1/s3-probe-results-2.json",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "fresh container",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:29:53Z",
+  "finished_utc": "2026-09-28T23:29:57Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 33,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 33
+  }
+ },
+ "expected": "all pass",
+ "observed": "33/33 incl. as_of inclusivity/echo, [from,to) window, opening 10900, pagination invariance, corrections, insufficient vs historical_overdraft (receiver, time-move, holds-only), linked 422, snapshots, holds history, concurrency",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s3-probe-results-2.json",
+   "sha256": "81bf08ffb20d91421d018afc0aef525233c1040739c22aa5bdaaa051753e5ad7"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Holds-only overdraft and time-move included."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s3-auditor-004"
+ ],
+ "reason": null
+}
