@@ -1,0 +1,23 @@
+== adversary stage-1 run 2026-09-28T21:19:21Z
+candidate_sha=beeaec72ff53fa75469c5f09236a786632f21fd8
+clone_head=beeaec72ff53fa75469c5f09236a786632f21fd8
+clone_stage1_tree=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_porcelain_begin
+clone_status_porcelain_end
+test_rev=63c6adbbceecfa2147453ad261d7ffcc95649a94 test_tree=25429c141698f3472ff6928170a93e48cdc909a3 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+anyio==4.15.1 certifi==2026.7.22 h11==0.16.0 httpcore==1.0.9 httpx==0.28.1 idna==3.20 iniconfig==2.3.0 packaging==26.3 pluggy==1.6.0 Pygments==2.21.0 pytest==9.1.1 typing_extensions==4.16.0 
+build_exit=0 build_seconds=3 image=adv-s1-beeaec72ff53-612577
+image_id=sha256:f5d94fc1ca97e3fd0e6d78582b5b0dd00132b272a269c6ae77eac9851b9a958a size=240860314
+container_a port=51903 health_s=0
+container_b port=51905 health_s=1
+container_c(PORT unset) port=51907 health_s=0
+S1-014 default_port_health_body={"status":"ok"}
+pytest_exit=0 pytest_seconds=29
+....................                                                     [100%]
+20 passed, 281 deselected in 24.52s
+stats adv-s1-a-612577 cpu=0.00% mem=16.16MiB / 2GiB
+stats adv-s1-b-612577 cpu=0.00% mem=9.871MiB / 2GiB
+container_a restarts=0 oom=false running=true
+== done 2026-09-28T21:19:58Z

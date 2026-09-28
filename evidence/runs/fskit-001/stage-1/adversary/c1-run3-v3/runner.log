@@ -1,0 +1,24 @@
+== adversary stage-1 run 2026-09-28T21:27:06Z
+candidate_sha=beeaec72ff53fa75469c5f09236a786632f21fd8
+clone_head=beeaec72ff53fa75469c5f09236a786632f21fd8
+clone_stage1_tree=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_porcelain_begin
+clone_status_porcelain_end
+test_rev=d815d96b3a556ceb1a5ce1fee2577f133c2dfe89 test_tree=ec553aa33283a2501d4e44a4648ec50676feb7f8 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+anyio==4.15.1 certifi==2026.7.22 h11==0.16.0 httpcore==1.0.9 httpx==0.28.1 idna==3.20 iniconfig==2.3.0 packaging==26.3 pluggy==1.6.0 Pygments==2.21.0 pytest==9.1.1 typing_extensions==4.16.0 
+build_exit=0 build_seconds=6 image=adv-s1-beeaec72ff53-618212
+image_id=sha256:352785be899b88aa4adb49603ed6dc92ca12e7d0a863286f26de72048b5b2794 size=240860236
+container_a port=64726 health_s=2
+container_b port=64732 health_s=2
+container_c(PORT unset) port=64734 health_s=2
+S1-014 default_port_health_body={"status":"ok"}
+pytest_exit=0 pytest_seconds=99
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+325 passed, 1 warning in 87.55s (0:01:27)
+stats adv-s1-a-618212 cpu=0.01% mem=23.91MiB / 2GiB
+stats adv-s1-b-618212 cpu=0.00% mem=17.04MiB / 2GiB
+container_a restarts=0 oom=false running=true
+== done 2026-09-28T21:29:08Z

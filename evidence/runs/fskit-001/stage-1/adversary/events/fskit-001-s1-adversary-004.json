@@ -1,0 +1,190 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-adversary-004",
+ "sequence": 4,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:19:58Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S1-001,S1-002,S1-003,S1-013,S1-013a,S1-06A,S1-078,S1-203,S1-204",
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "section": null,
+  "obligation": "S1-001,S1-002,S1-003,S1-013,S1-013a,S1-06A,S1-078,S1-203,S1-204"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "10 repeated runs of the CONC tests, fresh image and containers each time",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "63c6adbbceecfa2147453ad261d7ffcc95649a94",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "for i in 1..10: ADV_PYTEST_ARGS=-kconcurrency bash run.sh <clone> beeaec72 .../c1-conc-r$i",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s1-1 (fresh clone, detached at candidate)",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:13:36Z",
+  "finished_utc": "2026-09-28T21:19:58Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 200,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 200
+  }
+ },
+ "expected": "every concurrent test passes in every repetition",
+ "observed": "200/200 passed over 10 repetitions; 0 intermittent failures",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r1/results.json",
+   "sha256": "a1bf4eaac33a938e46bdf01f730018a58912cde72785bd095e448fd41d37cb9a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r1/runner.log",
+   "sha256": "7f84eb79719f07c2c686029082dbf3ec0177764fe5f105d17c277da66316822e"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r1/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r10/results.json",
+   "sha256": "863f8de7ac9e6247eef1723120082a166635a431e0cf9d42b0bd46a7419b5c22"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r10/runner.log",
+   "sha256": "f187c121b775db395f11997bd6465baf61bc511dc1d83c4b2fcf7f83a2def8a6"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r10/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r2/results.json",
+   "sha256": "b76d9863595cf4a220b915fbc25ea1eb857fb0bfa866697ba81dd4e30003db2e"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r2/runner.log",
+   "sha256": "dfda1eb73cc07305d9574fea32f4413952b0d7f5a59ab97563e8dcc4053d60d1"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r2/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r3/results.json",
+   "sha256": "0e967870d5a6b0ce697549f3af9159e7a3205a04e4d754b7e924cc7e1ad62ac3"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r3/runner.log",
+   "sha256": "8d5765a34800d43184d03ba54814e20fd9342609e92585d89b35fbc6aa8bf76e"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r3/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r4/results.json",
+   "sha256": "f058ed81e12a3f5323aa4a57a6369dfbbe1ab3fe0dbcd3530daf096111dbd9a8"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r4/runner.log",
+   "sha256": "4769beafe53d4d87ed1134852103cb283685f8fe934eaf030a235ce7ab817aec"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r4/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r5/results.json",
+   "sha256": "27acce0d5bd615d7abe4549da72842c30450eb226ab6572f84b9a40608ed8bd7"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r5/runner.log",
+   "sha256": "ea874272594aea0e6ae4a6015689bfb2b7bc5f5f07e980fef7dfe44374f4629c"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r5/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r6/results.json",
+   "sha256": "6ab8ad3ec7f59c795882599c51b89d1790de74e1997ad9683c98524eb6be59e4"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r6/runner.log",
+   "sha256": "cdda44146bc96ab2fdc13cf60a15f093e284bb260f60d3daca8b770137254cc0"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r6/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r7/results.json",
+   "sha256": "5d95d6e91170f2cd2de2d980c70c0edf2661b99b006ad3b793e6b1199d00879f"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r7/runner.log",
+   "sha256": "32d5f82e38ff5700f7fa8ca79c49fcb3dc312ce954c9f97c48b8471f7f9b4dab"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r7/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r8/results.json",
+   "sha256": "83d36e0d4bd670d19e40f83a7d6e766432202614d3d695152fd3fab487ff04d7"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r8/runner.log",
+   "sha256": "fd6bd1626b4d56786ca715240b7cef95bb0dd696f3434ae647bae03f97e96794"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r8/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r9/results.json",
+   "sha256": "76dafcc4892a5fa16e07df7ead4db789eff99def01b31c5f2545d12c98300de1"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r9/runner.log",
+   "sha256": "9d9d4f5bc432d6b5223dd927aa75d5d99c8e18773f69383d81cca532f7d2db87"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-1/adversary/c1-conc-r9/summary.md",
+   "sha256": "194f3c4ed25b12625d5f462746e23c65a196ef7013f58ff71e98574eccc7f811"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "10 repetitions on one host; a race with probability below ~1/200 per test would likely go unseen"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "3d6a464f-0ae0-4942-a11e-f788c2793e68",
+  "c54b2566-53a4-4b97-81bb-caaa3484dc64"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

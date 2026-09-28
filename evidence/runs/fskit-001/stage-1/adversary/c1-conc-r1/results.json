@@ -1,0 +1,251 @@
+[
+ {
+  "test": "test_concurrency.py::test_overdraft_storm_single_wallet",
+  "obligations": [
+   "S1-002",
+   "S1-058",
+   "S1-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.474,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_balance_never_read_negative_during_load",
+  "obligations": [
+   "S1-002",
+   "S1-001"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.262,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_request_paid_at_most_once_different_keys",
+  "obligations": [
+   "S1-003"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.631,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_pay_races_cancel_and_decline[0]",
+  "obligations": [
+   "S1-003"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.157,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_pay_races_cancel_and_decline[1]",
+  "obligations": [
+   "S1-003"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.98,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_pay_races_cancel_and_decline[2]",
+  "obligations": [
+   "S1-003"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.066,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_pay_races_cancel_and_decline[3]",
+  "obligations": [
+   "S1-003"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.929,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_pay_races_cancel_and_decline[4]",
+  "obligations": [
+   "S1-003"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.907,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_identical_requests_one_effect[payments]",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.451,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_identical_requests_one_effect[requests]",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.547,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_identical_requests_one_effect[pay]",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.59,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_identical_requests_one_effect[splits]",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.558,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_identical_requests_one_effect[settlements]",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.542,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_same_key_different_bodies",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [
+   "D-14"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.516,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_opposing_payments_and_overlapping_settlements",
+  "obligations": [
+   "S1-204",
+   "S1-203",
+   "S1-001"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.758,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_settlements_cannot_overdraw",
+  "obligations": [
+   "S1-203",
+   "S1-002"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.648,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_signup_same_email",
+  "obligations": [
+   "S1-06A"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.854,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_concurrent_signup_same_handle",
+  "obligations": [
+   "S1-06A"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.924,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_50_concurrent_logins_under_5s",
+  "obligations": [
+   "S1-013a",
+   "S1-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.172,
+  "error": null
+ },
+ {
+  "test": "test_concurrency.py::test_50_in_flight_mixed",
+  "obligations": [
+   "S1-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.204,
+  "error": null
+ }
+]
