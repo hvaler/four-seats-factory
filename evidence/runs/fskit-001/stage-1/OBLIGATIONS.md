@@ -4,7 +4,7 @@ Run: fskit-001 · Track: pocketful · Active stage: 1 · Register owner: analyst
 Kickoff checkout: C:\nexus\dev\dark-factory-wearedevs @ 803560d2a678ace1414465c098eb0ab5380ffade (verified with `git rev-parse HEAD`)
 Spec: pocketful/spec/stage-1.md · SHA-256 65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 · 25082 bytes (Windows CRLF working-tree file; LF-normalised SHA-256 f5e4c644076cf5b480c072bc17a966f3b3e229272c44b301d333763be2c438a6; git blob dd44280488c44a920dbba08b3ce6e8f6ffe9e45a at 803560d2)
 Other specs as read at dispatch (not active): stage-2 39aaf9d7…6e54 · stage-3 2255d3f2…6e54c · stage-4 1894b002…df1 (full hashes in STAGE-REGISTER.md)
-Register revision: r1 (2026-09-28, before the adversary challenge). Rows are only ever added or re-stated in later revisions. Nothing is deleted.
+Register revision: r2 (2026-09-28). r1 was challenged by the adversary and the auditor; the r2 section at the end adds and restates rows. Rows are only ever added or re-stated in later revisions. Nothing is deleted.
 
 Owners: **I** = implementer (production), **A** = adversary (independent challenge tests), **U** = auditor (reproduction and verdict). Every row is built by I, challenged by A and reproduced by U. "Method" names the acceptance method: `API` means black-box HTTP tests against a clean container of the frozen candidate; `CONC` means concurrent HTTP tests; `XC` means two independent containers; `HARN` means the official harness; `INSP` means inspection of the delivered files.
 
@@ -209,3 +209,63 @@ States: OPEN → CLAIMED → CHALLENGED → REPRODUCED → ACCEPTED | REJECTED |
 | D-15 | Settlement "malformed batch shape" vs the §5 wrong-type 400 | transfers missing, not an array, empty, >32 entries, or an entry not an object → 422 validation_failed. A wrong-typed entry field follows the payment rules (amount/note/visibility → 422; a non-string handle → 422 as batch shape) | §11 |
 | D-16 | Payment/pay "insufficient funds" when balance == amount | Allowed (balance becomes 0) | §1 nonnegative |
 | D-17 | Actual model id recording | Each seat records its own actual runtime model id and usage; analyst runs as claude-opus-5-5 (per its runtime), while run-config.json lists claude-opus-5; the discrepancy is recorded, not resolved by assumption | dispatch "Record actual model IDs" |
+
+
+---
+
+# Register revision r2 (2026-09-28): additions and restatements
+
+Sources: auditor coverage review c3740b90-a06e-4370-9eff-4e473284a22f (points A1–A11) and follow-up d3f21ddd; adversary R1 findings 2601eb96-8023-49ee-bc7d-ee47e7c4a542 (R1-01…R1-24); implementer decisions in 757eef75-35f0-4327-b0e9-1981eb9b9f34 (I-1…I-8). All r1 rows remain in force except where a row below restates them. Every row below is OPEN.
+
+## New rows
+
+| ID | Source | Obligation | Boundary / error case | Method → expected | Origin |
+|---|---|---|---|---|---|
+| S1-021 | §3.4, §4, §10 | Every ID created after a reset or import differs from every existing (seeded, imported or generated) ID | Seed p_1…p_20, rq_1…rq_20, u_1…u_5, sp_1…; then create payments, requests, splits, signups and settlements; the same after an A→B import | API + XC: no collision; replay, /activity and lookups stay correct | R1-01 |
+| S1-06A | §6, §5 | Concurrent signups: N with the same email → exactly one 201, the rest 409 email_taken; different emails deriving the same handle → exactly one 201, the rest 409 handle_taken; no extra account can log in; no 5xx | N=20 | CONC | R1-06 |
+| S1-013a | §2, §6 | 50 concurrent logins each complete in under 5 s on 2 vCPU. **Risk probe (not a hard requirement):** a reset with a 100-user fixture completes in under 10 s | Password-hash cost vs limits | CONC timing, isolated | R1-07 |
+| S1-145 | §8, §9 | A zero-share split request is a normal pending request: pay → 201 with a payment of amount 0 (although POST /payments rejects 0); decline and cancel work as for any request | — | API | R1-02 |
+| S1-204 | §11, §1, §5 | Opposing concurrent payments (A→B racing B→A) and settlements that overlap payments on the same wallets never deadlock, time out (>5 s) or return a 5xx | — | CONC | R1-08 |
+| S1-205 | §11 | A net-zero cycle between empty wallets (A→B 100, B→A 100, both at 0) is affordable → 201; duplicate entries for the same pair are legal and summed in the net; the operator need not be a party to any entry; exactly 32 entries → OK | — | API | R1-11 |
+| S1-206 | §8 decline/cancel | decline and cancel accept a request with no body (no Content-Type, Content-Length 0) and ignore any body sent | — | API | A3, R1-09 |
+
+## Restated rows (restatement supersedes the r1 wording; the r1 text is kept above)
+
+| ID | Restatement | Origin |
+|---|---|---|
+| S1-016 / S1-053 | Add: a token issued before the last reset → 401 on every authenticated route; `Authorization: Basic …` and `Bearer` with no token → 401; an unauthenticated pay, decline or cancel on an unknown id → 401 (not 404) | R1-14 |
+| S1-017 | The content-type check excludes 204 responses (they have no body) | R1-23 |
+| S1-018 | An explicit offset is required; `Z` and `±hh:mm` are both accepted | R1-24 |
+| S1-001 / S1-002 | Method: (a) every balance read at any point during load is ≥0; (b) the final sum over all users = the seeded total; (c) successful debits never exceed what the balance allows. **Stated gap:** transient cross-wallet atomicity is observable only through these proxies | R1-21 |
+| S1-043 | Add: with a seeded balance near 2^53−1 (sum within ±2^53), a 1000000000 payment leaves exact results; conservation is computed without floats. Non-integral decimals such as 1000.00000000000001 → 422 (D-31) | R1-13 |
+| S1-044 / S1-120 / S1-121 | Seeded non-pending requests follow the state machine: seeded paid → pay, decline and cancel give 409 request_not_pending; seeded declined → decline gives 200 and cancel 409; seeded cancelled → cancel gives 200 and decline 409 | R1-12 |
+| S1-069 / S1-181 | The export plaintext check (the seeded password string is absent from the export) is recorded only as a boolean plus the export's SHA-256; export contents are never stored or posted | R1-22 |
+| S1-071 | Add: the key belongs to the user, not the token. The same user on a second token → 200 replay; with a different body → 409 | R1-04 |
+| S1-072 | See D-19: the namespace is (user, method, concrete path, key); on a different path, any body is a first use | R1-03, I-2 |
+| S1-077 | Add: string-escape equivalence ("é" ≡ "é") and exact numeric equivalence (D-06) are the same value; unknown fields ARE part of the compared body (D-26) | R1-05, A5 |
+| S1-064 | Resolved by D-21 (a@b@c → 422) | A1 |
+| S1-098 | Resolved by D-29 | A2 |
+| S1-131 / S1-132 / S1-150 | Add: an offset past the end → 200 [] with has_more false; limit=01 valid; limit=-1, 1.0 or %201 → 422; direction combined with status; a page ending exactly at the last item → has_more false | R1-10 |
+| S1-140 | One share per LISTED handle, in the given order (the caller is never inserted when omitted); one request per listed handle except the caller; if the caller is listed, their position counts in the remainder order | R1-15 |
+| S1-193 / S1-194 / S1-195 | Precedence as in D-28 | A8, R1-18 |
+
+## Decisions added or revised in r2 (NOT source requirements)
+
+| ID | Decision | Basis / origin |
+|---|---|---|
+| D-08 (revised) | Emails are compared **verbatim** (case-sensitive) for email_taken and login. `ADA@example.com` next to an existing `ada@example.com` → 409 handle_taken. The suites assert the exact-duplicate case as spec and the case-variant case only as this decision | A9, R1-16; replaces the r1 D-08 |
+| D-18 | Within a body, all wrong-JSON-type checks (400) precede all field-rule checks (422); within each phase, fields are checked in spec order; amount, note and visibility never produce 400 | I-1 |
+| D-19 | The idempotency namespace is (user, method, concrete path, key). The same key on a different path, including a different request id on /pay, is an independent first use whatever the body. Only 201 outcomes claim a key; a replay returns the stored original response with 200 | I-2, R1-03 |
+| D-20 | An empty pay body (0 bytes or whitespace only) is read as `{}` for both validation and idempotency equality: replaying `{}` against an empty body → 200; either against `{"visibility":"public"}` → 409. On endpoints with required fields an empty body stays 400 malformed_request. Decline and cancel ignore the body entirely. (Adversary proposed 400 for an empty pay body; rejected because every pay field is optional) | I-3, A4, d3f21ddd, R1-09 |
+| D-21 | Email form: exactly one `@`, a non-empty local part and domain, no whitespace; otherwise 422 | I-4, A1 |
+| D-22 | Handle derivation works per Unicode code point: lowercase, map each code point outside [a-z0-9_] to one `_`, truncate to 20 code points (`Zoë.K@x.com` → `zo__k`). Case mappings that change length (e.g. dotted capital I) are optional robustness only | I-5, R1-17 |
+| D-23 | Import validates the whole state (types, references, non-negative balances) before an atomic swap; otherwise 422 and nothing changes | I-6 |
+| D-24 | Reset: a body that does not parse, or is not an object → 400; content errors (negative balance, dangling refs, duplicate id/handle/email, regex-invalid handle, minor_units ∉ {0,2,3}, bad status, a missing required field) → 422 and nothing changes | I-7, A6 |
+| D-25 | Unknown route → 404 not_found; known route with the wrong method → 405 method_not_allowed. Tests assert only the envelope and a 4xx status | I-8, R1-19 |
+| D-26 | Idempotency body equality compares the whole parsed JSON value, **including unknown fields**; numbers compare by exact value; string escapes are compared as their decoded values | A5, R1-05 |
+| D-27 | 401 precedes every 400 and 422 on every endpoint (including GET query validation and unparseable bodies) and precedes 404 for unknown resource ids | A7, R1-14 |
+| D-28 | POST /settlements precedence: 401 → 403 non-operator → 400 unparseable body → 400 missing_idempotency_key → 422 key length → claimed-key resolution → batch shape 422 (transfers missing, not an array, 0 or more than 32 entries, an entry not an object, a non-string handle) → entries in input order, each checked as a payment (amount/note/visibility 422 → self_payment 422 → unknown handle 404); the first invalid entry decides → net affordability 409 | A8, R1-18, D-15 |
+| D-29 | note: every valid Unicode string round-trips exactly, including U+0000; lone surrogates are not required | A2 |
+| D-30 | Signup precedence: 400 type errors → 422 validation (email form, password length, missing fields) → 409 email_taken → 409 handle_taken | R1-16 |
+| D-31 | Amounts are parsed exactly from their JSON source text: a non-integral decimal such as 1000.00000000000001 → 422 even though it rounds to 1000.0 as a double. Severity low; the suite reports it as a risk probe | R1-13 |
+| D-32 | Seeded payments and requests (D-11 order) are older than anything created after the reset, so newest-first puts post-reset items first | R1-20 |
