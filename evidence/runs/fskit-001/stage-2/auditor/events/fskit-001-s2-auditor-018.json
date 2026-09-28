@@ -1,0 +1,131 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-auditor-018",
+ "sequence": 18,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:36:08Z",
+ "event_type": "CHALLENGE_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4 + 39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "id": "adversary suites v2 on candidate 2",
+  "section": null,
+  "obligation": "adversary suites v2 on candidate 2"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor re-run of adversary 207536fa on 68583038",
+ "candidate_commit": "68583038e7ea52429b062af0f775d3cbfd96b7c3",
+ "candidate_product_tree": "a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2",
+ "test_commit": "adversary@207536fae2da9a95df3509aaac5f1950b41cd524",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "run.sh clones/auditor-s2-2 68583038 clones/auditor-s1-1 checks/fskit-001-s2-audit-advsuite-2 (ADV_PY=~/aud-venv)",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153.0.8010.12 (~/aud-venv)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "playwright": "1.63.0"
+  },
+  "container_image_digest": "sha256:792ce5288c3057dcb08ca201b9bc4bea813d4a044121203a4d19ee8f5892b8a5",
+  "mode": "runner fresh images/containers",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T22:30:38Z",
+  "finished_utc": "2026-09-28T22:36:08Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 464,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 464
+  }
+ },
+ "expected": "all pass",
+ "observed": "stage-1 suite on stage-2/ 325/325; stage-2 suite 139/139 (the F2-01 tests now pass)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/SHA256SUMS",
+   "sha256": "8da8f713d6bb62e961ba3a3f7db57929cfa6366eacb067c7a11950f72c62a379"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/build-stage1.log",
+   "sha256": "f959608386e1937e250d3923243ad73e7968561c09e63ec29bda3dcc6dbbf413"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/build-stage2.log",
+   "sha256": "c5ed95fd1173e8755331f43b75807b5bd83461a666da87454b5b2bc3c6a80362"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/container-adv2-a.log",
+   "sha256": "c12c910e573e8a07b6a60037f83beb67e7bdd37dcf11cb1e5e162441f9b7a002"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/container-adv2-b.log",
+   "sha256": "44644200d55501e702f2b584ec59d6d91ea8512e15f25649f2b45601543697ea"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/container-adv2-c.log",
+   "sha256": "75186986b0e0d7e763631dab8bd0a716529d9d2b8966bdcea0ec2d9f0b533aad"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/container-adv2-s1.log",
+   "sha256": "4351b48d321bcfeee03dbc5d6ad68d1e6a82a9681153c275665671ecf08a506a"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/junit-stage1suite.xml",
+   "sha256": "25c5485cd07c4b1f07a42bd06533c42e9dab93f4bb1b67f2e2f68f682db3d11f"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/junit.xml",
+   "sha256": "55feb128f9601153a4a14bca7bbb4fe5a753cc699f9cbaa1f411cd546d76eed8"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/pytest-stage1suite.log",
+   "sha256": "7be9908818bbcf3104746d7842f21b9c5f224d35d04f76caa2a84c6188f951eb"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/pytest.log",
+   "sha256": "46be4aef19b8c93dad9dc171cf007159c08a9279c316cc6b08d530a306c85ca1"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/results-stage1suite.json",
+   "sha256": "10d20e6e97e2e33034d2630d7bf4c751e1b3b216b0d292584eca6626733397e8"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/results.json",
+   "sha256": "e7325ccd38654635619053b9a77ce543861c7737bdf0ad93364167400110cae0"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/runner.log",
+   "sha256": "f09787e5e4d6f6ece2a166ee9e3263ffc880d070e454a0df2dd165d472bb61c7"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/summary-stage1suite.md",
+   "sha256": "f5f89295f84d5da991aad3aca4174765bf205e6d583a5faf0e5cc7e8aa2bb89e"
+  },
+  {
+   "path": "checks/fskit-001-s2-audit-advsuite-2/summary.md",
+   "sha256": "334cf21e4e73141cbb2a24ec17b8f9ddbc5f7049d4465e6a3ae2f7cb6557f2e6"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Clean checkout of the test revision, own venv."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "f0fbb7e1-cf4a-48a2-a573-6c0735b5bf9f"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
