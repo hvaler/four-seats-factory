@@ -160,7 +160,8 @@ def p_idem_semantics():
     s5, j5, _ = call("POST", "/requests", {"payer_handle": "bb", "amount": 100, "note": "x"}, token=ta, key=key)
     record("S1-072", "same key other path -> 201", s5 == 201, {"s": s5, "c": code(j5)})
     s6, _, _ = call("POST", "/payments", {"to_handle": "aa", "amount": 100, "note": "x"}, token=tb, key=key)
-    record("S1-071", "other user same key -> own first use", s6 == 409, {"s": s6, "note": "bb balance 100 after, but 409 expected only if short"})
+    # bb holds exactly 100 (received above); aa's key must not affect bb -> bb's own first use -> 201
+    record("S1-071", "other user same key -> own first use", s6 == 201, {"s": s6})
     fk = k()
     sf, jf, _ = call("POST", "/payments", {"to_handle": "cc", "amount": 999999}, token=ta, key=fk)
     sg, _, _ = call("POST", "/payments", {"to_handle": "cc", "amount": 5}, token=ta, key=fk)
@@ -191,9 +192,14 @@ def p_amount_forms():
         s, j, _ = call("POST", "/payments", raw=('{"to_handle":"bb","amount":%s}' % raw).encode(), token=ta, key=k())
         ok[raw] = (s, (j or {}).get("amount"))
     bad = {}
-    for raw in ['"1000"', "true", "null", "1000.5", "0", "-1", "1000000001", "1e10", "[1]"]:
+    for raw in ['"1000"', "true", "false", "1000.5", "0", "-1", "1000000001", "1e10"]:
         s, j, _ = call("POST", "/payments", raw=('{"to_handle":"bb","amount":%s}' % raw).encode(), token=ta, key=k())
         bad[raw] = (s, code(j))
+    obs = {}
+    for raw in ["null", "[1]", "{}"]:  # spec-ambiguous (400 vs 422): observed only, not asserted
+        s, j, _ = call("POST", "/payments", raw=('{"to_handle":"bb","amount":%s}' % raw).encode(), token=ta, key=k())
+        obs[raw] = (s, code(j))
+    record("OBS", "amount null/array/object (not asserted)", all(v[0] in (400, 422) for v in obs.values()), obs)
     record("S1-031", "integral numeric forms accepted",
            all(v[0] == 201 for v in ok.values()) and ok["1e3"][1] == 1000 and isinstance(ok["1e3"][1], int), ok)
     record("S1-055/S1-093", "invalid amounts -> 422 validation_failed",
@@ -360,6 +366,32 @@ def p_visibility_auth():
     record("S1-050/S1-017", "unknown route error envelope + json ct", s == 404 and code(j) is not None and "application/json" in (ct or ""), {"s": s, "ct": ct})
 
 
+def p_id_collision_and_zero_share():
+    """R1-01 (proposed S1-021): new ids never collide with seeded ids. R1-02 (proposed S1-145): zero share payable."""
+    fx = fixture([("aa", 1000), ("bb", 1000), ("cc", 0)])
+    fx["users"][0]["id"], fx["users"][1]["id"], fx["users"][2]["id"] = "u_1", "u_2", "u_3"
+    fx["payments"] = [{"id": "p_%d" % i, "from_user_id": "u_1", "to_user_id": "u_2", "amount": 1, "note": "",
+                       "visibility": "public"} for i in range(1, 21)]
+    fx["requests"] = [{"id": "rq_%d" % i, "requester_id": "u_2", "payer_id": "u_1", "amount": 1, "note": "",
+                       "status": "pending"} for i in range(1, 21)]
+    reset(fx)
+    ta, tb = login("aa"), login("bb")
+    new_p = [call("POST", "/payments", {"to_handle": "bb", "amount": 1}, token=ta, key=k())[1]["payment_id"] for _ in range(25)]
+    new_r = [call("POST", "/requests", {"payer_handle": "bb", "amount": 1}, token=ta, key=k())[1]["request_id"] for _ in range(25)]
+    s, su, _ = call("POST", "/auth/signup", {"email": "newbie@audit.invalid", "password": "longenough1", "display_name": "N"})
+    seeded = {"p_%d" % i for i in range(1, 21)} | {"rq_%d" % i for i in range(1, 21)} | {"u_1", "u_2", "u_3"}
+    clash = (set(new_p) | set(new_r) | {su.get("user_id")}) & seeded
+    feed = call("GET", "/activity?limit=200", token=ta)[1]["payments"]
+    record("R1-01/S1-020", "generated ids never collide with seeded ids", not clash and len(set(new_p)) == 25 and len(feed) == 45
+           and all(len(x) <= 64 for x in new_p + new_r), {"clash": sorted(clash), "feed": len(feed)})
+    s, sp, _ = call("POST", "/splits", {"amount": 1, "participant_handles": ["aa", "bb", "cc"]}, token=ta, key=k())
+    zero = [r for r in sp["requests"] if r["payer_handle"] == "cc"][0]
+    tc = login("cc")
+    s, pj, _ = call("POST", "/requests/%s/pay" % zero["request_id"], {}, token=tc, key=k())
+    record("R1-02/S1-143", "zero-share request payable -> payment amount 0", s == 201 and pj.get("amount") == 0 and bal(tc) == 0,
+           {"s": s, "c": code(pj)})
+
+
 def p_export_import(base_b):
     """S1-170..S1-178, S1-202 across two independent containers."""
     fx = fixture([("op", 0), ("aa", 1000), ("bb", 0)], operators=["op"])
@@ -419,7 +451,7 @@ def main():
     BASE = a.base
     started = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     probes = [p_conservation_concurrent, p_pay_at_most_once, p_idem_concurrent_all_paths, p_idem_semantics,
-              p_amount_forms, p_splits, p_settlements, p_settlement_concurrency, p_visibility_auth]
+              p_amount_forms, p_splits, p_settlements, p_settlement_concurrency, p_visibility_auth, p_id_collision_and_zero_share]
     for p in probes:
         try:
             p()
