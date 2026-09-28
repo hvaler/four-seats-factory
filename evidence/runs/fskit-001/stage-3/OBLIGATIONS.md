@@ -191,3 +191,9 @@ Sources: auditor coverage review 90404c89-3acd-4738-90ac-d647d26943a9 (C1–C7),
 | D3-18 | 2→3 import: a stage-2 export records no void time, so a stage-2 voided hold releases at the IMPORT time. This errs on the safe side for money, because it never accepts a real overdraft, at the cost of possibly rejecting a legitimate backdated correction. Captures on imported holds release at their capture payment's created_at, and expiries at expires_at. Recorded as a known limitation of 2→3 imports | C1 |
 | D3-19 | Statement tie order "payment id ascending" = plain code-unit (byte) lexicographic order of the id string | R3-09 |
 | D3-20 | Query instants: only the percent-decoded value is used. A decoded space where the offset should be (an unencoded `+`) is not RFC 3339 → 422. The echo returns the decoded string exactly. The suites send `%2B`; the literal `+` is tested only as this decision | R3-10 |
+
+## Decision added after r2
+
+| ID | Decision | Origin |
+|---|---|---|
+| D3-21 | historical_overdraft rejects a correction that makes a past boundary negative, OR more negative than the existing history already is at that boundary. On native stage-3 history (never negative) this equals the literal rule. It only differs on imported approximate history (D3-18), where an artifact negative must not block unrelated corrections. Tested as a decision; the literal rule is asserted on native history | implementer 739ed4f1; analyst reply |
