@@ -1,0 +1,13 @@
+pocketful stage-1 listening on 0.0.0.0:9305
+
+<--- Last few GCs --->
+
+[1:0x79b51d69e000]    52429 ms: Mark-Compact 1011.2 (1042.4) -> 1002.0 (1041.3) MB, pooled: 2 MB, 34.44 / 0.01 ms  (average mu = 0.357, current mu = 0.383) allocation failure; scavenge might not succeed
+[1:0x79b51d69e000]    52507 ms: Mark-Compact 1011.6 (1043.0) -> 1002.5 (1041.5) MB, pooled: 2 MB, 46.60 / 0.01 ms  (average mu = 0.384, current mu = 0.404) allocation failure; scavenge might not succeed
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+
