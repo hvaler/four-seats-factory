@@ -1,0 +1,47 @@
+[
+ {
+  "test": "test_s2_v3.py::test_capture_at_or_just_after_deadline[0]",
+  "obligations": [
+   "S2-057",
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.124,
+  "error": null
+ },
+ {
+  "test": "test_s2_v3.py::test_capture_at_or_just_after_deadline[50]",
+  "obligations": [
+   "S2-057",
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.144,
+  "error": null
+ },
+ {
+  "test": "test_s2_v3.py::test_capture_at_or_just_after_deadline[250]",
+  "obligations": [
+   "S2-057",
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.328,
+  "error": null
+ }
+]

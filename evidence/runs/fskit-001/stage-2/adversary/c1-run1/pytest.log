@@ -1,0 +1,117 @@
+........................................................................ [ 51%]
+.........................................................FF........      [100%]
+=================================== FAILURES ===================================
+_____________________ test_authorize_capture_void_ui[w375] _____________________
+
+api = <advlib.Api object at 0x7a618124f890>
+page = <Page url='http://127.0.0.1:62589/authorizations'>
+base = 'http://127.0.0.1:62589'
+
+    @pytest.mark.obl("S2-026", "S2-027", "S2-020")
+    def test_authorize_capture_void_ui(api, page, base):
+        w = world(api)
+        login(page, base, "ada@example.com")
+        goto(page, base, "/authorizations")
+        if tid(page, "authorize-handle").count() == 0:
+            goto(page, base, "/")
+        tid(page, "authorize-handle").fill("bob")
+        fill_amount(page, "authorize-amount", "20.00")
+        tid(page, "authorize-note").fill("deposit")
+        tid(page, "authorize-visibility").select_option("private")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        expect(tid(page, "wallet-available")).to_have_attribute("data-amount", "8000")
+        a1 = w.auths("ada").json["authorizations"][0]
+        fill_amount(page, "authorize-amount", "30.01")
+        tid(page, "authorize-handle").fill("cy")
+        tid(page, "authorize-submit").click()
+        page.wait_for_timeout(1500)
+        a2 = [x for x in w.auths("ada").json["authorizations"] if x["to_handle"] == "cy"][0]
+        fill_amount(page, "authorize-amount", "999.00")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "authorize-error")).to_be_visible(timeout=T)
+        goto(page, base, "/authorizations")
+        item = tid(page, f"authorization-item-{a1['authorization_id']}")
+        expect(item).to_have_attribute("data-status", "open", timeout=T)
+        assert tid(page, f"authorization-amount-{a1['authorization_id']}").inner_text().strip() == "20.00 EUR"
+        assert tid(page, f"authorization-expires-{a1['authorization_id']}").inner_text().strip() == a1["expires_at"]
+        expect(tid(page, f"authorization-void-{a1['authorization_id']}")).to_be_visible()
+        expect(tid(page, f"authorization-capture-{a1['authorization_id']}")).to_have_count(0)
+        tid(page, f"authorization-void-{a2['authorization_id']}").click()
+        expect(tid(page, f"authorization-item-{a2['authorization_id']}")).to_have_attribute("data-status", "voided", timeout=T)
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        # the receiver captures part of it
+        tid(page, "logout-button").click()
+        login(page, base, "bob@example.com")
+        goto(page, base, "/authorizations")
+        aid = a1["authorization_id"]
+        pre = tid(page, f"authorization-capture-amount-{aid}")
+        expect(pre).to_have_value("20.00", timeout=T)
+        expect(tid(page, f"authorization-void-{aid}")).to_have_count(0)
+        fill_amount(page, f"authorization-capture-amount-{aid}", "25.00")
+        tid(page, f"authorization-capture-{aid}").click()
+        expect(tid(page, "authorization-error")).to_be_visible(timeout=T)
+>       assert pre.input_value() == "25.00"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s2_ui.py:535: AssertionError
+____________________ test_authorize_capture_void_ui[w1280] _____________________
+
+api = <advlib.Api object at 0x7a6181272420>
+page = <Page url='http://127.0.0.1:62589/authorizations'>
+base = 'http://127.0.0.1:62589'
+
+    @pytest.mark.obl("S2-026", "S2-027", "S2-020")
+    def test_authorize_capture_void_ui(api, page, base):
+        w = world(api)
+        login(page, base, "ada@example.com")
+        goto(page, base, "/authorizations")
+        if tid(page, "authorize-handle").count() == 0:
+            goto(page, base, "/")
+        tid(page, "authorize-handle").fill("bob")
+        fill_amount(page, "authorize-amount", "20.00")
+        tid(page, "authorize-note").fill("deposit")
+        tid(page, "authorize-visibility").select_option("private")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        expect(tid(page, "wallet-available")).to_have_attribute("data-amount", "8000")
+        a1 = w.auths("ada").json["authorizations"][0]
+        fill_amount(page, "authorize-amount", "30.01")
+        tid(page, "authorize-handle").fill("cy")
+        tid(page, "authorize-submit").click()
+        page.wait_for_timeout(1500)
+        a2 = [x for x in w.auths("ada").json["authorizations"] if x["to_handle"] == "cy"][0]
+        fill_amount(page, "authorize-amount", "999.00")
+        tid(page, "authorize-submit").click()
+        expect(tid(page, "authorize-error")).to_be_visible(timeout=T)
+        goto(page, base, "/authorizations")
+        item = tid(page, f"authorization-item-{a1['authorization_id']}")
+        expect(item).to_have_attribute("data-status", "open", timeout=T)
+        assert tid(page, f"authorization-amount-{a1['authorization_id']}").inner_text().strip() == "20.00 EUR"
+        assert tid(page, f"authorization-expires-{a1['authorization_id']}").inner_text().strip() == a1["expires_at"]
+        expect(tid(page, f"authorization-void-{a1['authorization_id']}")).to_be_visible()
+        expect(tid(page, f"authorization-capture-{a1['authorization_id']}")).to_have_count(0)
+        tid(page, f"authorization-void-{a2['authorization_id']}").click()
+        expect(tid(page, f"authorization-item-{a2['authorization_id']}")).to_have_attribute("data-status", "voided", timeout=T)
+        expect(tid(page, "wallet-held")).to_have_attribute("data-amount", "2000", timeout=T)
+        # the receiver captures part of it
+        tid(page, "logout-button").click()
+        login(page, base, "bob@example.com")
+        goto(page, base, "/authorizations")
+        aid = a1["authorization_id"]
+        pre = tid(page, f"authorization-capture-amount-{aid}")
+        expect(pre).to_have_value("20.00", timeout=T)
+        expect(tid(page, f"authorization-void-{aid}")).to_have_count(0)
+        fill_amount(page, f"authorization-capture-amount-{aid}", "25.00")
+        tid(page, f"authorization-capture-{aid}").click()
+        expect(tid(page, "authorization-error")).to_be_visible(timeout=T)
+>       assert pre.input_value() == "25.00"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s2_ui.py:535: AssertionError
+=========================== short test summary info ============================
+FAILED test_s2_ui.py::test_authorize_capture_void_ui[w375] - AssertionError
+FAILED test_s2_ui.py::test_authorize_capture_void_ui[w1280] - AssertionError
+2 failed, 137 passed in 221.53s (0:03:41)

@@ -1,0 +1,18 @@
+== repro run 1
+prefill: '20.00'
+typed: '25.00'
+error text: 'That is more than the amount still held.'
+after refusal: '20.00'
+status: open held: 2000 bob total: 2500
+== repro run 2
+prefill: '20.00'
+typed: '25.00'
+error text: 'That is more than the amount still held.'
+after refusal: '20.00'
+status: open held: 2000 bob total: 2500
+== repro run 3
+prefill: '20.00'
+typed: '25.00'
+error text: 'That is more than the amount still held.'
+after refusal: '20.00'
+status: open held: 2000 bob total: 2500

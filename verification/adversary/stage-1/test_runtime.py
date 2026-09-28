@@ -1,4 +1,6 @@
 """§3 runtime contract, §4 fixture, §5 error envelope."""
+import os
+
 import pytest
 
 from advlib import (PASSWORD, Api, World, assert_error, fixture, new_key,
@@ -60,8 +62,12 @@ def test_negative_fixture_balance_rejected_and_state_kept(api):
 def test_currency_declared_by_fixture(api, cur, mu):
     w1 = World(api, fixture(currency=cur, minor_units=mu))
     me = api.me(w1.tok["ada"])
-    assert me == {"user_id": "u_ada", "display_name": "Ada", "handle": "ada",
-                  "balance": 10000, "currency": cur, "minor_units": mu}
+    want = {"user_id": "u_ada", "display_name": "Ada", "handle": "ada",
+            "balance": 10000, "currency": cur, "minor_units": mu}
+    if os.environ.get("ADV_STAGE", "1") == "1":
+        assert me == want
+    else:  # S1-090 superseded in stage 2 (S2-904): /me gains total/available/held
+        assert {k: me.get(k) for k in want} == want, me
     r = api.pay(w1.tok["ada"], "bob", 1)
     assert r.status == 201 and r.json["currency"] == cur
 

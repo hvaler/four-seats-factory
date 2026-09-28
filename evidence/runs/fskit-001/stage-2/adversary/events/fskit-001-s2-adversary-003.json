@@ -1,0 +1,252 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-adversary-003",
+ "sequence": 3,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T22:05:24Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S2-010..S2-074,S2-901,S2-902",
+  "spec_path": "pocketful/spec/stage-2.md",
+  "spec_sha256": "39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "section": null,
+  "obligation": "S2-010..S2-074,S2-901,S2-902"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "adversary stage-2 suite v1 full run",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": "207536fae2da9a95df3509aaac5f1950b41cd524",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "run.sh <clone> f1f0847d clones/adversary-s1-1 .../c1-run1",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s2-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:59:38Z",
+  "finished_utc": "2026-09-28T22:05:24Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": 137,
+   "failed": 2,
+   "skipped": 0,
+   "collected": 139
+  }
+ },
+ "expected": "all stage-2 tests pass",
+ "observed": "137/139 passed; 2 failed = test_authorize_capture_void_ui[w375,w1280] at the 'input kept after refused capture' assertion (finding F2-01); XC 1->2 both D2-18 shapes passed; D2-13 byte-identical replays passed",
+ "result": "FAIL",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/build-stage1.log",
+   "sha256": "4eb295eb06f483e8c6d8494c7369c4a54a4d26b15b665c474289ec3d0fc9b2f4"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/build-stage2.log",
+   "sha256": "9c56d0715555afdb99b4b1e1455aac614deb9aeaf38e75d9c36dcb449f3a7356"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/container-adv2-a.log",
+   "sha256": "c12c910e573e8a07b6a60037f83beb67e7bdd37dcf11cb1e5e162441f9b7a002"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/container-adv2-b.log",
+   "sha256": "44644200d55501e702f2b584ec59d6d91ea8512e15f25649f2b45601543697ea"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/container-adv2-c.log",
+   "sha256": "09d7ebfca8cd502389a0f907a617da64b34c4c2be1176d453439a15ed3bc5f6a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/container-adv2-s1.log",
+   "sha256": "4351b48d321bcfeee03dbc5d6ad68d1e6a82a9681153c275665671ecf08a506a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/junit-stage1suite.xml",
+   "sha256": "9cfd9f899deaab9e0472ad2ad7fcab7cac1285909ed9165b25e8ef0eab9ff6cc"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/junit.xml",
+   "sha256": "793abacc9ae5d5b92284fc5dad008314da89b7aa78b080794eaccb123ca84423"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/pytest-stage1suite.log",
+   "sha256": "57bd6354ec9d9d4524eac38ed9531f8a3bfbbd9820821ca4a340c26ab2e79e5a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/pytest.log",
+   "sha256": "c7fba4a664df9adc8560700fb42fa582db7f3cbf7589bdfdd3275fcadab03601"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/results-stage1suite.json",
+   "sha256": "6dee0fb0bebf28c110a16cc05ee971b81bd5d3c000219fbfd8ecd37149c24337"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/results.json",
+   "sha256": "8967e12fd61c2591e9afd026225416b987724e0b2e3723c03154079ad2ef0595"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/runner.log",
+   "sha256": "74d63182a4992171ee7ffd629a540d50a25eff472727c019fea3faf8fabfd5e1"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/summary-stage1suite.md",
+   "sha256": "f5f89295f84d5da991aad3aca4174765bf205e6d583a5faf0e5cc7e8aa2bb89e"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/summary.md",
+   "sha256": "8d565f83db0ed28ee92f7855f8fab0d1418ee25c8c6d7aefa43205cfa3368976"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_-w1280.png",
+   "sha256": "e877a89ea25fc2708d4dab54a3accddc1ba8ed133f0f536417d2757777f6d690"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_-w375.png",
+   "sha256": "bf26f869c4231663d58d447f3cad70db55049896e82da099184436d1a0f3e2d2"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_authorizations-w1280.png",
+   "sha256": "3bab5e8fc2e9447524a096576e7f64e8d7fa0658f2f4974fd762afa690984189"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_authorizations-w375.png",
+   "sha256": "de95a6a090d79c8ce56e392e08451431960385f5619086f2cc17da7521b4e419"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_login-w1280.png",
+   "sha256": "874cde315dad7e9ac859da4ffb3129c17912175c4c30a326a9506f6dbc8da598"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_login-w375.png",
+   "sha256": "19447cdab404046ef285ca1966da74df042ff24d37c5cfc4e7f8d8f1a6419188"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_requests-w1280.png",
+   "sha256": "5218405e9e612163c10dacaa90defd332a7bdb122e662586b0eb7ed06e911016"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_requests-w375.png",
+   "sha256": "27e0706a2ce861215bb822b5e6da424f617cf4b1f09f859928759bf87ff7f8cb"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_signup-w1280.png",
+   "sha256": "08b44737b4ae6d2034322738f378a8cc0511dd6666315cc2301c90da663536b5"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_signup-w375.png",
+   "sha256": "e7dbce2c5c9e6931be31440bf05e31d852f95ecf8a5db0daba5d4eeb0eef4f29"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_split-w1280.png",
+   "sha256": "d47bf4f64a6ff311b31c61d938cc30ca8f65445f483c484403d81746c239fcfc"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/route_split-w375.png",
+   "sha256": "2a707036722e699989f316fa7f61c63becf6a76d55aaf215b514d108d864d8e2"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/wallet-with-hold-w1280.png",
+   "sha256": "501ddea9d90cbfb767166ffc48a17cd85f277bdd3041b28147d9eefdcabd49e2"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/wallet-with-hold-w375.png",
+   "sha256": "360287fed259d2e3ecf9e19d452045d28edc7dcb68608b9c6f8becc31e7b41ff"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_-abc-w1280.png",
+   "sha256": "6db418da9feccbcdff4076d2786544bf19cb3f483ee6503582762dcb7fb16ad4"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_-abc-w375.png",
+   "sha256": "9efe223ddd59b97d5633d03110838c52b44ae8162b85bf49feec70670bf8b7b9"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_-ada-w1280.png",
+   "sha256": "75c840d8fd099562e8843048f483fe55cf0b2d3e76b461f060ac7f45fb8b78c2"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_-ada-w375.png",
+   "sha256": "164e70a96204c4432a08640799224cb61fb0e9e7650d09257c2c81a60e572f7b"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_authorizations-abc-w1280.png",
+   "sha256": "31e69cb52cc7d3c66187dfd80f023768a7184fbfaa8bf8201531d8c826c6f55d"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_authorizations-abc-w375.png",
+   "sha256": "cfb5f66128f092009b2ed41ca1990d1bfc49a7cbe23ccd739b18bedaaa8ad229"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_authorizations-ada-w1280.png",
+   "sha256": "37d645812d05685d6b9e02ecb93ba8f72a92306298dba6fb4761230aaf063626"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_authorizations-ada-w375.png",
+   "sha256": "e34c64d42798a2fdc0bb32e0e33ea5fc4c4d862990040fe0e66da11d04dfb609"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_requests-abc-w1280.png",
+   "sha256": "def295a780000ed0090eb805552068c1311613ba3b3748be1dbc62c2e3689194"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_requests-abc-w375.png",
+   "sha256": "c4045aa5e4782d2ddc5e6f4e9f580d9304d0a4b948df09be004dd6a4617677fa"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_requests-ada-w1280.png",
+   "sha256": "f4a13d2a87536b029e15323d6c4547fa74c7d8f20d892e5d1d1e4525349732b1"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_requests-ada-w375.png",
+   "sha256": "ef5f33f732b42f1a027eb346abe1bbb56511323292d600ce0efcd6ae52f6273d"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_split-abc-w1280.png",
+   "sha256": "e64abb57446ec2a938d5f9419202a58b7c24f3ae7613d122249581a66eda1606"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_split-abc-w375.png",
+   "sha256": "dfdbc751650daf62b1d6bdb9cc9bca30173171c9de3d40d77f63052d4d0c3769"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_split-ada-w1280.png",
+   "sha256": "4004bfcfd856cfd8fc6ee9d2d8f9bf111c6027064f0348b8c8e436808c402d42"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-2/adversary/c1-run1/shots/worst_split-ada-w375.png",
+   "sha256": "e1b13779e4ad54f14d13fd12fe924d483cb45737d4e0f5d6959138664cdeb6e4"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "F2-01 is a decision-row failure (D2-19 per analyst ruling 50c67d05), not a spec-row failure"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e",
+  "99a2211d-f6b5-41ad-a130-54558e0d6f47"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

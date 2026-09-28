@@ -1,0 +1,100 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s2-adversary-001",
+ "sequence": 1,
+ "run_id": "fskit-001",
+ "stage": 2,
+ "timestamp_utc": "2026-09-28T21:59:23Z",
+ "event_type": "HARNESS_RUN",
+ "requirement": {
+  "id": "S2-900",
+  "spec_path": "pocketful/spec/stage-2.md",
+  "spec_sha256": "39aaf9d7743c6fd831663e5b8363866f7d70795e5efb9000c2803f471397b13f",
+  "section": null,
+  "obligation": "S2-900"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "official harness --stage 2 on adversary clean clone",
+ "candidate_commit": "f1f0847d23be4b7cee84fcc00436a26ff48a0915",
+ "candidate_product_tree": "583b05637641c51decce4c7cac8e75847a8d77f6",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "wsl -e bash -lc 'cd /mnt/c/nexus/dev/dark-factory-wearedevs && ~/df-venv/bin/python -m harness run --track pocketful --repo /mnt/c/nexus/dev/band-kit/clones/adversary-s2-1 --stage 2 --out /mnt/c/nexus/dev/band-kit/checks/fskit-001-s2-adversary-1'",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s2-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:58:05Z",
+  "finished_utc": "2026-09-28T21:59:23Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 182,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 182
+  }
+ },
+ "expected": "suites 1 and 2 pass with 0 skipped; stage-3 probe fails",
+ "observed": "suite 1 147/147, suite 2 35/35, 0 failed/errors/skipped; claimed_stage 2; revision f1f0847d; stage-3 probe 1 failed 2 passed (stops at first failure)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s2-adversary-1/report.json",
+   "sha256": "9efdb06a38c71f8a3e3a6702fc3d1dca41db270da6d3937fafdd66aac2116100"
+  },
+  {
+   "path": "checks/fskit-001-s2-adversary-1/stage-1.counts.json",
+   "sha256": "6250f0fd1251afe620a1f77f720deecc44479bd1466308da32a9204809c34546"
+  },
+  {
+   "path": "checks/fskit-001-s2-adversary-1/stage-1.log",
+   "sha256": "c86393bc9d4c61aecb72da89dff2bca07a8478bc97560040c46a40e89464f070"
+  },
+  {
+   "path": "checks/fskit-001-s2-adversary-1/stage-2.counts.json",
+   "sha256": "6edc7d42b81b03606624ab2c38143073c7abd23f98ed846791b8ab91824add54"
+  },
+  {
+   "path": "checks/fskit-001-s2-adversary-1/stage-2.log",
+   "sha256": "2befd1a2760c431b865e91aa5bf51b28113e974e1ed0e8370207dfab05a297dc"
+  },
+  {
+   "path": "checks/fskit-001-s2-adversary-1/stage-3.counts.json",
+   "sha256": "fffc3d1f57c0b569f5fe902ba8dbf2589ee785f49dc8bd7caa4c99d2ce9d698f"
+  },
+  {
+   "path": "checks/fskit-001-s2-adversary-1/stage-3.log",
+   "sha256": "b9921274d45f9c54b0fb800f0eda1bf9e206f801f8533b862a831b2b0f8ca2d0"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "host mode (auditor owns isolated); shipped checks are a partial sample"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "fbfffd9d-cd44-459d-95da-929ddf8d157e",
+  "99a2211d-f6b5-41ad-a130-54558e0d6f47"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

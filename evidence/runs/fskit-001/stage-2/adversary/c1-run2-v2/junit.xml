@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="43.791" timestamp="2026-09-29T00:14:44.414517+02:00" hostname="HugoValer"><testcase classname="test_s2_v2" name="test_display_name_renders_as_text[w375]" time="6.520" /><testcase classname="test_s2_v2" name="test_display_name_renders_as_text[w1280]" time="5.815" /><testcase classname="test_s2_v2" name="test_latest_refresh_wins_on_authorizations[w375]" time="8.955" /><testcase classname="test_s2_v2" name="test_latest_refresh_wins_on_authorizations[w1280]" time="5.179" /><testcase classname="test_s2_v2" name="test_refused_capture_keeps_input_then_success_resets_prefill[w375]" time="6.502"><failure message="AssertionError: Locator expected to have Value '25.00'&#10;Actual value: 20.00 &#10;Call log:&#10;  - Expect &quot;to_have_value&quot; get_by_test_id(&quot;authorization-capture-amount-a_DrFCjjQGNh1VDsRj&quot;) with timeout 5000ms&#10;  - waiting for get_by_test_id(&quot;authorization-capture-amount-a_DrFCjjQGNh1VDsRj&quot;)&#10;    14 × locator resolved to &lt;input value=&quot;20.00&quot; id=&quot;f-wzesea57fy&quot; autocomplete=&quot;off&quot; inputmode=&quot;decimal&quot; data-testid=&quot;authorization-capture-amount-a_DrFCjjQGNh1VDsRj&quot;/&gt;&#10;       - unexpected value &quot;20.00&quot;&#10;&#10;Aria snapshot:&#10;- textbox &quot;Amount to collect&quot;: &quot;20.00&quot;">api = &lt;advlib.Api object at 0x7233aac52090&gt;
+page = &lt;Page url='http://127.0.0.1:52508/authorizations'&gt;
+
+    @pytest.mark.obl("S2-027")
+    @pytest.mark.decision("D2-19")
+    def test_refused_capture_keeps_input_then_success_resets_prefill(api, page):
+        w = W2(api, fx2())
+        aid = w.authorize("ada", "bob", 2000).json["authorization_id"]
+        login(page, api.base, "bob@example.com")
+        goto(page, api.base, "/authorizations")
+        inp = tid(page, f"authorization-capture-amount-{aid}")
+        expect(inp).to_have_value("20.00", timeout=T)
+        fill_amount(page, f"authorization-capture-amount-{aid}", "25.00")
+        tid(page, f"authorization-capture-{aid}").click()
+        expect(tid(page, "authorization-error")).to_be_visible(timeout=T)
+&gt;       expect(inp).to_have_value("25.00")
+E       AssertionError: Locator expected to have Value '25.00'
+E       Actual value: 20.00 
+E       Call log:
+E         - Expect "to_have_value" get_by_test_id("authorization-capture-amount-a_DrFCjjQGNh1VDsRj") with timeout 5000ms
+E         - waiting for get_by_test_id("authorization-capture-amount-a_DrFCjjQGNh1VDsRj")
+E           14 × locator resolved to &lt;input value="20.00" id="f-wzesea57fy" autocomplete="off" inputmode="decimal" data-testid="authorization-capture-amount-a_DrFCjjQGNh1VDsRj"/&gt;
+E              - unexpected value "20.00"
+E       
+E       Aria snapshot:
+E       - textbox "Amount to collect": "20.00"
+
+test_s2_v2.py:91: AssertionError</failure></testcase><testcase classname="test_s2_v2" name="test_refused_capture_keeps_input_then_success_resets_prefill[w1280]" time="6.566"><failure message="AssertionError: Locator expected to have Value '25.00'&#10;Actual value: 20.00 &#10;Call log:&#10;  - Expect &quot;to_have_value&quot; get_by_test_id(&quot;authorization-capture-amount-a_BFsdLZwb0sjHXAn0&quot;) with timeout 5000ms&#10;  - waiting for get_by_test_id(&quot;authorization-capture-amount-a_BFsdLZwb0sjHXAn0&quot;)&#10;    14 × locator resolved to &lt;input value=&quot;20.00&quot; autocomplete=&quot;off&quot; id=&quot;f-h0pnotsab5i&quot; inputmode=&quot;decimal&quot; data-testid=&quot;authorization-capture-amount-a_BFsdLZwb0sjHXAn0&quot;/&gt;&#10;       - unexpected value &quot;20.00&quot;&#10;&#10;Aria snapshot:&#10;- textbox &quot;Amount to collect&quot;: &quot;20.00&quot;">api = &lt;advlib.Api object at 0x7233aace3110&gt;
+page = &lt;Page url='http://127.0.0.1:52508/authorizations'&gt;
+
+    @pytest.mark.obl("S2-027")
+    @pytest.mark.decision("D2-19")
+    def test_refused_capture_keeps_input_then_success_resets_prefill(api, page):
+        w = W2(api, fx2())
+        aid = w.authorize("ada", "bob", 2000).json["authorization_id"]
+        login(page, api.base, "bob@example.com")
+        goto(page, api.base, "/authorizations")
+        inp = tid(page, f"authorization-capture-amount-{aid}")
+        expect(inp).to_have_value("20.00", timeout=T)
+        fill_amount(page, f"authorization-capture-amount-{aid}", "25.00")
+        tid(page, f"authorization-capture-{aid}").click()
+        expect(tid(page, "authorization-error")).to_be_visible(timeout=T)
+&gt;       expect(inp).to_have_value("25.00")
+E       AssertionError: Locator expected to have Value '25.00'
+E       Actual value: 20.00 
+E       Call log:
+E         - Expect "to_have_value" get_by_test_id("authorization-capture-amount-a_BFsdLZwb0sjHXAn0") with timeout 5000ms
+E         - waiting for get_by_test_id("authorization-capture-amount-a_BFsdLZwb0sjHXAn0")
+E           14 × locator resolved to &lt;input value="20.00" autocomplete="off" id="f-h0pnotsab5i" inputmode="decimal" data-testid="authorization-capture-amount-a_BFsdLZwb0sjHXAn0"/&gt;
+E              - unexpected value "20.00"
+E       
+E       Aria snapshot:
+E       - textbox "Amount to collect": "20.00"
+
+test_s2_v2.py:91: AssertionError</failure></testcase></testsuite></testsuites>

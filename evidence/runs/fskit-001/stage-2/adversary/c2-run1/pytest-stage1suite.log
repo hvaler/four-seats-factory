@@ -1,0 +1,12 @@
+........................................................................ [ 22%]
+........................................................................ [ 44%]
+........................................................................ [ 66%]
+........................................................................ [ 88%]
+.....................................                                    [100%]
+=============================== warnings summary ===============================
+test_coverage_v3.py::test_non_ascii_idempotency_key_observation
+  test_coverage_v3.py:367: PytestWarning: record_property is incompatible with junit_family 'xunit2' (use 'legacy' or 'xunit1')
+    @pytest.mark.risk
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+325 passed, 1 warning in 54.32s

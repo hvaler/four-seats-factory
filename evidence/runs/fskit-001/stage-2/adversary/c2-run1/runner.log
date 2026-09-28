@@ -1,0 +1,26 @@
+== adversary stage-2 run 2026-09-28T22:21:21Z
+candidate_sha=68583038e7ea52429b062af0f775d3cbfd96b7c3 clone_head=68583038e7ea52429b062af0f775d3cbfd96b7c3
+stage2_tree=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 stage1_tree_in_candidate=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_begin
+clone_status_end
+s1_clone_head=beeaec72ff53fa75469c5f09236a786632f21fd8 s1_tree=347efba502629e5b5bbd730f35c34bdfe208c478
+test_rev=bdb21efc6e3ccdbc952f3f6bc24b56313e7a1266 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+anyio==4.15.1 certifi==2026.7.22 greenlet==3.5.6 h11==0.16.0 httpcore==1.0.9 httpx==0.28.1 idna==3.20 iniconfig==2.3.0 packaging==26.3 playwright==1.63.0 pluggy==1.6.0 pyee==13.0.1 Pygments==2.21.0 pytest==9.1.1 typing_extensions==4.16.0 
+chromium 153.0.8010.12
+build_stage2_exit=0 seconds=2
+build_stage1_exit=0 seconds=5
+image2_id=sha256:e98c3dd198681e556040b108425043f6ed753b6ced2fa4b7aa62fbef12de9761 size=240959204
+stage2_a port=53214 health_s=1
+stage2_b port=53216 health_s=0
+stage1_accepted port=53217 health_s=1
+stage2_c(PORT unset) port=53218 health_s=1 body={"status":"ok"}
+clock host=1790634094.993229110 container=1790634095
+stage1suite_exit=0 seconds=57 325 passed, 1 warning in 54.32s
+stage2suite_exit=0 seconds=303 148 passed, 3 warnings in 293.95s (0:04:53)
+stats adv2-a-653509 cpu=0.00% mem=26.23MiB / 2GiB
+stats adv2-b-653509 cpu=0.00% mem=21.35MiB / 2GiB
+stats adv2-s1-653509 cpu=0.00% mem=11.68MiB / 2GiB
+stage2_a restarts=0 oom=false running=true
+== done 2026-09-28T22:27:37Z
