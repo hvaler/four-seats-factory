@@ -1,0 +1,70 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-006",
+ "sequence": 6,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:10:46Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "S1-013,S1-013a,S1-014,S1-06A",
+  "section": null,
+  "obligation": "S1-013,S1-013a,S1-014,S1-06A"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Timing, PORT default and signup races",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "auditor@31ba973b tools/timing_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "/mnt/c/nexus/dev/band-kit/wt/auditor/evidence/runs/fskit-001/stage-1/auditor/",
+  "command": "~/df-venv/bin/python tools/timing_probe.py http://127.0.0.1:9103 (container aud-c started WITHOUT -e PORT, -p 9103:8080)",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; harness venv Python 3.12.3; kickoff 803560d2 (clean modulo CRLF; untracked .venv only)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:12d1a0f842c02a91bdb8050042e67566a70cf6c607aefdc0bf669686cd706b74",
+  "mode": "--cpus 2 --memory 2g",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:10:44Z",
+  "finished_utc": "2026-09-28T21:10:46Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 4,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 4
+  }
+ },
+ "expected": "PORT unset -> 8080; 100-user reset < 10 s; 50 concurrent logins each < 5 s; 20 same-email signups -> one 201; 20 same-handle signups -> one 201 and one login",
+ "observed": "health 200 on 8080 with PORT unset; reset100 0.429 s; login50 max 0.255 s; same-email 1x201 + 19x email_taken; same-handle 1x201 + 19x handle_taken, 1 login ok; first health ~0.05 s after start",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-1/auditor/c1/timing-results.json",
+   "sha256": "96b89ef9da92bb546317fb806610a2c67ee9f4c504d961a5befe64c620d984f3"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host, single run; not a distribution."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "3d6a464f-0ae0-4942-a11e-f788c2793e68"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
