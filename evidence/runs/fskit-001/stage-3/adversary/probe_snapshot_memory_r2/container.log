@@ -1,0 +1,13 @@
+pocketful stage-1 listening on 0.0.0.0:9781
+
+<--- Last few GCs --->
+
+[1:0x763c74dc2000]    57245 ms: Scavenge 1016.4 (1042.5) -> 1011.8 (1041.7) MB, pooled: 3 MB, 14.75 / 0.00 ms  (average mu = 0.637, current mu = 0.798) allocation failure; 
+[1:0x763c74dc2000]    57266 ms: Scavenge 1016.3 (1042.3) -> 1012.1 (1049.9) MB, pooled: 0 MB, 15.91 / 0.00 ms  (average mu = 0.637, current mu = 0.798) allocation failure; 
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+

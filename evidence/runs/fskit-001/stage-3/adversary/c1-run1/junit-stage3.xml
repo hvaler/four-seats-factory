@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="50" time="17.327" timestamp="2026-09-29T01:33:40.247444+02:00" hostname="HugoValer"><testcase classname="test_s3_api" name="test_seeded_created_at" time="0.122" /><testcase classname="test_s3_api" name="test_future_seeded_created_at_rejected" time="0.074" /><testcase classname="test_s3_api" name="test_as_of_invalid[2026-09-24T13:20:00]" time="0.070" /><testcase classname="test_s3_api" name="test_as_of_invalid[2026-09-24]" time="0.075" /><testcase classname="test_s3_api" name="test_as_of_invalid[]" time="0.074" /><testcase classname="test_s3_api" name="test_as_of_invalid[yesterday]" time="0.073" /><testcase classname="test_s3_api" name="test_as_of_invalid[2026-13-01T00:00:00+00:00]" time="0.074" /><testcase classname="test_s3_api" name="test_as_of_inclusive_opening_current_and_echo" time="0.127" /><testcase classname="test_s3_api" name="test_statement_window_order_balances" time="0.191" /><testcase classname="test_s3_api" name="test_statement_pagination_invariant" time="0.231" /><testcase classname="test_s3_api" name="test_statement_bad_instants[2026-09-24T13:20:00-from]" time="0.070" /><testcase classname="test_s3_api" name="test_statement_bad_instants[2026-09-24T13:20:00-to]" time="0.072" /><testcase classname="test_s3_api" name="test_statement_bad_instants[2026-09-24T13:20:00-known_at]" time="0.072" /><testcase classname="test_s3_api" name="test_statement_bad_instants[2026-09-24-from]" time="0.075" /><testcase classname="test_s3_api" name="test_statement_bad_instants[2026-09-24-to]" time="0.073" /><testcase classname="test_s3_api" name="test_statement_bad_instants[2026-09-24-known_at]" time="0.072" /><testcase classname="test_s3_api" name="test_statement_bad_instants[-from]" time="0.072" /><testcase classname="test_s3_api" name="test_statement_bad_instants[-to]" time="0.079" /><testcase classname="test_s3_api" name="test_statement_bad_instants[-known_at]" time="0.075" /><testcase classname="test_s3_api" name="test_statement_from_after_to" time="0.084" /><testcase classname="test_s3_api" name="test_tie_order_by_id_bytes" time="0.078" /><testcase classname="test_s3_api" name="test_correction_access_and_validation" time="0.128" /><testcase classname="test_s3_api" name="test_correction_wrong_types_are_422" time="0.105" /><testcase classname="test_s3_api" name="test_correction_moves_difference_and_keeps_original" time="0.110" /><testcase classname="test_s3_api" name="test_revisions_access" time="0.107" /><testcase classname="test_s3_api" name="test_stale_replay_and_key_rules" time="0.109" /><testcase classname="test_s3_api" name="test_insufficient_funds_on_increase_and_decrease" time="0.128" /><testcase classname="test_s3_api" name="test_historical_overdraft_receiver_spent_earlier" time="0.143" /><testcase classname="test_s3_api" name="test_historical_overdraft_time_move_sender" time="0.129" /><testcase classname="test_s3_api" name="test_historical_overdraft_via_available_and_holds" time="0.143" /><testcase classname="test_s3_api" name="test_same_amount_time_move_changes_history_only" time="0.152" /><testcase classname="test_s3_api" name="test_zero_amount_revision_and_selected_amount" time="0.109" /><testcase classname="test_s3_api" name="test_known_at_selection_and_conservation_grid" time="0.359" /><testcase classname="test_s3_api" name="test_snapshot_is_frozen" time="0.234" /><testcase classname="test_s3_api" name="test_linked_payments_immutable" time="0.094" /><testcase classname="test_s3_api" name="test_request_payment_correctable_zero_upward" time="0.124" /><testcase classname="test_s3_api" name="test_hold_lifecycle_in_history" time="0.162" /><testcase classname="test_s3_api" name="test_expiry_in_history_and_future" time="2.591" /><testcase classname="test_s3_api" name="test_void_unknown_before_its_event_time" time="0.280"><failure message="AssertionError">w = &lt;adv3.W3 object at 0x7e3d8943f740&gt;
+
+    @pytest.mark.obl("S3-081")
+    def test_void_unknown_before_its_event_time(w):
+        a = w.authorize("ada", "bob", 1000).json
+        tick(30)
+        before_void = now_iso()
+        tick(30)
+        v = w.void("ada", a["authorization_id"]).json
+        far = "2099-01-01T00:00:00.000+00:00"
+        # known before the void: the hold is still open, so at a far future as_of it has expired at its deadline
+        m = w.me_at("ada", as_of=plus_ms(a["expires_at"], -1), known_at=before_void).json
+        assert m["held"] == 1000, m
+        m = w.me_at("ada", as_of=plus_ms(a["expires_at"], -1), known_at=v["closed_at"]).json
+        assert m["held"] == 0, m
+        m = w.me_at("ada", as_of=far, known_at=before_void).json
+&gt;       assert m["held"] == 0 and m["available"] == m["total"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s3_api.py:528: AssertionError</failure></testcase><testcase classname="test_s3_api" name="test_statement_money_only" time="0.177" /><testcase classname="test_s3_api" name="test_seeded_hold_created_at_default_and_supplied" time="0.153" /><testcase classname="test_s3_conc" name="test_same_expected_revision_only_one_wins[0]" time="0.518" /><testcase classname="test_s3_conc" name="test_same_expected_revision_only_one_wins[1]" time="0.594" /><testcase classname="test_s3_conc" name="test_same_expected_revision_only_one_wins[2]" time="0.515" /><testcase classname="test_s3_conc" name="test_recorded_at_strictly_increases_back_to_back" time="0.151" /><testcase classname="test_s3_conc" name="test_snapshot_stable_under_concurrent_writes" time="1.473" /><testcase classname="test_s3_conc" name="test_mixed_concurrent_invariants" time="4.140" /><testcase classname="test_s3_upgrade" name="test_imported_void_artifact_does_not_block_unrelated_correction" time="0.272" /><testcase classname="test_s3_upgrade" name="test_upgrade_1_to_3" time="0.245"><failure message="AssertionError: {'user_id': 'u_ada', 'display_name': 'Ada', 'handle': 'ada', 'balance': 10500, 'total': 10500, 'available': 10500, 'held': 0, 'currency': 'EUR', 'minor_units': 2, 'as_of': '2026-09-28T23:33:56.999+00:00'}">api_s1 = &lt;advlib.Api object at 0x7e3d89468560&gt;
+api = &lt;advlib.Api object at 0x7e3d89468860&gt;
+
+    @pytest.mark.obl("S3-071", "S3-072", "S3-902", "S2-040")
+    @pytest.mark.decision("D3-13", "D2-13")
+    def test_upgrade_1_to_3(api_s1, api):
+&gt;       run(api_s1, api, 1)
+
+test_s3_upgrade.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = &lt;advlib.Api object at 0x7e3d89468560&gt;
+dst = &lt;advlib.Api object at 0x7e3d89468860&gt;, stage = 1
+
+    def run(src, dst, stage):
+        rec = populate(src, stage)
+        tok = rec["tok"]
+        exp = src.call("GET", "/_test/export")
+        assert exp.status == 200
+        dst.reset(fx2())
+        t_import = datetime.now(timezone.utc)
+        assert dst.call("POST", "/_test/import", raw=exp.raw).status == 204
+        w = W3.__new__(W3)
+        w.api, w.fx, w.tok = dst, rec["fx"], tok
+        # sessions, balances, receipts
+        for h, b in rec["balances"].items():
+            assert dst.balance(tok[h]) == b, h
+        rp = dst.pay(tok["ada"], "bob", 321, key=rec["k_pay"], note="pre-upgrade")
+        assert rp.status == 200 and rp.raw == rec["pay"].raw
+        assert dst.pay(tok["cy"], "ada", 1, key=rec["failed_key"]).status == 201
+        if stage == 2:
+            r = dst.call("POST", "/authorizations", {"to_handle": "bob", "amount": 1000}, token=tok["ada"], key=rec["k_auth"])
+            assert r.status == 200 and r.raw == rec["auth_open"].raw
+            r = dst.call("POST", f"/authorizations/{rec['a2']}/capture", {"amount": 200, "final": False}, token=tok["cy"], key=rec["k_cap"])
+            assert r.status == 200 and r.raw == rec["cap"].raw
+        # imported history: revision 1 per payment, statement consistent with a reference ledger
+        p = rec["pay"].json
+        revs = w.revisions("ada", p["payment_id"]).json["revisions"]
+        assert len(revs) == 1 and revs[0]["amount"] == 321 and parse_ts(revs[0]["effective_at"]) == parse_ts(p["created_at"])
+        m = dst.call("GET", "/me", token=tok["ada"], params={"as_of": plus_ms(p["created_at"], -1)}).json
+        open_ada = rec["fx"]["users"][0]["balance"]
+&gt;       assert m["balance"] == open_ada, m
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'user_id': 'u_ada', 'display_name': 'Ada', 'handle': 'ada', 'balance': 10500, 'total': 10500, 'available': 10500, 'held': 0, 'currency': 'EUR', 'minor_units': 2, 'as_of': '2026-09-28T23:33:56.999+00:00'}
+
+test_s3_upgrade.py:65: AssertionError</failure></testcase><testcase classname="test_s3_upgrade" name="test_upgrade_2_to_3" time="0.276" /></testsuite></testsuites>

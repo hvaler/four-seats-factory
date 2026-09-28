@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-adversary-009",
+ "sequence": 9,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:25:00Z",
+ "event_type": "INSPECTION",
+ "requirement": {
+  "id": "S3-001,S3-002,S1-900",
+  "spec_path": "pocketful/spec/stage-3.md",
+  "spec_sha256": "2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "section": null,
+  "obligation": "S3-001,S3-002,S1-900"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "stage-3 provenance",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "git rev-parse e8886337:stage-3, HEAD:stage-{1,2,3}; git diff --stat a8e6178d HEAD:stage-3",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s3-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:24:00Z",
+  "finished_utc": "2026-09-28T23:25:00Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 1,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 1
+  }
+ },
+ "expected": "copy commit == a8e6178d; stage-1/2 unchanged",
+ "observed": "e8886337:stage-3 == a8e6178d; stage-2 a8e6178d, stage-1 347efba5 unchanged; 4 commits by implementer-thgt; diff: ledger.js new, app/store changed, UI and Dockerfile unchanged",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "times to the minute"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc",
+  "b54ef61d-bff2-4f21-b260-69ecd0c4692d"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
