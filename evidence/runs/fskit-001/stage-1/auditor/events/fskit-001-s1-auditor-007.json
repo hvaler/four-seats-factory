@@ -1,0 +1,108 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-007",
+ "sequence": 7,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:25:47Z",
+ "event_type": "CHALLENGE_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "adversary suite v2 (all obligation marks)",
+  "section": null,
+  "obligation": "adversary suite v2 (all obligation marks)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor re-run of adversary suite v2 in own checkout, venv, clone and containers",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "adversary@63c6adbbceecfa2147453ad261d7ffcc95649a94 suite tree 25429c141698f3472ff6928170a93e48cdc909a3",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "/mnt/c/nexus/dev/band-kit/clones/auditor-advsuite-1 (clean detached checkout)",
+  "command": "ADV_PY=$HOME/aud-venv/bin/python ADV_TEST_REV=63c6adbbceecfa2147453ad261d7ffcc95649a94 ADV_TEST_TREE=25429c141698f3472ff6928170a93e48cdc909a3 ADV_TEST_DIRTY=clean-detached-auditor-checkout bash /mnt/c/nexus/dev/band-kit/clones/auditor-advsuite-1/verification/adversary/stage-1/run.sh /mnt/c/nexus/dev/band-kit/clones/auditor-s1-1 beeaec72ff53fa75469c5f09236a786632f21fd8 /mnt/c/nexus/dev/band-kit/checks/fskit-001-s1-audit-advsuite-1",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; Python 3.12.3",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1"
+  },
+  "container_image_digest": "sha256:1095af6b605a20000d2b6223e63b7c47d8103588263994bea1d24f9344b72c10",
+  "mode": "runner: --no-cache build, containers A/B -e PORT with --cpus 2 --memory 2g --memory-swap 2g, C with PORT unset",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:24:40Z",
+  "finished_utc": "2026-09-28T21:25:47Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 301,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 301
+  }
+ },
+ "expected": "301/301 as in adversary event 003",
+ "observed": "301 passed (268 requirement, 25 decision, 8 risk); health A 2 s, B 0 s, C(PORT unset) 1 s; no restart/OOM",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/build.log",
+   "sha256": "6fa810666e478ad67abb15f871ac082efe5f467b28b8ddc509aa501040dedbfc"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/container-adv-s1-a.log",
+   "sha256": "99cdbc9ce1e48db9c0e5a55e3ec70703ba9f7e949822be50bdc25dcc60bee5f3"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/container-adv-s1-b.log",
+   "sha256": "11980b07e0b4c93400dd99f10c00edcbeaa7dc51606ab1e93d9e21f2b979a508"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/container-adv-s1-c.log",
+   "sha256": "53f080211e3a59024adb49e907ae02a7dfa02e9770a108bc7d8d2853a58d4916"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/pytest.log",
+   "sha256": "56d9b10c6d756566b9eb0000bc9ed5d8670334752f39c7b0ecb70e7f6a79c073"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/runner.log",
+   "sha256": "4dc6ee4cf8da7f7e297281be6ecd0659b3355fd3efab82366e486607cff05803"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/junit.xml",
+   "sha256": "6cc832f952a43d9e10bed5079c30cb23cbcb364c2aaf9d8ba2a5a2d0c75a7408"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/results.json",
+   "sha256": "d605066cbec8af60ab57e31f9c5b8bfa4c7fba1f0f5cc10714e8dd9fc84abaaa"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/summary.md",
+   "sha256": "a514b33273e4cc9b6cc548c570943722e53741f85757db2cefc4ec5b4ade6d97"
+  },
+  {
+   "path": "checks/fskit-001-s1-audit-advsuite-1/SHA256SUMS",
+   "sha256": "9d3516ecee6004f91c708f2123ac445ba7eda1bdad1038f7fc62696beca19bac"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Own venv ~/aud-venv pinned to the suite's requirements.txt; not the adversary's process or logs."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "b2c7fb5d-5505-4027-9878-825a0a71cca4"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

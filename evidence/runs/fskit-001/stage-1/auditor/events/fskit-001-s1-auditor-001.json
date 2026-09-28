@@ -1,0 +1,65 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-001",
+ "sequence": 1,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:12:00Z",
+ "event_type": "PROVENANCE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "S1-010,S1-069,S1-900,S1-901",
+  "section": null,
+  "obligation": "S1-010,S1-069,S1-900,S1-901"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Candidate provenance and delivery inspection",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "C:/nexus/dev/band-kit/clones/auditor-s1-1",
+  "command": "git clone C:/nexus/dev/band-kit/result clones/auditor-s1-1; git checkout --detach beeaec72; git rev-parse HEAD HEAD:stage-1; git log 7566dbb2..HEAD; git diff --name-only 7566dbb2 HEAD; git ls-files -s stage-1 (mode 120000/160000); grep src for fixture/harness/URL strings; read password.js, Dockerfile, RUN.md",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; harness venv Python 3.12.3; kickoff 803560d2 (clean modulo CRLF; untracked .venv only)",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": null,
+  "mode": null,
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:06:30Z",
+  "finished_utc": "2026-09-28T21:12:00Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "HEAD=beeaec72; stage-1 tree 347efba5; only stage-1/ changed; D-01 author; no symlink/submodule/nested .git; no test-detection code; password hashing",
+ "observed": "As expected. 3 commits by implementer-thgt; 13 files all under stage-1/; no mode 120000/160000 entries; case-insensitive grep of src for ada|bob|example.com|harness|pytest|playwright|u_ada|correct horse|fetch(|http(s):// gives 0 hits; scrypt N=4096 r=8 p=1 with 16-byte random salt; Dockerfile pinned node:22-alpine digest, npm ci, USER node; empty dependency set locked",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Inspection, not exhaustive review. scrypt N=2^12 is below common guidance (declared tradeoff) but is a password-hashing function per spec 6."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "3d6a464f-0ae0-4942-a11e-f788c2793e68"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
