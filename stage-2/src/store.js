@@ -5,6 +5,10 @@
 // multi-transfer settlement) is atomic and no other request can observe it
 // half-applied. Reset and import build a complete new state first and then
 // swap it in with one assignment.
+//
+// Holds (stage 2): an open authorization reserves money on its payer. Expiry is
+// derived from the clock whenever an authorization is looked at (sweep), so a
+// hold is released at its deadline without any request or timer.
 
 const crypto = require('node:crypto');
 const { JNum, isObject } = require('./json');
@@ -13,14 +17,19 @@ const { hashPassword, isValidHash } = require('./password');
 
 const HANDLE_RE = /^[a-z0-9_]{1,20}$/;
 const STATUSES = new Set(['pending', 'paid', 'declined', 'cancelled']);
+const AUTH_STATUSES = new Set(['open', 'captured', 'voided', 'expired']);
 const VISIBILITIES = new Set(['public', 'private']);
 const MINOR_UNITS = new Set([0, 2, 3]);
 const MAX_ID = 64;
+const DEFAULT_TTL = 600;
+const SCHEMA = 2;
+const RFC3339 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)$/i;
 
 function newState(currency = 'EUR', minorUnits = 2) {
   return {
     currency,
     minorUnits,
+    ttlSeconds: DEFAULT_TTL,
     total: 0n,
     users: new Map(),
     byHandle: new Map(),
@@ -30,6 +39,8 @@ function newState(currency = 'EUR', minorUnits = 2) {
     paymentById: new Map(),
     requests: [],
     requestById: new Map(),
+    authorizations: [],
+    authById: new Map(),
     splits: new Map(),
     settlements: new Map(),
     operators: new Set(),
@@ -42,9 +53,9 @@ let state = newState();
 const current = () => state;
 const replace = (next) => { state = next; };
 
-// RFC 3339 with an explicit numeric offset.
+// RFC 3339 with an explicit numeric offset and millisecond precision.
 function timestamp(date = new Date()) {
-  return date.toISOString().replace(/\.\d{3}Z$/, '+00:00');
+  return date.toISOString().replace(/Z$/, '+00:00');
 }
 
 function newId(prefix, taken) {
@@ -64,6 +75,7 @@ function newToken(s) {
 }
 
 function addUser(s, user) {
+  user.openAuths = new Set();
   s.users.set(user.id, user);
   s.byHandle.set(user.handle, user);
   s.byEmail.set(user.email, user);
@@ -78,6 +90,44 @@ function addRequest(s, request) {
   s.requests.push(request);
   s.requestById.set(request.id, request);
 }
+
+function addAuthorization(s, auth) {
+  s.authorizations.push(auth);
+  s.authById.set(auth.id, auth);
+  if (auth.status === 'open') s.users.get(auth.fromId).openAuths.add(auth);
+}
+
+// ---------------------------------------------------------------------------
+// Holds
+
+// Brings an authorization's status up to date with the clock: an open
+// authorization at or past its deadline is expired and releases its remainder.
+function sweep(s, auth, now = Date.now()) {
+  if (auth.status === 'open' && now >= auth.expiresMs) {
+    auth.status = 'expired';
+    s.users.get(auth.fromId).openAuths.delete(auth);
+  }
+  return auth;
+}
+
+// Releases an open hold with a final status (captured or voided).
+function close(s, auth, status) {
+  auth.status = status;
+  s.users.get(auth.fromId).openAuths.delete(auth);
+}
+
+const remaining = (auth) => (auth.status === 'open' ? auth.amount - auth.captured : 0n);
+
+function held(s, user, now = Date.now()) {
+  let sum = 0n;
+  for (const auth of [...user.openAuths]) {
+    sweep(s, auth, now);
+    sum += remaining(auth);
+  }
+  return sum;
+}
+
+const available = (s, user, now = Date.now()) => user.balance - held(s, user, now);
 
 function idemKey(userId, method, path, key) {
   return JSON.stringify([userId, method, path, key]);
@@ -145,12 +195,22 @@ function status(v, what) {
   return v;
 }
 
+function authStatus(v, what) {
+  need(AUTH_STATUSES.has(v), `${what} must be one of ${[...AUTH_STATUSES].join(', ')}`);
+  return v;
+}
+
+function rfc3339(v, what) {
+  need(typeof v === 'string' && RFC3339.test(v) && !Number.isNaN(Date.parse(v)), `${what} must be an RFC 3339 timestamp`);
+  return v;
+}
+
 function unique(map, key, what) {
   need(!map.has(key), `duplicate ${what}: ${key}`);
 }
 
 // ---------------------------------------------------------------------------
-// Reset (§3.3, §4, §11)
+// Reset (§3.3, §4, §11; stage 2 Model)
 
 async function stateFromFixture(fx) {
   if (!isObject(fx)) throw malformed('the fixture must be a JSON object');
@@ -160,7 +220,13 @@ async function stateFromFixture(fx) {
   need(MINOR_UNITS.has(minorUnits), 'minor_units must be 0, 2 or 3');
 
   const s = newState(currency, minorUnits);
-  const created = timestamp();
+  if (fx.authorization_ttl_seconds !== undefined) {
+    const ttl = jint(fx.authorization_ttl_seconds, 'authorization_ttl_seconds');
+    need(ttl >= 1n && ttl <= 10n ** 12n, 'authorization_ttl_seconds must be a positive integer');
+    s.ttlSeconds = Number(ttl);
+  }
+  const now = Date.now();
+  const created = timestamp(new Date(now));
   const passwords = [];
 
   arr(fx.users, 'users').forEach((raw, i) => {
@@ -195,6 +261,7 @@ async function stateFromFixture(fx) {
       visibility: visibility(p.visibility, `payments[${i}].visibility`),
       requestId: nullableId(p.request_id, `payments[${i}].request_id`),
       settlementId: nullableId(p.settlement_id, `payments[${i}].settlement_id`),
+      authorizationId: nullableId(p.authorization_id, `payments[${i}].authorization_id`),
       createdAt: created,
     };
     need(s.users.has(payment.fromId) && s.users.has(payment.toId), `payments[${i}] refers to an unknown user`);
@@ -223,6 +290,42 @@ async function stateFromFixture(fx) {
     addRequest(s, request);
   });
 
+  arr(fx.authorizations, 'authorizations', []).forEach((raw, i) => {
+    const a = obj(raw, `authorizations[${i}]`);
+    const what = `authorizations[${i}]`;
+    const expiresAt = rfc3339(a.expires_at, `${what}.expires_at`);
+    const auth = {
+      id: id(a.id, `${what}.id`),
+      fromId: id(a.from_user_id, `${what}.from_user_id`),
+      toId: id(a.to_user_id, `${what}.to_user_id`),
+      amount: jint(a.amount, `${what}.amount`),
+      captured: 0n,
+      note: optStr(a.note, `${what}.note`, ''),
+      visibility: visibility(a.visibility, `${what}.visibility`),
+      status: a.status === undefined ? 'open' : authStatus(a.status, `${what}.status`),
+      expiresAt,
+      expiresMs: Date.parse(expiresAt),
+      paymentIds: [],
+      createdAt: created,
+    };
+    need(s.users.has(auth.fromId) && s.users.has(auth.toId), `${what} refers to an unknown user`);
+    need(auth.fromId !== auth.toId, `${what} must be between two different users`);
+    need(auth.amount >= 1n && auth.amount <= 1000000000n, `${what}.amount must be from 1 to 1000000000`);
+    if (a.captured_amount !== undefined) auth.captured = jint(a.captured_amount, `${what}.captured_amount`);
+    else if (auth.status === 'captured') auth.captured = auth.amount;
+    need(auth.captured >= 0n && auth.captured <= auth.amount, `${what}.captured_amount is out of range`);
+    need(auth.status !== 'open' || auth.captured < auth.amount, `${what} is open with nothing left to capture`);
+    if (a.payment_id !== undefined && a.payment_id !== null) auth.paymentIds.push(id(a.payment_id, `${what}.payment_id`));
+    unique(s.authById, auth.id, 'authorization id');
+    addAuthorization(s, auth);
+    sweep(s, auth, now);
+  });
+
+  // The seeded unexpired open holds must fit inside each payer's balance.
+  for (const user of s.users.values()) {
+    need(held(s, user, now) <= user.balance, `the open holds of ${user.id} exceed its balance`);
+  }
+
   arr(fx.settlement_operator_ids, 'settlement_operator_ids', []).forEach((v, i) => {
     const uid = id(v, `settlement_operator_ids[${i}]`);
     need(s.users.has(uid), `settlement_operator_ids[${i}] is not a user`);
@@ -237,12 +340,15 @@ async function stateFromFixture(fx) {
 
 // ---------------------------------------------------------------------------
 // Export and import (§10). The state object is opaque to callers; amounts are
-// decimal strings so they survive any JSON tooling exactly.
+// decimal strings so they survive any JSON tooling exactly. A stage-1 export
+// (no schema marker) imports with no authorizations and the default TTL.
 
 function exportState(s) {
   return {
+    schema: SCHEMA,
     currency: s.currency,
     minor_units: s.minorUnits,
+    authorization_ttl_seconds: s.ttlSeconds,
     total: s.total.toString(),
     users: [...s.users.values()].map((u) => ({
       id: u.id,
@@ -263,6 +369,7 @@ function exportState(s) {
       visibility: p.visibility,
       request_id: p.requestId,
       settlement_id: p.settlementId,
+      authorization_id: p.authorizationId,
       created_at: p.createdAt,
     })),
     requests: s.requests.map((r) => ({
@@ -274,6 +381,19 @@ function exportState(s) {
       status: r.status,
       payment_id: r.paymentId,
       created_at: r.createdAt,
+    })),
+    authorizations: s.authorizations.map((a) => ({
+      id: a.id,
+      from_user_id: a.fromId,
+      to_user_id: a.toId,
+      amount: a.amount.toString(),
+      captured_amount: a.captured.toString(),
+      note: a.note,
+      visibility: a.visibility,
+      status: a.status,
+      expires_at: a.expiresAt,
+      payment_ids: a.paymentIds,
+      created_at: a.createdAt,
     })),
     splits: [...s.splits.values()].map((sp) => ({
       id: sp.id,
@@ -307,11 +427,18 @@ function stateFromExport(doc) {
   need(doc.format_version instanceof JNum && doc.format_version.toBigInt() === 1n, 'format_version must be 1');
   const st = obj(doc.state, 'state');
 
+  const schema = st.schema === undefined ? 1n : jint(st.schema, 'state.schema');
+  need(schema === 1n || schema === 2n, 'state.schema is not supported');
   const currency = str(st.currency, 'state.currency');
   need(currency.length > 0, 'state.currency must not be empty');
   const minorUnits = Number(jint(st.minor_units, 'state.minor_units'));
   need(MINOR_UNITS.has(minorUnits), 'state.minor_units must be 0, 2 or 3');
   const s = newState(currency, minorUnits);
+  if (schema === 2n) {
+    const ttl = jint(st.authorization_ttl_seconds, 'state.authorization_ttl_seconds');
+    need(ttl >= 1n && ttl <= 10n ** 12n, 'state.authorization_ttl_seconds must be positive');
+    s.ttlSeconds = Number(ttl);
+  }
   const ts = (v, what) => {
     need(typeof v === 'string' && !Number.isNaN(Date.parse(v)), `${what} must be a timestamp`);
     return v;
@@ -363,10 +490,11 @@ function stateFromExport(doc) {
       visibility: visibility(p.visibility, 'payment visibility'),
       requestId: nullableId(p.request_id, 'payment request_id'),
       settlementId: nullableId(p.settlement_id, 'payment settlement_id'),
+      authorizationId: nullableId(p.authorization_id, 'payment authorization_id'),
       createdAt: ts(p.created_at, 'payment created_at'),
     };
     need(s.users.has(payment.fromId) && s.users.has(payment.toId), 'payment refers to an unknown user');
-    need(payment.amount >= 1n, 'payment amount must be positive');
+    need(payment.amount >= 0n, 'payment amount must not be negative');
     unique(s.paymentById, payment.id, 'payment id');
     addPayment(s, payment);
   });
@@ -388,6 +516,35 @@ function stateFromExport(doc) {
     unique(s.requestById, request.id, 'request id');
     addRequest(s, request);
   });
+
+  arr(st.authorizations, 'state.authorizations', []).forEach((a, i) => {
+    obj(a, `state.authorizations[${i}]`);
+    const expiresAt = ts(a.expires_at, 'authorization expires_at');
+    const auth = {
+      id: id(a.id, 'authorization id'),
+      fromId: id(a.from_user_id, 'authorization from_user_id'),
+      toId: id(a.to_user_id, 'authorization to_user_id'),
+      amount: sint(a.amount, 'authorization amount'),
+      captured: sint(a.captured_amount, 'authorization captured_amount'),
+      note: str(a.note, 'authorization note'),
+      visibility: visibility(a.visibility, 'authorization visibility'),
+      status: authStatus(a.status, 'authorization status'),
+      expiresAt,
+      expiresMs: Date.parse(expiresAt),
+      paymentIds: arr(a.payment_ids, 'authorization payment_ids').map((pid) => {
+        need(s.paymentById.has(pid), 'authorization refers to an unknown payment');
+        return pid;
+      }),
+      createdAt: ts(a.created_at, 'authorization created_at'),
+    };
+    need(s.users.has(auth.fromId) && s.users.has(auth.toId), 'authorization refers to an unknown user');
+    need(auth.amount >= 1n && auth.captured >= 0n && auth.captured <= auth.amount, 'authorization amounts are inconsistent');
+    unique(s.authById, auth.id, 'authorization id');
+    addAuthorization(s, auth);
+  });
+  for (const user of s.users.values()) {
+    need(held(s, user) <= user.balance, 'open holds exceed a balance');
+  }
 
   arr(st.splits, 'state.splits').forEach((sp, i) => {
     obj(sp, `state.splits[${i}]`);
@@ -447,6 +604,7 @@ function stateFromExport(doc) {
 
 module.exports = {
   HANDLE_RE,
+  AUTH_STATUSES,
   current,
   replace,
   timestamp,
@@ -455,6 +613,12 @@ module.exports = {
   addUser,
   addPayment,
   addRequest,
+  addAuthorization,
+  sweep,
+  close,
+  remaining,
+  held,
+  available,
   idemKey,
   stateFromFixture,
   exportState,

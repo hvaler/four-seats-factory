@@ -14,7 +14,13 @@ function send(res, result) {
     return;
   }
   const payload = Buffer.from(result.text, 'utf8');
-  res.writeHead(result.status, { 'Content-Type': CONTENT_TYPE, 'Content-Length': payload.length });
+  const headers = { 'Content-Type': result.type || CONTENT_TYPE, 'Content-Length': payload.length, Vary: 'Accept' };
+  if (result.cache) headers['Cache-Control'] = result.cache;
+  if (result.type && result.type.startsWith('text/html')) {
+    headers['Content-Security-Policy'] = "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'";
+    headers['X-Content-Type-Options'] = 'nosniff';
+  }
+  res.writeHead(result.status, headers);
   res.end(payload);
 }
 

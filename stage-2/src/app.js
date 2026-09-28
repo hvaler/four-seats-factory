@@ -9,6 +9,7 @@ const store = require('./store');
 const { JNum, parse, isObject, canonical, stringify } = require('./json');
 const { ApiError, malformed, invalid, notFound, forbidden, unauthenticated, conflict } = require('./errors');
 const { hashPassword, verifyPassword, dummyHash } = require('./password');
+const ui = require('./ui');
 
 const MAX_AMOUNT = 1000000000n;
 const MAX_NOTE = 200;
@@ -165,7 +166,30 @@ function paymentView(s, p) {
     visibility: p.visibility,
     request_id: p.requestId,
     settlement_id: p.settlementId,
+    authorization_id: p.authorizationId,
     created_at: p.createdAt,
+  };
+}
+
+function authorizationView(s, a) {
+  store.sweep(s, a);
+  return {
+    authorization_id: a.id,
+    from_user_id: a.fromId,
+    from_handle: s.users.get(a.fromId).handle,
+    to_user_id: a.toId,
+    to_handle: s.users.get(a.toId).handle,
+    amount: a.amount,
+    captured_amount: a.captured,
+    remaining_amount: store.remaining(a),
+    currency: s.currency,
+    note: a.note,
+    visibility: a.visibility,
+    status: a.status,
+    expires_at: a.expiresAt,
+    payment_id: a.paymentIds.length ? a.paymentIds[a.paymentIds.length - 1] : null,
+    payment_ids: a.paymentIds,
+    created_at: a.createdAt,
   };
 }
 
@@ -191,6 +215,7 @@ function recordPayment(s, fields) {
     id: store.newId('p_', s.paymentById),
     requestId: null,
     settlementId: null,
+    authorizationId: null,
     ...fields,
   };
   store.addPayment(s, payment);
@@ -293,11 +318,15 @@ async function login(ctx) {
 function me(ctx) {
   const user = authenticate(ctx);
   const s = store.current();
+  const holds = store.held(s, user);
   return reply(200, {
     user_id: user.id,
     display_name: user.displayName,
     handle: user.handle,
     balance: user.balance,
+    total: user.balance,
+    available: user.balance - holds,
+    held: holds,
     currency: s.currency,
     minor_units: s.minorUnits,
   });
@@ -318,7 +347,7 @@ function createPayment(ctx) {
   const s = store.current();
   const to = s.byHandle.get(toHandle);
   if (!to) throw notFound('no user has that handle');
-  if (user.balance < amount) throw conflict('insufficient_funds', 'your balance is below the amount');
+  if (store.available(s, user) < amount) throw conflict('insufficient_funds', 'your available balance is below the amount');
 
   user.balance -= amount;
   to.balance += amount;
@@ -367,7 +396,7 @@ function payRequest(ctx) {
   const request = findRequest(ctx);
   if (request.payerId !== user.id) throw forbidden('only the payer may pay this request');
   if (request.status !== 'pending') throw conflict('request_not_pending', `the request is ${request.status}`);
-  if (user.balance < request.amount) throw conflict('insufficient_funds', 'your balance is below the amount');
+  if (store.available(s, user) < request.amount) throw conflict('insufficient_funds', 'your available balance is below the amount');
 
   const requester = s.users.get(request.requesterId);
   user.balance -= request.amount;
@@ -525,7 +554,7 @@ function createSettlement(ctx) {
     net.set(e.to, (net.get(e.to) || 0n) + e.amount);
   }
   for (const [wallet, delta] of net) {
-    if (wallet.balance + delta < 0n) throw conflict('insufficient_funds', 'the settlement is not affordable');
+    if (store.available(s, wallet) + delta < 0n) throw conflict('insufficient_funds', 'the settlement is not affordable');
   }
 
   // Commit every movement together.
@@ -552,9 +581,172 @@ function createSettlement(ctx) {
 }
 
 // ---------------------------------------------------------------------------
+// Authorizations and captures (stage 2)
+
+function createAuthorization(ctx) {
+  const user = authenticate(ctx);
+  const body = bodyObject(ctx);
+  const idem = idempotency(ctx, user, body);
+  if (idem.replay) return idem.replay;
+
+  typeString(body, 'to_handle');
+  const toHandle = required(body, 'to_handle');
+  const amount = ruleAmount(body.amount);
+  const note = ruleNote(body.note);
+  const visibility = ruleVisibility(body.visibility);
+  if (toHandle === user.handle) throw new ApiError(422, 'self_payment', 'you cannot authorize a payment to yourself');
+  const s = store.current();
+  const to = s.byHandle.get(toHandle);
+  if (!to) throw notFound('no user has that handle');
+  const now = Date.now();
+  if (store.available(s, user, now) < amount) {
+    throw conflict('insufficient_funds', 'your available balance is below the amount');
+  }
+
+  const createdAt = store.timestamp(new Date(now));
+  const expiresMs = now + s.ttlSeconds * 1000;
+  const auth = {
+    id: store.newId('a_', s.authById),
+    fromId: user.id,
+    toId: to.id,
+    amount,
+    captured: 0n,
+    note,
+    visibility,
+    status: 'open',
+    expiresAt: store.timestamp(new Date(expiresMs)),
+    expiresMs,
+    paymentIds: [],
+    createdAt,
+  };
+  store.addAuthorization(s, auth);
+  return idem.commit(authorizationView(s, auth));
+}
+
+function findAuthorization(ctx) {
+  const auth = store.current().authById.get(ctx.params[0]);
+  if (!auth) throw notFound('no such authorization');
+  return auth;
+}
+
+function captureAuthorization(ctx) {
+  const user = authenticate(ctx);
+  const body = bodyObject(ctx, { emptyIsObject: true });
+  const idem = idempotency(ctx, user, body);
+  if (idem.replay) return idem.replay;
+
+  // D2-02: types, amount rules, 404, 403, not_open, expired, exceeds.
+  if (body.final !== undefined && typeof body.final !== 'boolean') throw malformed('final must be a boolean');
+  let amount = null;
+  if (body.amount !== undefined) {
+    amount = body.amount instanceof JNum ? body.amount.toBigInt() : null;
+    if (amount === null || amount < 1n) throw invalid('amount must be a positive integer');
+  }
+  const final = body.final !== false;
+  const s = store.current();
+  const auth = findAuthorization(ctx);
+  if (auth.toId !== user.id) throw forbidden('only the receiver may capture this authorization');
+  const now = Date.now();
+  if (auth.status === 'captured' || auth.status === 'voided') {
+    throw conflict('authorization_not_open', `the authorization is ${auth.status}`);
+  }
+  store.sweep(s, auth, now);
+  if (auth.status === 'expired') throw conflict('authorization_expired', 'the authorization has expired');
+  const rest = store.remaining(auth);
+  if (amount === null) amount = rest;
+  if (amount > rest) {
+    throw new ApiError(422, 'capture_exceeds_authorization', 'the amount is above what remains authorized');
+  }
+
+  // The hold covers the capture, so the payer's total always suffices.
+  const payer = s.users.get(auth.fromId);
+  payer.balance -= amount;
+  user.balance += amount;
+  const payment = recordPayment(s, {
+    fromId: payer.id,
+    toId: user.id,
+    amount,
+    note: auth.note,
+    visibility: auth.visibility,
+    authorizationId: auth.id,
+    createdAt: store.timestamp(new Date(now)),
+  });
+  auth.captured += amount;
+  auth.paymentIds.push(payment.id);
+  if (final || auth.captured === auth.amount) store.close(s, auth, 'captured');
+  return idem.commit(paymentView(s, payment));
+}
+
+// Payer only, no idempotency key, body ignored (like decline).
+function voidAuthorization(ctx) {
+  const user = authenticate(ctx);
+  const s = store.current();
+  const auth = findAuthorization(ctx);
+  if (auth.fromId !== user.id) throw forbidden('only the payer may void this authorization');
+  store.sweep(s, auth);
+  if (auth.status === 'open') store.close(s, auth, 'voided');
+  else if (auth.status !== 'voided') throw conflict('authorization_not_open', `the authorization is ${auth.status}`);
+  return reply(200, authorizationView(s, auth));
+}
+
+function listAuthorizations(ctx) {
+  const user = authenticate(ctx);
+  const q = ctx.query;
+  const direction = q.has('direction') ? q.get('direction') : null;
+  if (direction !== null && !DIRECTIONS.has(direction)) throw invalid('direction must be incoming or outgoing');
+  const status = q.has('status') ? q.get('status') : null;
+  if (status !== null && !store.AUTH_STATUSES.has(status)) throw invalid('unknown status');
+  const paging = page(q);
+
+  const s = store.current();
+  const now = Date.now();
+  const keep = (a) => {
+    const outgoing = a.fromId === user.id;
+    const incoming = a.toId === user.id;
+    if (direction === 'incoming' ? !incoming : direction === 'outgoing' ? !outgoing : !(incoming || outgoing)) return false;
+    return status === null || store.sweep(s, a, now).status === status;
+  };
+  const { items, hasMore } = newestFirst(s.authorizations, keep, paging);
+  return reply(200, { authorizations: items.map((a) => authorizationView(s, a)), has_more: hasMore });
+}
+
+// ---------------------------------------------------------------------------
+// Browser UI (stage 2). /requests and /authorizations are shared with the API
+// and negotiate on Accept (D2-14); the other screens are UI only.
+
+function acceptQ(header, type) {
+  let q = 0;
+  for (const part of String(header || '').split(',')) {
+    const [media, ...params] = part.trim().toLowerCase().split(';').map((x) => x.trim());
+    if (media !== type) continue;
+    const qp = params.find((p) => p.startsWith('q='));
+    const v = qp ? Number(qp.slice(2)) : 1;
+    if (Number.isFinite(v)) q = Math.max(q, v);
+  }
+  return q;
+}
+
+function wantsHtml(ctx) {
+  const html = acceptQ(ctx.headers.accept, 'text/html');
+  return html > 0 && html >= acceptQ(ctx.headers.accept, 'application/json');
+}
+
+const page_ = () => ui.page();
+const negotiated = (api) => (ctx) => (wantsHtml(ctx) ? ui.page() : api(ctx));
+
+// ---------------------------------------------------------------------------
 // Routing
 
 const ROUTES = [
+  ['GET', /^\/$/, page_],
+  ['GET', /^\/split$/, page_],
+  ['GET', /^\/signup$/, page_],
+  ['GET', /^\/login$/, page_],
+  ['GET', /^\/static\/([a-z0-9.-]+)$/, (ctx) => ui.asset(ctx.params[0])],
+  ['GET', /^\/authorizations$/, negotiated(listAuthorizations)],
+  ['POST', /^\/authorizations$/, createAuthorization],
+  ['POST', /^\/authorizations\/([^/]+)\/capture$/, captureAuthorization],
+  ['POST', /^\/authorizations\/([^/]+)\/void$/, voidAuthorization],
   ['GET', /^\/health$/, health],
   ['POST', /^\/_test\/reset$/, reset],
   ['GET', /^\/_test\/export$/, exportState],
@@ -564,7 +756,7 @@ const ROUTES = [
   ['GET', /^\/me$/, me],
   ['POST', /^\/payments$/, createPayment],
   ['POST', /^\/requests$/, createRequest],
-  ['GET', /^\/requests$/, listRequests],
+  ['GET', /^\/requests$/, negotiated(listRequests)],
   ['POST', /^\/requests\/([^/]+)\/pay$/, payRequest],
   ['POST', /^\/requests\/([^/]+)\/decline$/, declineRequest],
   ['POST', /^\/requests\/([^/]+)\/cancel$/, cancelRequest],

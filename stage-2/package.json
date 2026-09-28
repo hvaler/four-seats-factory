@@ -1,8 +1,8 @@
 {
-  "name": "pocketful-stage-1",
+  "name": "pocketful-stage-2",
   "version": "1.0.0",
   "private": true,
-  "description": "Pocketful stage 1: wallet payments, requests, splits and atomic net settlements over a JSON API",
+  "description": "Pocketful stage 2: wallet screens, payments, requests, splits, settlements and payment authorizations",
   "main": "src/server.js",
   "engines": {
     "node": ">=22"
