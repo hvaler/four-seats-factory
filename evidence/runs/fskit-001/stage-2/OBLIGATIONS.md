@@ -183,3 +183,9 @@ All r1 rows stay in force unless restated below. Every row is OPEN.
 | D2-15 | Reset validation for authorizations (extends D-24): an unknown from/to user, from = to, an amount outside 1..1e9 or non-integral, a status outside the four, a missing or unparseable expires_at or one without an offset, a duplicate id, or authorization_ttl_seconds of 0, -1, 1.5, "600", true or null → 422, and nothing changes | R2-07 |
 | D2-16 | The authorize form appears on both `/` and `/authorizations`, one instance per page (never twice on the same page) | I2-1 |
 | D2-17 | Stage-2 timestamps have millisecond precision in RFC 3339 with an explicit offset (`…T21:40:00.123+00:00`). Seeded and imported timestamps (including stage-1 export values) are preserved verbatim, never regenerated | I2-2 |
+
+## Decision added after r2 (message 12a694af → analyst reply)
+
+| ID | Decision | Origin |
+|---|---|---|
+| D2-18 | Browser scenario for S2-041…043: the stage-2 UI (document and assets) loads from the stage-2 origin; before the switch, its fetch/XHR data calls are routed to the ACCEPTED stage-1 container; the stage-1 state is exported and imported into an independent stage-2 container between browser requests; after the switch every call goes to stage 2, with no reload. Checks: the token still works; a stage-1 pending request can be paid from /requests; a pay whose response was lost after commit on stage 1, retried with the same key and body, gets the original stage-1 receipt (200, bytes per D2-13) and money moves once. The same checks also run with a stage-2→stage-2 switch after importing a stage-1 export. Consequences: the UI fetches its data from the JSON API (same origin); it tolerates stage-1 /me bodies (missing total/available → balance, missing held → 0) and payments without authorization_id | R2-21 |
