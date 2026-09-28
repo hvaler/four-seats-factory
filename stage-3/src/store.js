@@ -47,6 +47,7 @@ function newState(currency = 'EUR', minorUnits = 2) {
     operators: new Set(),
     idem: new Map(),
     snapshots: new Map(),
+    seq: 0,
   };
 }
 
@@ -100,9 +101,17 @@ function revision(number, amount, effectiveAt, recordedAt, reason) {
   };
 }
 
+// Stamps a revision with the next write sequence number (snapshot watermark).
+function stamp(s, rev) {
+  if (rev.seq === undefined) rev.seq = (s.seq += 1);
+  else if (rev.seq > s.seq) s.seq = rev.seq;
+  return rev;
+}
+
 function addPayment(s, payment) {
   payment.createdNs = ledger.ns(payment.createdAt);
   if (!payment.revisions) payment.revisions = [revision(1, payment.amount, payment.createdAt, payment.createdAt, '')];
+  for (const rev of payment.revisions) stamp(s, rev);
   s.payments.push(payment);
   s.paymentById.set(payment.id, payment);
   s.users.get(payment.fromId).payments.push(payment);
@@ -430,6 +439,7 @@ function exportState(s) {
         effective_at: v.effectiveAt,
         recorded_at: v.recordedAt,
         reason: v.reason,
+        seq: v.seq,
       })),
     })),
     requests: s.requests.map((r) => ({
@@ -481,7 +491,16 @@ function exportState(s) {
       body: r.canon,
       response: r.response,
     })),
-    snapshots: [...s.snapshots].map(([token, snap]) => ({ token, user_id: snap.userId, result: snap.text })),
+    seq: s.seq,
+    snapshots: [...s.snapshots].map(([token, snap]) => ({
+      token,
+      user_id: snap.userId,
+      from_ns: snap.fromNs === null ? null : snap.fromNs.toString(),
+      to_ns: snap.toNs.toString(),
+      known_ns: snap.knownNs.toString(),
+      known_at: snap.knownAt,
+      seq_max: snap.seqMax,
+    })),
   };
 }
 
@@ -566,6 +585,7 @@ function stateFromExport(doc) {
         const rev = revision(n + 1, sint(v.amount, 'revision amount'), ts(v.effective_at, 'revision effective_at'),
           ts(v.recorded_at, 'revision recorded_at'), str(v.reason, 'revision reason'));
         need(rev.amount >= 0n, 'revision amount must not be negative');
+        if (v.seq !== undefined) rev.seq = Number(jint(v.seq, 'revision seq'));
         return rev;
       });
       need(payment.revisions.length >= 1, 'a payment needs revision 1');
@@ -695,12 +715,24 @@ function stateFromExport(doc) {
     s.idem.set(k, rec);
   });
 
+  if (st.seq !== undefined) {
+    const seq = Number(jint(st.seq, 'state.seq'));
+    if (seq > s.seq) s.seq = seq;
+  }
+  const nsOrNull = (v, what) => (v === null ? null : sint(v, what));
   arr(st.snapshots, 'state.snapshots', []).forEach((x, i) => {
     obj(x, `state.snapshots[${i}]`);
     const token = str(x.token, 'snapshot token');
     need(s.users.has(x.user_id), 'snapshot refers to an unknown user');
     unique(s.snapshots, token, 'snapshot token');
-    s.snapshots.set(token, { userId: x.user_id, text: str(x.result, 'snapshot result') });
+    s.snapshots.set(token, {
+      userId: x.user_id,
+      fromNs: nsOrNull(x.from_ns, 'snapshot from_ns'),
+      toNs: sint(x.to_ns, 'snapshot to_ns'),
+      knownNs: sint(x.known_ns, 'snapshot known_ns'),
+      knownAt: x.known_at === null ? null : str(x.known_at, 'snapshot known_at'),
+      seqMax: Number(jint(x.seq_max, 'snapshot seq_max')),
+    });
   });
 
   return s;
@@ -719,6 +751,7 @@ module.exports = {
   addRequest,
   addAuthorization,
   revision,
+  stamp,
   sweep,
   close,
   remaining,

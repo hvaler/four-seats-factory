@@ -751,8 +751,8 @@ function listAuthorizations(ctx) {
 // The statement of a user over [from, to) under known_at: every payment they
 // sent or received with its selected revision effective in the window, ordered
 // by effective_at then payment id (code-unit order), with running balances.
-function buildStatement(s, user, fromNs, toNs, K) {
-  const moves = ledger.paymentEvents(user, K)
+function buildStatement(s, user, fromNs, toNs, K, seqMax = Infinity) {
+  const moves = ledger.paymentEvents(user, K, null, seqMax)
     .sort((x, y) => (x.t < y.t ? -1 : x.t > y.t ? 1 : x.payment.id < y.payment.id ? -1 : x.payment.id > y.payment.id ? 1 : 0));
   let balance = user.opening;
   for (const m of moves) if (fromNs !== null && m.t < fromNs) balance += m.delta;
@@ -797,18 +797,29 @@ function statement(ctx) {
     const snap = s.snapshots.get(token);
     if (!snap || snap.userId !== user.id) throw notFound('no such statement snapshot');
     const paging = page(q);
-    const frozen = JSON.parse(snap.text);
-    return statementPage(frozen, paging, token, frozen.known_at !== undefined ? { known_at: frozen.known_at } : {});
+    const frozen = buildStatement(s, user, snap.fromNs, snap.toNs, snap.knownNs, snap.seqMax);
+    return statementPage(JSON.parse(stringify(frozen)), paging, token, snap.knownAt !== null ? { known_at: snap.knownAt } : {});
   }
   const from = instantParam(q, 'from');
   const to = instantParam(q, 'to');
   const knownAt = instantParam(q, 'known_at');
   if (from && to && from.ns > to.ns) throw invalid('from must not be after to');
   const paging = page(q);
-  const result = buildStatement(s, user, from ? from.ns : null, to ? to.ns : ctx.startNs, knownAt ? knownAt.ns : ctx.startNs);
+  // A snapshot is (window, known_at, write watermark): O(1) per token. Revisions
+  // are immutable and every later write has a higher sequence number, so each
+  // page re-derives exactly this result (F3-A01).
+  const snap = {
+    userId: user.id,
+    fromNs: from ? from.ns : null,
+    toNs: to ? to.ns : ctx.startNs,
+    knownNs: knownAt ? knownAt.ns : ctx.startNs,
+    knownAt: knownAt ? knownAt.text : null,
+    seqMax: s.seq,
+  };
+  const result = buildStatement(s, user, snap.fromNs, snap.toNs, snap.knownNs, snap.seqMax);
   const extra = knownAt ? { known_at: knownAt.text } : {};
   const token = `st_${crypto.randomBytes(18).toString('base64url')}`;
-  s.snapshots.set(token, { userId: user.id, text: stringify({ ...extra, ...result }) });
+  s.snapshots.set(token, snap);
   return statementPage(JSON.parse(stringify(result)), paging, token, extra);
 }
 
@@ -880,7 +891,7 @@ function createCorrection(ctx) {
 
   sender.balance -= diff;
   receiver.balance += diff;
-  p.revisions.push(proposed);
+  p.revisions.push(store.stamp(s, proposed));
   return idem.commit(revisionView(p, proposed));
 }
 
