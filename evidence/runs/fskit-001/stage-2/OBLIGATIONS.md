@@ -1,4 +1,4 @@
-# Obligation register — fskit-001 · Stage 2 (ACTIVE) · revision r1
+# Obligation register — fskit-001 · Stage 2 (ACTIVE) · revision r2 (the r2 section is at the end)
 
 Run: fskit-001 · Track: pocketful · Active stage: 2 · Register owner: analyst (hugo.valer/analyst-thgs)
 Kickoff: C:\nexus\dev\dark-factory-wearedevs @ 803560d2a678ace1414465c098eb0ab5380ffade
@@ -129,3 +129,57 @@ Owners and method codes as in the stage-1 register: I = implementer, A = adversa
 | D2-10 | How the UI keeps the pay retry identity | The page keeps (key, body) in memory while the form is unchanged; a changed field → a new key; nothing persists across a page reload (not required) | Uncertain ¶, Existing clients ¶ |
 | D2-11 | Session storage in the browser | The token is stored client-side (e.g. localStorage) so a signed-in browser keeps working after an export/import upgrade without re-login; logout clears it | Existing clients ¶ |
 | D2-12 | Seeded authorizations' created_at | Assigned at reset in fixture order (as D-11/D-32), with the absolute expires_at taken from the fixture; captured_amount for seeded captured authorizations = amount unless supplied | Model |
+
+
+---
+
+# Stage-2 register revision r2 (2026-09-28): additions, restatements and decisions
+
+Sources:
+- auditor coverage review 0751e812-c687-442e-8872-37d79ebe9157 (points B1–B9), answered in 640b688e;
+- adversary R2 findings 919ff78e-79db-4483-9ccc-1fb268e28475 (R2-01 … R2-20);
+- implementer readings I2-1 and I2-2 (5aab7ab3), accepted in 212d9f8e.
+
+All r1 rows stay in force unless restated below. Every row is OPEN.
+
+## New rows
+
+| ID | Source | Obligation | Method → expected | Origin |
+|---|---|---|---|---|
+| S2-035 | "Text is exactly the note", S2-031 | Notes, display names and handles render as TEXT, never as HTML. An XSS payload (`<img src=x onerror=alert(1)>`, `</td><script>…`) appears verbatim in activity, request, split and authorization note elements, and no dialog opens and no element is injected | UI | R2-11 |
+| S2-072 | inv. 2 "captures may spend the money reserved for them" | A payer with available 0 (total = held) can still be captured in full. A capture never raises insufficient_funds. After a partial FINAL capture, held falls by the full remainder, total by the captured amount, and the rest returns to available | API | B2, R2-04 |
+| S2-073 | §7 on the two new paths | Replaying POST /authorizations after the authorization was captured, voided or expired → 200 with the original body (status open). Replaying a capture after a later void or expiry → 200 with the original payment, never not_open or expired. A claimed capture key with an invalid body (e.g. amount above the remainder) → 409 idempotency_key_reuse. A failed capture (4xx) leaves its key reusable | API | R2-05 |
+| S2-074 | §10 + Expiry | A hold exported before its expires_at and imported (into another container) after it reads as expired and holds nothing | XC | B4 |
+| S2-904 | Cumulative rule | Stage-1 suites on stage-2/: harness suite 1 (inside `--stage 2`) and the adversary's stage-1 suite re-run against stage-2/. A test superseded by a stage-2 change (e.g. the exact /me body) is adapted in a new, separately recorded test revision, with nothing else weakened | HARN + A suite | B9, R2-19 |
+
+## Restated rows (supersede the r1 wording; the r1 text is kept above)
+
+| ID | Restatement | Origin |
+|---|---|---|
+| S2-011 | Negotiation per D2-14 | B8, R2-03 |
+| S2-012 | Signup errors (email_taken, handle_taken, short password) and a wrong login each show auth-error. A successful signup leaves the user signed in, with current-handle = the derived handle. Signed-out navigation to /, /requests, /split and /authorizations shows no user data and offers login/signup. Logout clears only the client session (tokens do not expire server-side, §6) | R2-14 |
+| S2-014 | Includes a rapid double click where the second click lands before the first response: exactly one payment | R2-16 |
+| S2-015 / S2-019 | No thousands grouping (`1234567.89 EUR`, `1000000000 JPY`). A zero share renders `0.00 EUR`. data-amount is the integer minor units | R2-12 |
+| S2-020 | Also: after capture or void on /authorizations, wallet-available, wallet-held and the list refresh; after authorize on /, the wallet numbers refresh; after a split, /requests shows the new requests once navigated to. Navigation waits for the write to succeed | R2-17 |
+| S2-027 | The capture prefill uses the decimal input form (`20.00`, not `2000`) and after a partial non-final capture shows the new remainder. Editing it above the remainder → authorization-error (server 422) with the input kept. authorization-captured-{id} is present ONLY when status = captured (absent for open-partial and expired-partial, while captured_amount remains in the API). The testid rule governs authorization-expires-{id} (exact RFC 3339); human-friendly formatting (S2-031) applies elsewhere | R2-13, R2-10, B7 |
+| S2-030 / S2-031 | Measurable proxies, recorded by A and U: (a) the computed font-size/weight of wallet-available exceeds wallet-balance and wallet-held; (b) each request and authorization status differs in a computed style or a text badge; (c) error, uncertain and success feedback differ in colour or iconography; (d) no raw ISO timestamp or bare id text in feed rows (except authorization-expires). Plus screenshots of every route at 375 and 1280 px. The verdict on these rows stays with the auditor | R2-18 |
+| S2-032 | Measured with worst-case content: a 200-character note with no spaces, 20-character handles, a display name of 60+ characters, the largest amounts, and 50+ feed items, at 375 px on every required route plus /authorizations | R2-15 |
+| S2-055 | The created_at and expires_at strings differ by exactly the TTL. Observable expiry happens at expires_at (the status just before it is open, with a 0.5 s margin; 1 s after it, expired). Reset validation per D2-15 | R2-06, R2-07, R2-20 |
+| S2-056 | Boundary: seeded unexpired open holds EQUAL to the balance → 204 with available 0 | R2-07 |
+| S2-060 / S2-069 | Voided and expired authorizations never appear in /activity (only capture payments do). The operator gets no access to others' authorizations. The listing ignores the authorization's visibility (only the parties see it). The response shape is `{"authorizations":[…],"has_more":…}` | R2-08, B5 |
+| S2-065 | payment_id stays the latest capture after a void or expiry; payment_ids keeps its order and never shrinks | R2-10 |
+| S2-068 | "A captured or expired one is 409 authorization_not_open" on void is SPEC. Only the clock-expired-while-status-open case is decision D2-08 | B6 |
+| S1-196 (superseded) | The settlement final net is evaluated against available: a wallet whose net debit is ≤ total but > available (it would eat into held) → 409 insufficient_funds, and nothing is committed | B3, R2-09 |
+| S1-112 (superseded) | Paying a request with only held money → 409 insufficient_funds | R2-09 |
+| S2-057 | Timing method: TTL = 2 s; the "after" check allows no margin 1 s past expires_at; the "before" check uses a 0.5 s margin; the host/container clock skew is recorded | R2-20 |
+
+## Decisions added or revised in r2 (NOT source requirements)
+
+| ID | Decision | Origin |
+|---|---|---|
+| D2-02 (revised) | Capture precedence: 401 → 400 unparseable → 400 missing key → 422 key length → claimed-key resolution → 400 wrong types (`final` not boolean) → 422 amount rules → 404 unknown → 403 not the receiver → **409 authorization_not_open for captured/voided, whatever the clock** → **409 authorization_expired for status expired (seeded, or open with expires_at ≤ now)** → 422 capture_exceeds_authorization | R2-01; replaces the r1 D2-02 |
+| D2-13 | A replay returns the stored original response bytes unchanged, even when they lack newer fields: a stage-1 payment replayed on stage-2 has no authorization_id. Reads (/activity etc.) always include authorization_id. The XC test asserts replay body == the stage-1 original | B1, R2-02 |
+| D2-14 | Negotiation on /requests and /authorizations: HTML only for **GET** when Accept explicitly lists `text/html` with q>0 and at a q not lower than `application/json`. `*/*`, a missing Accept and `application/json` → JSON. Every non-GET method → JSON whatever the Accept. `/`, `/split`, `/signup` and `/login` are UI-only and serve HTML regardless | B8, R2-03 (merged) |
+| D2-15 | Reset validation for authorizations (extends D-24): an unknown from/to user, from = to, an amount outside 1..1e9 or non-integral, a status outside the four, a missing or unparseable expires_at or one without an offset, a duplicate id, or authorization_ttl_seconds of 0, -1, 1.5, "600", true or null → 422, and nothing changes | R2-07 |
+| D2-16 | The authorize form appears on both `/` and `/authorizations`, one instance per page (never twice on the same page) | I2-1 |
+| D2-17 | Stage-2 timestamps have millisecond precision in RFC 3339 with an explicit offset (`…T21:40:00.123+00:00`). Seeded and imported timestamps (including stage-1 export values) are preserved verbatim, never regenerated | I2-2 |
