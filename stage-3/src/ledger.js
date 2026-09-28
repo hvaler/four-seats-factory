@@ -54,10 +54,12 @@ const nowNs = (ms = Date.now()) => (BigInt(ms) + 1n) * NS_PER_MS - 1n;
 const msToNs = (ms) => BigInt(ms) * NS_PER_MS;
 
 // The latest revision of a payment recorded at or before K (null: none yet).
-function selectedRevision(p, K) {
+// A snapshot also passes the sequence watermark of its read, so anything
+// recorded after that read is excluded even within the same millisecond.
+function selectedRevision(p, K, seqMax = Infinity) {
   let chosen = null;
   for (const rev of p.revisions) {
-    if (rev.recNs <= K) chosen = rev;
+    if (rev.recNs <= K && rev.seq <= seqMax) chosen = rev;
     else break;
   }
   return chosen;
@@ -67,10 +69,10 @@ const currentRevision = (p) => p.revisions[p.revisions.length - 1];
 
 // Payment movements for a user under known_at K, with an optional override
 // (payment -> revision) used to evaluate a proposed correction.
-function paymentEvents(user, K, override) {
+function paymentEvents(user, K, override, seqMax = Infinity) {
   const out = [];
   for (const p of user.payments) {
-    const rev = override && override.payment === p ? override.revision : selectedRevision(p, K);
+    const rev = override && override.payment === p ? override.revision : selectedRevision(p, K, seqMax);
     if (!rev) continue;
     const sign = p.fromId === user.id ? -1n : 1n;
     out.push({ t: rev.effNs, delta: sign * rev.amount, payment: p, revision: rev });
@@ -110,10 +112,28 @@ function totalAt(user, A, K) {
   return total;
 }
 
+// Held amount of one authorization in the view (A, K). The hold exists from
+// its creation (if known by K); captures known by K reduce it; it is released
+// at a close event known by K, or at expires_at, whichever comes first. The
+// deadline is known as soon as the creation is (F3-01).
+function authHeldAt(s, a, A, K) {
+  if (!a.lifecycle || a.createHold <= 0n) return 0n;
+  if (a.createdNs > A || a.createdNs > K) return 0n;
+  if (a.expiresNs <= A) return 0n;
+  if (a.closedNs !== null && (a.status === 'captured' || a.status === 'voided') && a.closedNs <= A && a.closedNs <= K) return 0n;
+  let left = a.createHold;
+  for (const pid of a.paymentIds) {
+    const p = s.paymentById.get(pid);
+    if (!p || p.createdNs > A || p.createdNs > K) continue;
+    left -= p.amount < left ? p.amount : left;
+  }
+  return left;
+}
+
 function heldAt(s, user, A, K) {
   let held = 0n;
-  for (const e of holdEvents(s, user)) if (e.t <= A && e.known <= K) held += e.delta;
-  return held < 0n ? 0n : held;
+  for (const a of user.authsOut) held += authHeldAt(s, a, A, K);
+  return held;
 }
 
 // Evaluates (total, available) at every boundary of a user's history, with
@@ -176,5 +196,6 @@ module.exports = {
   holdEvents,
   totalAt,
   heldAt,
+  authHeldAt,
   overdraws,
 };
