@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-009",
+ "sequence": 9,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:30:49Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "S1-017,S1-019,S1-047,S1-050,S1-060,S1-174,S1-175,D-09,D-24",
+  "section": null,
+  "obligation": "S1-017,S1-019,S1-047,S1-050,S1-060,S1-174,S1-175,D-09,D-24"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor supplemental probe for the rows routed by analyst 4837ffaf",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": "auditor@236ecf352c05facbfe51825dc5c5107eead2aaba tools/audit_probe2.py (committed right after the run; file unmodified between run and commit)",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "/mnt/c/nexus/dev/band-kit/wt/auditor/evidence/runs/fskit-001/stage-1/auditor/tools",
+  "command": "~/df-venv/bin/python audit_probe2.py --base http://127.0.0.1:9101 --base-b http://127.0.0.1:9102 --out ../c1/probe2-results.json",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; Python 3.12.3",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1"
+  },
+  "container_image_digest": "sha256:12d1a0f842c02a91bdb8050042e67566a70cf6c607aefdc0bf669686cd706b74",
+  "mode": "containers aud-a/aud-b recreated from image built --no-cache from clone, --cpus 2 --memory 2g",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:30:48Z",
+  "finished_utc": "2026-09-28T21:30:49Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 10,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 10
+  }
+ },
+ "expected": "all pass",
+ "observed": "content type + envelope on 26 calls over every route; unknown fields/params ignored on all 16 routes and in fixture/import; negative balance and 9 D-24 reset errors -> 422 with prior state intact; non-object/missing state and 19 structural inner mutations -> 422, destination unchanged, no 5xx; 6 exports under 16 concurrent writers each import to B with sum conserved and balances == seed + feed net; re-import of saved export reproduces it exactly; D-09",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-1/auditor/c1/probe2-results.json",
+   "sha256": "06696fc8342abe6a31b95cccadd5bfb4e076951cee6ae11fa46f198445a7dc9b"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Export mid-write check uses public payments only; transient negativity remains proxy-observed."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "4837ffaf-0ea4-4bfc-9a41-f79a6532532d"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

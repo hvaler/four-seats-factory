@@ -1,0 +1,65 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s1-auditor-011",
+ "sequence": 11,
+ "run_id": "fskit-001",
+ "stage": 1,
+ "timestamp_utc": "2026-09-28T21:33:30Z",
+ "event_type": "INSPECTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md",
+  "spec_sha256": "65497dea09a8b432598c71662320cf66c3550e183cfd76e2d7f97318e0d30aa4",
+  "id": "S1-004,S1-032,S1-181",
+  "section": null,
+  "obligation": "S1-004,S1-032,S1-181"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Route surface and evidence secret scan",
+ "candidate_commit": "beeaec72ff53fa75469c5f09236a786632f21fd8",
+ "candidate_product_tree": "347efba502629e5b5bbd730f35c34bdfe208c478",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": "C:/nexus/dev/band-kit",
+  "command": "read clones/auditor-s1-1/stage-1/src/app.js route table; git grep -E 'scrypt$N$|\"token\":\"<16+ chars>\"|pw-*-12345' over adversary@7eed1b73:evidence and auditor HEAD:evidence",
+  "environment": "Windows 11 host; WSL2; Docker server 29.8.0; Python 3.12.3",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1"
+  },
+  "container_image_digest": null,
+  "mode": null,
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T21:33:00Z",
+  "finished_utc": "2026-09-28T21:33:30Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "exactly the spec routes (no deposit/withdraw/handle-change surface); no credentials or export state in evidence",
+ "observed": "16 routes = spec routes (health, reset, export, import, signup, login, me, payments, requests GET/POST, pay, decline, cancel, splits, activity, settlements); no handle-mutation route; both git grep scans: 0 matches",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Pattern scan, not a proof of absence of every secret form."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
