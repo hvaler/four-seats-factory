@@ -189,3 +189,10 @@ All r1 rows stay in force unless restated below. Every row is OPEN.
 | ID | Decision | Origin |
 |---|---|---|
 | D2-18 | Browser scenario for S2-041…043: the stage-2 UI (document and assets) loads from the stage-2 origin; before the switch, its fetch/XHR data calls are routed to the ACCEPTED stage-1 container; the stage-1 state is exported and imported into an independent stage-2 container between browser requests; after the switch every call goes to stage 2, with no reload. Checks: the token still works; a stage-1 pending request can be paid from /requests; a pay whose response was lost after commit on stage 1, retried with the same key and body, gets the original stage-1 receipt (200, bytes per D2-13) and money moves once. The same checks also run with a stage-2→stage-2 switch after importing a stage-1 export. Consequences: the UI fetches its data from the JSON API (same origin); it tolerates stage-1 /me bodies (missing total/available → balance, missing held → 0) and payments without authorization_id | R2-21 |
+
+## Register revision r3 (2026-09-29): correction
+
+| ID | Change | Origin |
+|---|---|---|
+| S2-027 (clause) | The r2 clause "with the input kept" (after a refused capture) is NOT stage-2.md source text. It was recorded without a decision label, which was the analyst's error. The r2 text is left in place and the clause is re-labelled as decision D2-19 | F2-01 (e3876ae7), ruling 50c67d05 |
+| D2-19 | A refused capture keeps the typed capture amount in authorization-capture-amount-{id}, consistent with the pay-form rule and S2-034 (considered error states). It binds as a band decision; its failure is a decision-row failure, not a spec-row failure | 50c67d05 |
