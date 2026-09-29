@@ -1,0 +1,157 @@
+{
+ "started_utc": "2026-09-29T00:27:39Z",
+ "finished_utc": "2026-09-29T00:27:40Z",
+ "passed": 14,
+ "failed": 0,
+ "total": 14,
+ "results": [
+  {
+   "obligation": "S4-050 1->4",
+   "probe": "import; tokens; balances; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "ddcb49a1e386052ee0b9584df48e85fb135ed0567afdfb2ca7ce209edc8eebcd"
+   }
+  },
+  {
+   "obligation": "D2-13/S4-042 1->4",
+   "probe": "source receipts replay byte-identical",
+   "pass": true,
+   "detail": {
+    "byte_equal": [
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "obligation": "S4-050 1->4",
+   "probe": "refund of imported payment; batch reversal of imported settlement; imported rev1 correction_batch_id null; conservation",
+   "pass": true,
+   "detail": {
+    "refund": 201,
+    "batch": 201,
+    "c": null,
+    "total": 15000
+   }
+  },
+  {
+   "obligation": "S4-050 1->4",
+   "probe": "imported pending request payable",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S4-050 2->4",
+   "probe": "import; tokens; balances; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "af8642d0232bbd3b99a6592e344743c67e208c487085c39983e371c8b3bae88d"
+   }
+  },
+  {
+   "obligation": "D2-13/S4-042 2->4",
+   "probe": "source receipts replay byte-identical",
+   "pass": true,
+   "detail": {
+    "byte_equal": [
+     true,
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "obligation": "S4-050 2->4",
+   "probe": "refund of imported payment; batch reversal of imported settlement; imported rev1 correction_batch_id null; conservation",
+   "pass": true,
+   "detail": {
+    "refund": 201,
+    "batch": 201,
+    "c": null,
+    "total": 15000
+   }
+  },
+  {
+   "obligation": "S4-050 2->4",
+   "probe": "imported pending request payable",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S4-050 3->4",
+   "probe": "import; tokens; balances; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "28a8cd28a2e13e0fda3f4927f24fa75ee0470fd67c50f20260f84792f49cfc3f"
+   }
+  },
+  {
+   "obligation": "D2-13/S4-042 3->4",
+   "probe": "source receipts replay byte-identical",
+   "pass": true,
+   "detail": {
+    "byte_equal": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "obligation": "S4-050 3->4",
+   "probe": "refund of imported payment; batch reversal of imported settlement; imported rev1 correction_batch_id null; conservation",
+   "pass": true,
+   "detail": {
+    "refund": 201,
+    "batch": 201,
+    "c": null,
+    "total": 15000
+   }
+  },
+  {
+   "obligation": "S4-050 3->4",
+   "probe": "imported pending request payable",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S4-050/S4-043 3->4",
+   "probe": "stage-3 snapshot pages the same entries after import (every stage-3 field equal; only stage-4 fields added); revision history preserved",
+   "pass": true,
+   "detail": {
+    "s": [
+     200,
+     200
+    ],
+    "hist_same": true,
+    "added_fields": [
+     "refund_of"
+    ]
+   }
+  },
+  {
+   "obligation": "OBS 3->4",
+   "probe": "snapshot entries byte-equal including new fields (observation, not asserted)",
+   "pass": true,
+   "detail": {
+    "exact_equal": false
+   }
+  }
+ ]
+}
