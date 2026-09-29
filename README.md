@@ -11,7 +11,7 @@
 
 **Track:** Pocketful · **Team:** four-seats · **Licence:** MIT
 
-**[Live demo](https://four-seats-factory.onrender.com/login)** ·
+**[Video (3 min)](https://youtu.be/oiodvnGptt0)** · **[Live demo](https://four-seats-factory.onrender.com/login)** ·
 **[Presentation (PDF)](docs/presentation/four-seats-factory.pdf)** ·
 **[Evidence index](EVIDENCE-INDEX.md)** · **[How the factory works](FACTORY.md)**
 
