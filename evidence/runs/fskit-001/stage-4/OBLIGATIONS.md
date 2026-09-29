@@ -1,4 +1,4 @@
-# Obligation register — fskit-001 · Stage 4 (ACTIVE) · revision r1
+# Obligation register — fskit-001 · Stage 4 (ACTIVE) · revision r2 (the r2 section is at the end)
 
 Run: fskit-001 · Track: pocketful · Active stage: 4 (the final stage) · Register owner: analyst (hugo.valer/analyst-thgs)
 
@@ -120,3 +120,39 @@ Suites 1–3, the stage-2 browser rows at 375/1280 px, and the earlier upgrade g
 | D4-09 | Refund of a capture and the authorization's history | The refund is an ordinary new payment; the authorization's captured_amount and payment_ids are unchanged, and a closed hold stays closed | Refunds ¶2 |
 | D4-10 | Batch correction including a non-member ordinary payment together with settlements | Allowed: the batch can mix non-members and complete settlements | Batch ¶2 |
 | D4-11 | Refund feed visibility | Copied from the target payment | Refunds ¶2 |
+
+
+---
+
+# Stage-4 register revision r2 (2026-09-29): additions, restatements and decisions
+
+Sources: the auditor's coverage review 21e98727-082c-4495-9a8a-beedbeeab052 (E1–E4), answered in 97fea423; the adversary's R4 findings 782895ec-cc01-43a5-8c86-ee6dc0abe9b2 (R4-01 … R4-11); the implementer's plan 3242dcc5. All r1 rows stay in force unless restated. Every row is OPEN.
+
+## New rows
+
+| ID | Source | Obligation | Method → expected | Origin |
+|---|---|---|---|---|
+| S4-024 | §7 on the new paths | 15 concurrent same-key refunds, and 15 concurrent same-key batches: exactly one 201, the rest 200 with the same body; the effect happens once | CONC | E1 |
+| S4-025 | Refunds ¶2 + stage-3 history | A refund is a payment at its own created_at. It counts in /me?as_of, in statements, and at historical_overdraft boundaries of later backdated corrections. Named case: the receiver refunds 300 at t2; the sender then backdates a correction of the target down to 300 at t1. The receiver's history is checked with the refund included | API | E2 |
+| S4-026 | Refunds ¶2 | refund_of appears in statement entries' `payment` and in /activity. /payments/{refund}/revisions has revision 1 only and is readable only by its two parties (the original parties, reversed). Correcting a refund → 422 linked_payment_immutable, both singly and in a batch | API | E3, R4-04 |
+| S4-052 | Batch ¶5 | 3→4 upgrade: the imported revision histories and the D3-18 closed_at values are unchanged, and correction_batch_id is null on imported revisions | XC | E4 |
+
+## Restated rows (the r1 text is kept above)
+
+| ID | Restatement | Origin |
+|---|---|---|
+| S4-021 / S4-037 | refund_exceeds_payment also applies to batch items, in input order. A settlement member refunded by 30 cannot be batch-corrected below 30, which blocks a full reversal to 0 of that settlement; correcting it to exactly 30 is allowed | R4-01 |
+| S4-045 | A refund of a member is not itself a member. A batch including the refund payment alongside the members → 422 linked_payment_immutable for that item; a batch with all the members and without the refund → allowed | R4-02 |
+| S4-011 / S4-012 | Named paths: only the receiver of a refund, who is the original sender, can reach 422 invalid_refund_target. Anyone else gets 403 first (D4-01) | R4-03 |
+| S4-014 / S4-021 | A refund of a corrected payment is limited by the current corrected amount. A later backdated correction of the target below the refunded total → 422 refund_exceeds_payment, which takes precedence over historical_overdraft | R4-04 |
+| S4-038 | Two-instant combined case: a batch moves a non-member's effective_at earlier and also reduces a member. Each alone would overdraw a shared wallet at some boundary, but the combination does not → 201. The reverse arrangement → 409 historical_overdraft | R4-05 |
+| S4-040 | After a batch, a single correction of one of its non-member payments uses expected_revision = the batch revision, and its recorded_at is strictly greater than the batch's. A second batch is strictly greater than both | R4-06 |
+| S4-030 / S4-036 | An operator who is also a sender must still use the batch path for settlement members. A non-operator sender can use single corrections on non-members, and gets 403 on /correction-batches | R4-07 |
+| S4-043 | A snapshot from before a batch pages unchanged. A new first read after the batch shows each member's batch revision, with delta and balance_after recomputed. A known_at just before the batch's recorded_at shows the pre-batch view for EVERY member at once (there is no partial view) | R4-08 |
+
+## Decisions added or extended in r2 (NOT source requirements)
+
+| ID | Decision | Origin |
+|---|---|---|
+| D4-09 (extended) | A capture may be refunded while its authorization is still open (after a partial non-final capture). The refund comes from the receiver's available funds, and the authorization's remaining_amount and held are unchanged | R4-10 |
+| D4-12 | In a batch, each revision's effective_at is stored and echoed exactly as supplied for that item. Comparisons, including the identical-instant rule for members, use instants. The tests compare instants only | R4-09 |
