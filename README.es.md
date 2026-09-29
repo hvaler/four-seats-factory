@@ -94,6 +94,16 @@ python -m harness run --track pocketful --repo <este repo> --stage 1 --mode isol
 `--stage 2`, `3` y `4` hacen lo mismo con las carpetas posteriores, y `--all` verifica la cadena
 entera. Los stages 2 a 4 sirven una interfaz de navegador; el harness la recorre a 375 px y 1280 px.
 
+O todo en un solo comando —clonar desde GitHub en un directorio temporal nuevo, `harness check` y
+los cuatro stages en modo aislado—:
+
+```
+bash setup/verify-from-clone.sh <ruta-al-checkout-del-kickoff>
+```
+
+Necesita Docker en marcha y el harness del kickoff instalado; si no está en el `.venv` del kickoff,
+indícalo con `PYTHON`. Unos cinco minutos, y no escribe nada fuera de sus directorios temporales.
+
 ### Demo en vivo
 
 **<https://four-seats-factory.onrender.com/login>** — entra como `ada@example.com`, `bob@example.com`

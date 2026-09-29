@@ -72,6 +72,12 @@ seats are opened in; ours was one level too deep for the first attempt and did n
    **Download full session**, saved unchanged as `room.json`. Redact receiver leases (`jrx_…`) and
    record it, as in [`REDACTION.md`](REDACTION.md).
 
+## Verifying the result
+
+`setup/verify-from-clone.sh <kickoff-dir>` does what a judge would: clones this repository from GitHub
+into a new temporary directory, runs `harness check`, then `harness run --all --mode isolated`, and
+prints the stage each folder claims. It exits non-zero unless all four claim their own stage.
+
 ## Pointing it at a different problem
 
 Change the dispatch, not the mandates. In `setup/dispatch-template.txt`:

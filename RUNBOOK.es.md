@@ -74,6 +74,13 @@ sirvió de nada.
    → **Download full session**, guardado sin cambios como `room.json`. Redactar los leases de receptor
    (`jrx_…`) y dejar constancia, como en [`REDACTION.md`](REDACTION.md).
 
+## Verificar el resultado
+
+`setup/verify-from-clone.sh <dir-del-kickoff>` hace lo mismo que haría un juez: clona este
+repositorio desde GitHub en un directorio temporal nuevo, pasa `harness check`, después
+`harness run --all --mode isolated`, e imprime el stage que reclama cada carpeta. Termina con error
+salvo que las cuatro reclamen el suyo.
+
 ## Apuntarla a otro problema
 
 Se cambia el despacho, no los mandatos. En `setup/dispatch-template.txt`:
