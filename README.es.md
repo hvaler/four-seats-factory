@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/logo-dark.svg">
+    <img src="docs/brand/logo-light.svg" alt="Four Seats Factory" width="440">
+  </picture>
+</p>
+
 # Cuatro asientos, y el servicio de pagos que construyeron
 
 *[Read in English](README.md)*
