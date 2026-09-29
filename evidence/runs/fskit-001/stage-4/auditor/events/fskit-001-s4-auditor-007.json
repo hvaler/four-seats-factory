@@ -1,0 +1,94 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-auditor-007",
+ "sequence": 7,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:30:49Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1..4.md",
+  "spec_sha256": "65497dea… + 39aaf9d7… + 2255d3f2… + 1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "id": "S4-902/S4-901 (earlier rows on stage-4/), memory gate",
+  "section": null,
+  "obligation": "S4-902/S4-901 (earlier rows on stage-4/), memory gate"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Regression and memory gate on stage-4",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": "s3_probe @459189a7, risk_snapshot_count, s2_api_probe @c66eae37, s2_ui_probe @9adf0051, audit_probe @9eeeae1d, audit_probe2 @236ecf35, timing_probe @31ba973b",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "see c1/*-on-s4.json, c1/memory-gate.jsonl, c1/ui",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:32dce302a57309712a5d28cf6d67254cb25369120eef3dd5678d67a1a459671d",
+  "mode": "fresh containers",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:28:08Z",
+  "finished_utc": "2026-09-29T00:30:49Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 183,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 183
+  }
+ },
+ "expected": "all pass",
+ "observed": "stage-3 33/33; memory gate 20000/20000, container running at 45.52 MiB; stage-2 API 31/31; UI 375/1280 44/44; stage-1 61/61 + 10/10 + 4/4",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s3-probe-on-s4.json",
+   "sha256": "c6d51da683400848f31883516e5e97e8d8eb493683e8fb0f98bf56377bcc8e3d"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/memory-gate.jsonl",
+   "sha256": "bc3adfda3cd83ce3ec973e77c4b0b05772e93743e33a4674be5e176c0c010096"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s2-api-on-s4.json",
+   "sha256": "8ddcd142fff230496e23778b531407dfc00ece3bb1dc6871d1dd5fb6e8db06f5"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/ui/ui-results.json",
+   "sha256": "07b6aa9ca4e1c277a6a587627c9c9aa7afb1bf89e6fc7a08b363d3fabce91190"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s1-probe-on-s4.json",
+   "sha256": "e13ea6ccfd01be848a5a827bf7b3cc66bbcf15192d93fdefd1970fcb9ac55d0f"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s1-probe2-on-s4.json",
+   "sha256": "cfb6c180fc88bed2c797c3b8497902d03b65ad85998021f1741efc60c980e1eb"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s1-timing-on-s4.json",
+   "sha256": "51b378c1cdb416b59176931c25d6a4b8b117dc7eca9a972119aa4fafab084767"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

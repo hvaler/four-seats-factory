@@ -1,0 +1,797 @@
+{
+ "started_utc": "2026-09-29T00:30:46Z",
+ "finished_utc": "2026-09-29T00:30:47Z",
+ "passed": 61,
+ "failed": 0,
+ "total": 61,
+ "results": [
+  {
+   "obligation": "S1-001/S1-002",
+   "probe": "50 concurrent debits of 50 from 1000",
+   "pass": true,
+   "detail": {
+    "201": 20,
+    "others": [
+     "(409, 'insufficient_funds')"
+    ],
+    "final": {
+     "src": 0,
+     "d0": 250,
+     "d1": 200,
+     "d2": 200,
+     "d3": 150,
+     "d4": 200
+    },
+    "total": 1000
+   }
+  },
+  {
+   "obligation": "S1-003",
+   "probe": "20 pays + decline + cancel racing",
+   "pass": true,
+   "detail": {
+    "pay201": 1,
+    "moved": 700,
+    "statuses": [
+     201,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S1-078",
+   "probe": "15x concurrent same key payments",
+   "pass": true,
+   "detail": {
+    "statuses": {
+     "200": 14,
+     "201": 1
+    },
+    "distinct_bodies": 1,
+    "debit": 7
+   }
+  },
+  {
+   "obligation": "S1-078",
+   "probe": "15x concurrent same key requests",
+   "pass": true,
+   "detail": {
+    "statuses": {
+     "200": 14,
+     "201": 1
+    },
+    "distinct_bodies": 1,
+    "debit": 0
+   }
+  },
+  {
+   "obligation": "S1-078",
+   "probe": "15x concurrent same key pay",
+   "pass": true,
+   "detail": {
+    "statuses": {
+     "200": 14,
+     "201": 1
+    },
+    "distinct_bodies": 1,
+    "debit": 10
+   }
+  },
+  {
+   "obligation": "S1-078",
+   "probe": "15x concurrent same key splits",
+   "pass": true,
+   "detail": {
+    "statuses": {
+     "200": 14,
+     "201": 1
+    },
+    "distinct_bodies": 1,
+    "debit": 0
+   }
+  },
+  {
+   "obligation": "S1-078",
+   "probe": "15x concurrent same key settlements",
+   "pass": true,
+   "detail": {
+    "statuses": {
+     "200": 14,
+     "201": 1
+    },
+    "distinct_bodies": 1,
+    "debit": 3
+   }
+  },
+  {
+   "obligation": "S1-074/S1-077",
+   "probe": "replay reordered + 1e2 form",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     200
+    ]
+   }
+  },
+  {
+   "obligation": "S1-075",
+   "probe": "same key different body",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "idempotency_key_reuse"
+   }
+  },
+  {
+   "obligation": "S1-080",
+   "probe": "claimed key + invalid body -> 409",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "idempotency_key_reuse"
+   }
+  },
+  {
+   "obligation": "S1-072",
+   "probe": "same key other path -> 201",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "c": null
+   }
+  },
+  {
+   "obligation": "S1-071",
+   "probe": "other user same key -> own first use",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S1-076",
+   "probe": "failed-4xx key reusable with different body",
+   "pass": true,
+   "detail": {
+    "s": [
+     409,
+     201
+    ]
+   }
+  },
+  {
+   "obligation": "S1-113/S1-111",
+   "probe": "pay replay 200 after paid; {} vs public -> 409",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     200,
+     409
+    ],
+    "c3": "idempotency_key_reuse"
+   }
+  },
+  {
+   "obligation": "S1-052/S1-057",
+   "probe": "key empty/absent 400, 256 -> 422, 255 ok",
+   "pass": true,
+   "detail": {
+    "s": [
+     400,
+     400,
+     422,
+     201
+    ]
+   }
+  },
+  {
+   "obligation": "OBS",
+   "probe": "amount null/array/object (not asserted)",
+   "pass": true,
+   "detail": {
+    "null": [
+     422,
+     "validation_failed"
+    ],
+    "[1]": [
+     422,
+     "validation_failed"
+    ],
+    "{}": [
+     422,
+     "validation_failed"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-031",
+   "probe": "integral numeric forms accepted",
+   "pass": true,
+   "detail": {
+    "1000": [
+     201,
+     1000
+    ],
+    "1000.0": [
+     201,
+     1000
+    ],
+    "1e3": [
+     201,
+     1000
+    ],
+    "1E3": [
+     201,
+     1000
+    ],
+    "1000000000": [
+     201,
+     1000000000
+    ]
+   }
+  },
+  {
+   "obligation": "S1-055/S1-093",
+   "probe": "invalid amounts -> 422 validation_failed",
+   "pass": true,
+   "detail": {
+    "\"1000\"": [
+     422,
+     "validation_failed"
+    ],
+    "true": [
+     422,
+     "validation_failed"
+    ],
+    "false": [
+     422,
+     "validation_failed"
+    ],
+    "1000.5": [
+     422,
+     "validation_failed"
+    ],
+    "0": [
+     422,
+     "validation_failed"
+    ],
+    "-1": [
+     422,
+     "validation_failed"
+    ],
+    "1000000001": [
+     422,
+     "validation_failed"
+    ],
+    "1e10": [
+     422,
+     "validation_failed"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-055",
+   "probe": "note/visibility wrong -> 422",
+   "pass": true,
+   "detail": {
+    "null": [
+     422,
+     "validation_failed"
+    ],
+    "5": [
+     422,
+     "validation_failed"
+    ],
+    "true": [
+     422,
+     "validation_failed"
+    ],
+    "vis \"PUBLIC\"": [
+     422,
+     "validation_failed"
+    ],
+    "vis null": [
+     422,
+     "validation_failed"
+    ],
+    "vis 1": [
+     422,
+     "validation_failed"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-051",
+   "probe": "wrong-type handle / unparseable / non-object -> 400",
+   "pass": true,
+   "detail": {
+    "s": [
+     400,
+     400,
+     400
+    ]
+   }
+  },
+  {
+   "obligation": "S1-098",
+   "probe": "note verbatim unicode round-trip",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S1-095",
+   "probe": "note 200 ok / 201 -> 422",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     422
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 1000 over ['aa', 'bb', 'cc']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     334,
+     333,
+     333
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 1 over ['aa', 'bb', 'cc']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     1,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 10 over ['aa', 'bb', 'cc']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     4,
+     3,
+     3
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 999 over ['aa', 'bb', 'cc']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     333,
+     333,
+     333
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 5 over ['aa', 'bb', 'cc', 'dd', 'ee']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 1000 over ['cc', 'aa', 'bb']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     334,
+     333,
+     333
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 1000000000 over ['bb', 'cc', 'dd', 'ee', 'aa']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     200000000,
+     200000000,
+     200000000,
+     200000000,
+     200000000
+    ]
+   }
+  },
+  {
+   "obligation": "S1-160/S1-140",
+   "probe": "split 7 over ['bb', 'cc']",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "shares": [
+     4,
+     3
+    ]
+   }
+  },
+  {
+   "obligation": "S1-142",
+   "probe": "self-only split",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S1-141",
+   "probe": "split invalid {\"amount\": 5, \"participant_handles\": []}",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "validation_failed"
+   }
+  },
+  {
+   "obligation": "S1-141",
+   "probe": "split invalid {\"amount\": 5, \"participant_handles\": [\"bb\", \"bb\"]}",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "validation_failed"
+   }
+  },
+  {
+   "obligation": "S1-141",
+   "probe": "split invalid {\"amount\": 5, \"participant_handles\": [\"bb\", \"zz\"]}",
+   "pass": true,
+   "detail": {
+    "s": 404,
+    "c": "not_found"
+   }
+  },
+  {
+   "obligation": "S1-192",
+   "probe": "non-operator 403, no token 401",
+   "pass": true,
+   "detail": {
+    "s": [
+     403,
+     401
+    ]
+   }
+  },
+  {
+   "obligation": "S1-196/S1-198",
+   "probe": "net-affordable reversed chain commits; member shape",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "bal": [
+     0,
+     0,
+     100
+    ]
+   }
+  },
+  {
+   "obligation": "S1-201",
+   "probe": "settlement replay 200 identical",
+   "pass": true,
+   "detail": {
+    "s": 200
+   }
+  },
+  {
+   "obligation": "S1-200/S1-191",
+   "probe": "private member hidden from operator & third party",
+   "pass": true,
+   "detail": {
+    "in_op": false,
+    "in_cc": false
+   }
+  },
+  {
+   "obligation": "S1-196/S1-197",
+   "probe": "net short by 1 -> 409 atomic, key reusable",
+   "pass": true,
+   "detail": {
+    "s": [
+     409,
+     201
+    ],
+    "before": [
+     0,
+     0,
+     100
+    ],
+    "after": [
+     0,
+     0,
+     100
+    ]
+   }
+  },
+  {
+   "obligation": "S1-195",
+   "probe": "entry errors in input order, before funds",
+   "pass": true,
+   "detail": {
+    "got": [
+     404,
+     "not_found",
+     422,
+     "self_payment",
+     404,
+     "not_found"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-193",
+   "probe": "transfers count 0",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "validation_failed"
+   }
+  },
+  {
+   "obligation": "S1-193",
+   "probe": "transfers count 33",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "validation_failed"
+   }
+  },
+  {
+   "obligation": "S1-193",
+   "probe": "transfers count 32",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "c": null
+   }
+  },
+  {
+   "obligation": "S1-001",
+   "probe": "sum after settlements (post-reset baseline)",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S1-203",
+   "probe": "concurrent settlements+payments",
+   "pass": true,
+   "detail": {
+    "bal": [
+     0,
+     10,
+     40,
+     1950
+    ],
+    "outcomes": [
+     "(201, None)",
+     "(409, 'insufficient_funds')"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-039",
+   "probe": "feed iff public or party",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S1-040",
+   "probe": "third party cannot list request",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S1-053",
+   "probe": "unauthenticated variants",
+   "pass": true,
+   "detail": {
+    "None": [
+     401,
+     "unauthenticated"
+    ],
+    "Bearer": [
+     401,
+     "unauthenticated"
+    ],
+    "Bearer nope": [
+     401,
+     "unauthenticated"
+    ],
+    "Basic abc": [
+     401,
+     "unauthenticated"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-120/S1-121/S1-112",
+   "probe": "decline/cancel lifecycle",
+   "pass": true,
+   "detail": {
+    "got": [
+     403,
+     403,
+     200,
+     200,
+     409,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S1-056/S1-057/S1-131",
+   "probe": "query validation -> 422",
+   "pass": true,
+   "detail": {
+    "limit=0": [
+     422,
+     "validation_failed"
+    ],
+    "limit=201": [
+     422,
+     "validation_failed"
+    ],
+    "limit=1e2": [
+     422,
+     "validation_failed"
+    ],
+    "limit=4.0": [
+     422,
+     "validation_failed"
+    ],
+    "limit=%2B4": [
+     422,
+     "validation_failed"
+    ],
+    "offset=-1": [
+     422,
+     "validation_failed"
+    ],
+    "direction=up": [
+     422,
+     "validation_failed"
+    ],
+    "status=open": [
+     422,
+     "validation_failed"
+    ],
+    "status=": [
+     422,
+     "validation_failed"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-050/S1-017",
+   "probe": "unknown route error envelope + json ct",
+   "pass": true,
+   "detail": {
+    "s": 404,
+    "ct": "application/json; charset=utf-8"
+   }
+  },
+  {
+   "obligation": "R1-01/S1-020",
+   "probe": "generated ids never collide with seeded ids",
+   "pass": true,
+   "detail": {
+    "clash": [],
+    "feed": 45
+   }
+  },
+  {
+   "obligation": "R1-02/S1-143",
+   "probe": "zero-share request payable -> payment amount 0",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "c": null
+   }
+  },
+  {
+   "obligation": "S1-170/S1-069",
+   "probe": "export shape; no plaintext password",
+   "pass": true,
+   "detail": {
+    "s": 200
+   }
+  },
+  {
+   "obligation": "S1-175",
+   "probe": "export snapshot unaffected by later writes",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S1-174",
+   "probe": "invalid import rejected, dest unchanged",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "me": 200
+   }
+  },
+  {
+   "obligation": "S1-174",
+   "probe": "invalid import rejected, dest unchanged",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "me": 200
+   }
+  },
+  {
+   "obligation": "S1-174",
+   "probe": "invalid import rejected, dest unchanged",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "me": 200
+   }
+  },
+  {
+   "obligation": "S1-174",
+   "probe": "invalid JSON import -> 400",
+   "pass": true,
+   "detail": {
+    "s": 400
+   }
+  },
+  {
+   "obligation": "S1-172/S1-176/S1-177/S1-178/S1-202",
+   "probe": "A->B import continuity",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "old_tok": 200,
+    "dest_tok": 401,
+    "replay": 200,
+    "diff": 409,
+    "failed_key": 201,
+    "settle_replay": 200,
+    "login": 200,
+    "feed_len": 3
+   }
+  },
+  {
+   "obligation": "S1-179",
+   "probe": "reset clears imported state",
+   "pass": true,
+   "detail": {}
+  }
+ ]
+}

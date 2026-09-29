@@ -1,0 +1,483 @@
+{
+ "started_utc": "2026-09-29T00:29:47Z",
+ "finished_utc": "2026-09-29T00:29:54Z",
+ "passed": 31,
+ "failed": 0,
+ "total": 31,
+ "results": [
+  {
+   "obligation": "S2-052",
+   "probe": "GET /me fields with no holds",
+   "pass": true,
+   "detail": {
+    "me": {
+     "balance": 10000,
+     "total": 10000,
+     "available": 10000,
+     "held": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-050/S2-058",
+   "probe": "authorize creates hold, moves no money",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "me": {
+     "total": 10000,
+     "available": 8000,
+     "held": 2000
+    }
+   }
+  },
+  {
+   "obligation": "S2-060",
+   "probe": "open authorization not a feed item",
+   "pass": true,
+   "detail": {
+    "feed": []
+   }
+  },
+  {
+   "obligation": "S2-059/S1-092",
+   "probe": "held funds cannot back payment or authorization",
+   "pass": true,
+   "detail": {
+    "s": [
+     409,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S1-002/S2-052",
+   "probe": "spend exactly available -> available 0, hold intact",
+   "pass": true,
+   "detail": {
+    "me": {
+     "total": 2000,
+     "available": 0,
+     "held": 2000
+    }
+   }
+  },
+  {
+   "obligation": "S2-062/S2-063",
+   "probe": "final partial capture spends reservation, releases rest",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "payer": {
+     "total": 500,
+     "available": 500,
+     "held": 0
+    },
+    "recv": 1500
+   }
+  },
+  {
+   "obligation": "S2-063",
+   "probe": "second capture after final -> 409 authorization_not_open",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "authorization_not_open"
+   }
+  },
+  {
+   "obligation": "S2-069/S2-064",
+   "probe": "GET /authorizations shape and captured state",
+   "pass": true,
+   "detail": {
+    "keys": [
+     "authorizations",
+     "has_more"
+    ],
+    "item": {
+     "status": "captured",
+     "captured_amount": 1500,
+     "remaining_amount": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-062/S1-199",
+   "probe": "capture payment in feed with authorization_id; others null",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S2-064",
+   "probe": "700/700/600 non-final captures; exceeds compares remainder; full remainder closes",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     201,
+     422,
+     201
+    ],
+    "fin": {
+     "status": "captured",
+     "captured_amount": 2000,
+     "remaining_amount": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-065/S2-068",
+   "probe": "void after partial capture keeps records, releases rest; void twice 200",
+   "pass": true,
+   "detail": {
+    "v": 200,
+    "v2": 200,
+    "me": {
+     "total": 2700,
+     "held": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-061/S2-066/D2-03",
+   "probe": "omitted amount = remainder; replay 200; {} vs {amount} vs {final:true} -> 409",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     200,
+     409,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S2-067/S2-068/D2-04",
+   "probe": "capture/void error codes",
+   "pass": true,
+   "detail": {
+    "got": [
+     [
+      400,
+      "malformed_request"
+     ],
+     [
+      422,
+      "validation_failed"
+     ],
+     [
+      422,
+      "validation_failed"
+     ],
+     [
+      403,
+      "forbidden"
+     ],
+     [
+      403,
+      "forbidden"
+     ],
+     [
+      404,
+      "not_found"
+     ],
+     [
+      403,
+      "forbidden"
+     ],
+     [
+      403,
+      "forbidden"
+     ]
+    ]
+   }
+  },
+  {
+   "obligation": "S1-070",
+   "probe": "capture needs Idempotency-Key",
+   "pass": true,
+   "detail": {
+    "s": 400
+   }
+  },
+  {
+   "obligation": "S1-070",
+   "probe": "authorize needs Idempotency-Key",
+   "pass": true,
+   "detail": {
+    "s": 400
+   }
+  },
+  {
+   "obligation": "S2-054/S2-056/S2-028",
+   "probe": "seeded past open = expired, holds nothing; seeded future holds",
+   "pass": true,
+   "detail": {
+    "me": {
+     "available": 4000,
+     "held": 1000
+    }
+   }
+  },
+  {
+   "obligation": "S2-055",
+   "probe": "expires_at = created_at + ttl(2)",
+   "pass": true,
+   "detail": {
+    "created": "2026-09-29T00:29:47.495+00:00",
+    "expires": "2026-09-29T00:29:49.495+00:00"
+   }
+  },
+  {
+   "obligation": "S2-057/S2-065/D2-08",
+   "probe": "clock expiry with no request at deadline; capture 409 expired; void 409 not_open",
+   "pass": true,
+   "detail": {
+    "me": {
+     "available": 3900,
+     "held": 1000
+    },
+    "cap": [
+     409,
+     "authorization_expired"
+    ],
+    "void": [
+     409,
+     "authorization_not_open"
+    ]
+   }
+  },
+  {
+   "obligation": "S2-055",
+   "probe": "bad ttl -> reset 422",
+   "pass": true,
+   "detail": {
+    "0": [
+     422,
+     "validation_failed"
+    ],
+    "-1": [
+     422,
+     "validation_failed"
+    ],
+    "1.5": [
+     422,
+     "validation_failed"
+    ],
+    "600": [
+     422,
+     "validation_failed"
+    ],
+    "True": [
+     422,
+     "validation_failed"
+    ]
+   }
+  },
+  {
+   "obligation": "S2-056",
+   "probe": "seeded unexpired open holds > balance -> 422; expired/closed don't count",
+   "pass": true,
+   "detail": {
+    "s": [
+     422,
+     204
+    ]
+   }
+  },
+  {
+   "obligation": "S1-196(sup)/S1-002",
+   "probe": "settlement net debit cannot eat held funds",
+   "pass": true,
+   "detail": {
+    "s": [
+     409,
+     201
+    ],
+    "me": {
+     "total": 600,
+     "available": 0,
+     "held": 600
+    }
+   }
+  },
+  {
+   "obligation": "S2-011",
+   "probe": "Accept text/html -> UI, else JSON",
+   "pass": true,
+   "detail": {
+    "/requests None": [
+     200,
+     "application/json"
+    ],
+    "/requests text/html": [
+     200,
+     "text/html"
+    ],
+    "/requests application/json": [
+     200,
+     "application/json"
+    ],
+    "/authorizations None": [
+     200,
+     "application/json"
+    ],
+    "/authorizations text/html": [
+     200,
+     "text/html"
+    ],
+    "/authorizations application/json": [
+     200,
+     "application/json"
+    ]
+   }
+  },
+  {
+   "obligation": "S2-051/S2-070/S2-071",
+   "probe": "mixed concurrent captures/void/payments/authorizations/settlements",
+   "pass": true,
+   "detail": {
+    "total": 6000,
+    "caps201": 15,
+    "auth": {
+     "status": "captured",
+     "captured_amount": 1500,
+     "remaining_amount": 0
+    },
+    "reads": 60,
+    "outcomes": [
+     "(201, None)",
+     "(409, 'authorization_not_open')",
+     "(409, 'insufficient_funds')"
+    ]
+   }
+  },
+  {
+   "obligation": "S1-078(sup)",
+   "probe": "15x concurrent same key on capture and authorize",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S2-072/S1-112(sup)",
+   "probe": "available 0: pay request with held money 409; capture still spends reservation; final partial releases rest",
+   "pass": true,
+   "detail": {
+    "pay": 409,
+    "cap": 201,
+    "me": {
+     "total": 600,
+     "available": 600,
+     "held": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-073",
+   "probe": "replay authorize after capture -> 200 original (open); replay capture -> 200; claimed key + invalid body -> 409",
+   "pass": true,
+   "detail": {
+    "s": [
+     200,
+     200,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S2-073",
+   "probe": "failed capture key reusable; replay after void -> 200 original payment",
+   "pass": true,
+   "detail": {
+    "s": [
+     422,
+     201,
+     200,
+     200
+    ]
+   }
+  },
+  {
+   "obligation": "S2-060/S2-069",
+   "probe": "only capture payments in feed; operator sees no others' authorizations",
+   "pass": true,
+   "detail": {
+    "feed": 2,
+    "operator_list": 0
+   }
+  },
+  {
+   "obligation": "S2-056",
+   "probe": "seeded open holds == balance -> 204, available 0",
+   "pass": true,
+   "detail": {
+    "s": 204
+   }
+  },
+  {
+   "obligation": "D2-15",
+   "probe": "authorization fixture errors -> 422, previous state intact",
+   "pass": true,
+   "detail": {
+    "unknown user": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "from=to": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "amount 0": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "amount 1.5": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "status bad": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "expires missing": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "expires no offset": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "expires garbage": [
+     422,
+     "validation_failed",
+     200
+    ],
+    "duplicate id": [
+     422,
+     "validation_failed",
+     200
+    ]
+   }
+  },
+  {
+   "obligation": "S2-074",
+   "probe": "exported open hold imported after expiry reads expired",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "me": {
+     "available": 1000,
+     "held": 0
+    },
+    "status": "expired"
+   }
+  }
+ ]
+}

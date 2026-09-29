@@ -1,0 +1,176 @@
+{
+ "started_utc": "2026-09-29T00:51:23Z",
+ "finished_utc": "2026-09-29T00:51:24Z",
+ "passed": 14,
+ "failed": 0,
+ "total": 14,
+ "results": [
+  {
+   "obligation": "S3-071/S3-072 1->3",
+   "probe": "import accepted; old tokens valid; balances kept; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "9aee4df1b3701d031ef56b6ffbdfb3eca104f00bbe8340661e22d62b7d603cb6"
+   }
+  },
+  {
+   "obligation": "D2-13/S3-072 1->3",
+   "probe": "source receipts replay 200 with ORIGINAL bytes",
+   "pass": true,
+   "detail": {
+    "statuses": [
+     200,
+     200,
+     200
+    ],
+    "byte_equal": [
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "obligation": "S3-072/D3-13 1->3",
+   "probe": "historical /me and /statement over imported history; conservation now and at opening",
+   "pass": true,
+   "detail": {
+    "total": 15000,
+    "total_opening": 15000,
+    "entries": 3,
+    "opening": 10000,
+    "closing": 9145
+   }
+  },
+  {
+   "obligation": "S3-072/D3-13 1->3",
+   "probe": "imported payment has revision 1 at created_at and can be corrected",
+   "pass": true,
+   "detail": {
+    "rev1": {
+     "payment_id": "p_b_1J6SmMyiKz0O-A",
+     "revision": 1,
+     "amount": 700,
+     "effective_at": "2026-09-29T00:51:23+00:00",
+     "recorded_at": "2026-09-29T00:51:23+00:00",
+     "reason": ""
+    },
+    "correct": 201
+   }
+  },
+  {
+   "obligation": "S3-070 1->3",
+   "probe": "imported settlement member: rev1 at committed_at; correction 422 linked_payment_immutable",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "linked_payment_immutable"
+   }
+  },
+  {
+   "obligation": "S3-072 1->3",
+   "probe": "imported pending request payable",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S3-071/S3-072 2->3",
+   "probe": "import accepted; old tokens valid; balances kept; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "a38f2eaf01ae87b8c106dd1163edcfb7e42aada0ce3864eb6e33cca0552033d1"
+   }
+  },
+  {
+   "obligation": "D2-13/S3-072 2->3",
+   "probe": "source receipts replay 200 with ORIGINAL bytes",
+   "pass": true,
+   "detail": {
+    "statuses": [
+     200,
+     200,
+     200,
+     200,
+     200
+    ],
+    "byte_equal": [
+     true,
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "obligation": "S3-072/D3-13 2->3",
+   "probe": "historical /me and /statement over imported history; conservation now and at opening",
+   "pass": true,
+   "detail": {
+    "total": 15000,
+    "total_opening": 15000,
+    "entries": 4,
+    "opening": 10000,
+    "closing": 9045
+   }
+  },
+  {
+   "obligation": "S3-072/D3-13 2->3",
+   "probe": "imported payment has revision 1 at created_at and can be corrected",
+   "pass": true,
+   "detail": {
+    "rev1": {
+     "payment_id": "p_wauGpzgb31J5ePpA",
+     "revision": 1,
+     "amount": 700,
+     "effective_at": "2026-09-29T00:51:24.183+00:00",
+     "recorded_at": "2026-09-29T00:51:24.183+00:00",
+     "reason": ""
+    },
+    "correct": 201
+   }
+  },
+  {
+   "obligation": "S3-070 2->3",
+   "probe": "imported settlement member: rev1 at committed_at; correction 422 linked_payment_immutable",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "linked_payment_immutable"
+   }
+  },
+  {
+   "obligation": "S3-072 2->3",
+   "probe": "imported pending request payable",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S3-071/S3-082/D3-18 2->3",
+   "probe": "imported holds: statuses, held, closed_at (capture time; void at import time)",
+   "pass": true,
+   "detail": {
+    "held_aa": 600,
+    "cap_closed": "2026-09-29T00:51:24.209+00:00",
+    "void_closed": "2026-09-29T00:51:24.261+00:00"
+   }
+  },
+  {
+   "obligation": "S3-071/S3-084 2->3",
+   "probe": "imported capture correction 422 linked; imported open hold capturable; captures once in statement",
+   "pass": true,
+   "detail": {
+    "corr": 422,
+    "cap": 201,
+    "held": 200,
+    "capture_entries": 3
+   }
+  }
+ ]
+}
