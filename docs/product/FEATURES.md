@@ -411,6 +411,9 @@ Authorization: Bearer <token>
 
 ## Reproduce these
 
+Against the live demo at <https://four-seats-factory.onrender.com>, seeded with the same
+`seed.json`, or locally:
+
 ```
 cd stage-4
 docker build -t pocketful-stage-4 . && docker run --rm -p 8080:8080 pocketful-stage-4
@@ -419,3 +422,7 @@ curl -X POST http://127.0.0.1:8080/_test/reset -H "Content-Type: application/jso
 
 Then sign in at <http://127.0.0.1:8080/login> as `ada@example.com` / `correct horse`, or send the
 requests above with the token from `POST /auth/login`.
+
+The service logs `pocketful stage-1 listening on …` even when it is `stage-4/`. That string was written
+in stage 1 and each stage copied the code forward unchanged; it is not a sign that the wrong folder
+was deployed, and it was left as is because editing it would change an accepted product tree.

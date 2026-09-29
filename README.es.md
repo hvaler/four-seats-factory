@@ -83,7 +83,24 @@ python -m harness run --track pocketful --repo <este repo> --stage 1 --mode isol
 `--stage 2`, `3` y `4` hacen lo mismo con las carpetas posteriores, y `--all` verifica la cadena
 entera. Los stages 2 a 4 sirven una interfaz de navegador; el harness la recorre a 375 px y 1280 px.
 
-Para probar el producto a mano:
+### Demo en vivo
+
+**<https://four-seats-factory.onrender.com/login>** — entra como `ada@example.com`, `bob@example.com`
+o `cy@example.com`, todos con la contraseña `correct horse`.
+
+Ejecuta el `stage-4/` de este repositorio, construido con su propio `Dockerfile` sin cambiar nada, en
+una sola instancia. El estado vive en memoria, como permite la especificación, así que un reinicio o
+un redespliegue lo vacían. Si la encuentras vacía, una llamada desde la raíz del repositorio restaura los datos de
+demostración —y esa llamada forma parte de la especificación:
+
+```
+curl -X POST https://four-seats-factory.onrender.com/_test/reset -H "Content-Type: application/json" --data-binary @seed.json
+```
+
+Cualquiera puede hacerla, así que cualquiera puede reiniciar la demo. Con datos sembrados no importa;
+con dinero real no sería aceptable.
+
+### Ejecutarlo tú mismo
 
 ```
 cd stage-4
