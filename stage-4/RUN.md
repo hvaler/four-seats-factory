@@ -1,18 +1,17 @@
-# Pocketful — stage 3
+# Pocketful — stage 4
 
 Wallet screens in the browser and the JSON API for payments, requests, splits,
-settlements and payment authorizations, extended with historical balances,
-paginated statements with snapshot tokens, and payment corrections with an
-immutable revision history. It runs as one container
+settlements, payment authorizations, historical balances, statements and
+payment corrections, extended with refunds and operator correction batches. It runs as one container
 with no outbound network access at run time; every UI asset is served from the
 image.
 
 ## Build and run
 
-From this folder (`stage-3/`):
+From this folder (`stage-4/`):
 
 ```sh
-docker build -t pocketful-stage-3 . && docker run --rm -e PORT=8080 -p 8080:8080 pocketful-stage-3
+docker build -t pocketful-stage-4 . && docker run --rm -e PORT=8080 -p 8080:8080 pocketful-stage-4
 ```
 
 Then open <http://localhost:8080/>. The service listens on `0.0.0.0:$PORT`
@@ -24,8 +23,15 @@ create an account at `/signup`.
 To run under the stage limits:
 
 ```sh
-docker run --rm --cpus 2 --memory 2g -e PORT=8080 -p 8080:8080 pocketful-stage-3
+docker run --rm --cpus 2 --memory 2g -e PORT=8080 -p 8080:8080 pocketful-stage-4
 ```
+
+## Refunds and batch corrections (stage 4)
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /payments/{id}/refunds` | The original receiver returns up to the payment’s current corrected amount, from available funds; the refund is a new payment with `refund_of` |
+| `POST /correction-batches` | A settlement operator corrects up to 32 payments atomically, including whole settlements; all new revisions share one `recorded_at` and a `correction_batch_id` |
 
 ## History API (stage 3)
 
@@ -100,8 +106,13 @@ python test/browser/capture_draft_test.py http://127.0.0.1:8080
   instants are compared at nanosecond resolution. A correction is refused with
   `historical_overdraft` if it would make total or available negative at any
   past boundary where the existing history is not already that low.
+- **Refunds and batches:** a correction can never go below a payment’s
+  refunded total, and captures and refunds cannot be corrected. A batch is
+  validated item by item, then for settlement completeness, then for the
+  combined current and historical affordability of all its revisions together.
 - **Upgrade:** `POST /_test/import` accepts this service's exports and the
-  stage-1 service's exports. Stage-1 and stage-2 exports import
+  stage-1 service's exports. Stage-1, stage-2 and stage-3 exports import (a stage-3 export keeps its revisions and statement snapshots);
+  stage-1 and stage-2 exports import
   with revision 1 for every payment and openings derived from the imported
   balances; a stage-2 voided hold, whose void time was not recorded, releases
   at the import time.
