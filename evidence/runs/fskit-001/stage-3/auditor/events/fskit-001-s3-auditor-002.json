@@ -1,0 +1,102 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-002",
+ "sequence": 2,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:27:17Z",
+ "event_type": "HARNESS_RUN",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-900",
+  "section": null,
+  "obligation": "S3-900"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Harness --stage 3 host",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "kickoff@803560d2",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "~/df-venv/bin/python -m harness run --track pocketful --repo /mnt/c/nexus/dev/band-kit/clones/auditor-s3-1 --stage 3 --out /mnt/c/nexus/dev/band-kit/checks/fskit-001-s3-audit-1",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "host",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:25:43Z",
+  "finished_utc": "2026-09-28T23:27:17Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 188,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 188
+  }
+ },
+ "expected": "suites 1-3 pass",
+ "observed": "147/147 + 35/35 + 6/6, 0 skipped; stage-4 probe fails (refund_of)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s3-audit-1/report.json",
+   "sha256": "87b5fc73a8ea56e661239090aaeb845d98df8482d5e12c170989234971007a81"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-1.counts.json",
+   "sha256": "6250f0fd1251afe620a1f77f720deecc44479bd1466308da32a9204809c34546"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-1.log",
+   "sha256": "1b0414d44b75029481cf666d9daa7ee7b0c8ab02cdd129e26b13306c05628f9f"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-2.counts.json",
+   "sha256": "6edc7d42b81b03606624ab2c38143073c7abd23f98ed846791b8ab91824add54"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-2.log",
+   "sha256": "71a4551d9394b5ffe5c9718ef5ce9390e0c193096a727ca3ce28f6af9ebda220"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-3.counts.json",
+   "sha256": "8241d0e80683a5feb47ba8b31953d93938cc0fe28eeb0dc92740756568e6123b"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-3.log",
+   "sha256": "42d54fe9e21b21261eb5883a67ee8024c6f82c99457d5da7fd3aab22c2b6a972"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-4.counts.json",
+   "sha256": "d8d3781bc9f0573598e44bbea7ee9797a007bd0f6236a0e744aa8eefb29c51f1"
+  },
+  {
+   "path": "checks/fskit-001-s3-audit-1/stage-4.log",
+   "sha256": "85c65b3a9b60dff27888e76f6e9da9ff0af754e95b610f84cbdddcc33f68ff6a"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Partial public sample (stage-3 public suite is only 6 tests)."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

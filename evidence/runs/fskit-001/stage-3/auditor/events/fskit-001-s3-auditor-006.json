@@ -1,0 +1,70 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-006",
+ "sequence": 6,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:30:14Z",
+ "event_type": "UPGRADE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-071,S3-072",
+  "section": null,
+  "obligation": "S3-071,S3-072"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "upgrade run 1",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "auditor@529cf4ec tools/s3_upgrade_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "s3_upgrade_probe.py (fresh s1u, s2u, t13, t23)",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "ACCEPTED stage-1/2 images + candidate",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:30:13Z",
+  "finished_utc": "2026-09-28T23:30:14Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": 13,
+   "failed": 1,
+   "skipped": 0,
+   "collected": 14
+  }
+ },
+ "expected": "all pass",
+ "observed": "13/14; failure = auditor TOOL expectation (stage-1 source has 3 aa entries, not >=4; math reconciles)",
+ "result": "FAIL_TOOL",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s3-upgrade-results.json",
+   "sha256": "8a2c119327a68938fc736a81032a829ddb6fdebe5f9c88363f480f2636cd6eba"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Preserved; superseded by 007."
+ },
+ "state": "OPEN",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

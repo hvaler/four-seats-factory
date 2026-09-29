@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-012",
+ "sequence": 12,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:49:36Z",
+ "event_type": "FINDING_RECHECK",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-081,S3-057 (F3-01)",
+  "section": null,
+  "obligation": "S3-081,S3-057 (F3-01)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "F3-01 recheck",
+ "candidate_commit": "51a0bdd1c48207fb3e22fb163d1fd7972123aa3d",
+ "candidate_product_tree": "f586c4995f31122e887e462d54590b955f6b45a2",
+ "test_commit": "auditor tools/repro_f3_01.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "repro_f3_01.py :9306",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:9d61adde4e6eb1efa216b593d898cc63a270a946b0087b608c7bb79630604838",
+  "mode": "fresh container",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:49:35Z",
+  "finished_utc": "2026-09-28T23:49:36Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "held 0 past expires_at under earlier known_at",
+ "observed": "A 1000, B 0, C 0, D 0 -> NOT_REPRODUCED (fixed)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/repro-f3-01.log",
+   "sha256": "da0b2dfa8700018870117615ab165e9a3e58708bc966b8fcf5adaf1299f91ae2"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": ""
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "47a2a349-2c9e-4087-acd1-e70a94c2cc07"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s3-auditor-010"
+ ],
+ "reason": null
+}

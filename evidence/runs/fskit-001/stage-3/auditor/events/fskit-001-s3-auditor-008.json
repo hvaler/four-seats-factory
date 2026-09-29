@@ -1,0 +1,86 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-008",
+ "sequence": 8,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:32:11Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-904 (stage-1/2 rows on stage-3/), S3-901",
+  "section": null,
+  "obligation": "S3-904 (stage-1/2 rows on stage-3/), S3-901"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Regression probes on stage-3",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "s2_api_probe @c66eae37, s2_ui_probe @9adf0051, audit_probe @9eeeae1d, audit_probe2 @236ecf35, timing_probe @31ba973b",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "see c1/*-on-s3.json and c1/ui",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "candidate containers",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:30:56Z",
+  "finished_utc": "2026-09-28T23:32:11Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 150,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 150
+  }
+ },
+ "expected": "all pass",
+ "observed": "stage-2 API 31/31, UI 375/1280 44/44, stage-1 61/61, 10/10, timing 4/4",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s2-api-on-s3.json",
+   "sha256": "94ceaf995ae69f569b609940c4a6a1eff8324d3f6c3d36fd9c9ee973cd6ef20c"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/ui/ui-results.json",
+   "sha256": "3797f412f36b4413291bb14b96ccc25e63202d7046efd48bad923abf4a087cc8"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s1-probe-on-s3.json",
+   "sha256": "17e3c12b1314033f84129e33da0bd9c5414918186fe738d8386e7bf333110347"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s1-probe2-on-s3.json",
+   "sha256": "22e1d186d0aa36a4c5f655b863c195a192aee9b30d53a6f6699fe3ccdd52e8a1"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s1-timing-on-s3.json",
+   "sha256": "99294e07249c58e8e9dde820a7a429708a0cd2881b3ff8b13e85d4c0cef5823c"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

@@ -1,0 +1,238 @@
+{
+ "started_utc": "2026-09-28T23:56:44Z",
+ "finished_utc": "2026-09-28T23:56:45Z",
+ "passed": 10,
+ "failed": 0,
+ "total": 10,
+ "results": [
+  {
+   "obligation": "S1-017/S1-050",
+   "probe": "content type + error envelope on every route (26 calls)",
+   "pass": true,
+   "detail": {
+    "bad": {}
+   }
+  },
+  {
+   "obligation": "S1-019",
+   "probe": "unknown fields/params ignored on every endpoint",
+   "pass": true,
+   "detail": {
+    "got": {
+     "reset": 204,
+     "signup": 201,
+     "login": 200,
+     "payments": 201,
+     "requests": 201,
+     "pay": 201,
+     "decline": 200,
+     "cancel": 200,
+     "splits": 201,
+     "settlements": 201,
+     "GET /me?x": 200,
+     "GET /requests?x": 200,
+     "GET /activity?x": 200,
+     "GET /health?x": 200,
+     "export?x": 200,
+     "import+unknown": 204
+    }
+   }
+  },
+  {
+   "obligation": "S1-047",
+   "probe": "negative fixture balance -> 422, previous state intact",
+   "pass": true,
+   "detail": {
+    "got": [
+     422,
+     "validation_failed",
+     200,
+     493
+    ]
+   }
+  },
+  {
+   "obligation": "D-24",
+   "probe": "reset content errors -> 422, previous state intact",
+   "pass": true,
+   "detail": {
+    "got": {
+     "D-24 duplicate handle": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 duplicate email": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 duplicate user id": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 regex-invalid handle": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 minor_units 1": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 dangling payment ref": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 dangling request ref": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 bad request status": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ],
+     "D-24 missing users": [
+      422,
+      "validation_failed",
+      200,
+      493
+     ]
+    },
+    "unparseable": 400,
+    "non_object": 400
+   }
+  },
+  {
+   "obligation": "OBS",
+   "probe": "operator id not a user (not asserted)",
+   "pass": true,
+   "detail": {
+    "got": [
+     422,
+     "validation_failed",
+     200,
+     493
+    ]
+   }
+  },
+  {
+   "obligation": "D-09",
+   "probe": "display_name empty/missing 422, non-string 400",
+   "pass": true,
+   "detail": {
+    "got": [
+     422,
+     422,
+     400
+    ]
+   }
+  },
+  {
+   "obligation": "S1-174",
+   "probe": "missing / non-object state -> 422, destination unchanged",
+   "pass": true,
+   "detail": {
+    "got": {
+     "state missing": [
+      422,
+      "validation_failed",
+      true
+     ],
+     "state string": [
+      422,
+      "validation_failed",
+      true
+     ],
+     "state array": [
+      422,
+      "validation_failed",
+      true
+     ],
+     "state empty object": [
+      422,
+      "validation_failed",
+      true
+     ]
+    }
+   }
+  },
+  {
+   "obligation": "S1-174",
+   "probe": "structurally broken inner state -> 422 (or accepted as valid), destination unchanged on reject, no 5xx",
+   "pass": true,
+   "detail": {
+    "variants": 24,
+    "accepted_204": [],
+    "non422_rejects": {},
+    "5xx": {}
+   }
+  },
+  {
+   "obligation": "S1-175",
+   "probe": "re-importing an earlier export reproduces it exactly (export of B == saved copy)",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S1-175",
+   "probe": "exports during 16 concurrent writers are consistent snapshots",
+   "pass": true,
+   "detail": {
+    "exports": 6,
+    "distinct": 6,
+    "detail": [
+     {
+      "import": 204,
+      "payments": 51,
+      "sum_ok": true,
+      "balances_match_feed": true
+     },
+     {
+      "import": 204,
+      "payments": 144,
+      "sum_ok": true,
+      "balances_match_feed": true
+     },
+     {
+      "import": 204,
+      "payments": 212,
+      "sum_ok": true,
+      "balances_match_feed": true
+     },
+     {
+      "import": 204,
+      "payments": 295,
+      "sum_ok": true,
+      "balances_match_feed": true
+     },
+     {
+      "import": 204,
+      "payments": 374,
+      "sum_ok": true,
+      "balances_match_feed": true
+     },
+     {
+      "import": 204,
+      "payments": 455,
+      "sum_ok": true,
+      "balances_match_feed": true
+     }
+    ]
+   }
+  }
+ ]
+}

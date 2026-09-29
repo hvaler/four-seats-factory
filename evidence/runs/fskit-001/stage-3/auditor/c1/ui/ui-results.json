@@ -1,0 +1,849 @@
+{
+ "started_utc": "2026-09-28T23:31:04Z",
+ "finished_utc": "2026-09-28T23:32:06Z",
+ "passed": 44,
+ "failed": 0,
+ "total": 44,
+ "results": [
+  {
+   "obligation": "S2-010/S2-032/S2-012",
+   "probe": "direct navigation, current-user on every signed-in screen, no horizontal scroll @375",
+   "pass": true,
+   "detail": {
+    "/signup": {
+     "anchor": true,
+     "scroll": [
+      375,
+      375
+     ]
+    },
+    "/login": {
+     "anchor": true,
+     "scroll": [
+      375,
+      375
+     ]
+    },
+    "/": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      375,
+      375
+     ]
+    },
+    "/requests": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      375,
+      375
+     ]
+    },
+    "/split": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      375,
+      375
+     ]
+    },
+    "/authorizations": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      375,
+      375
+     ]
+    }
+   }
+  },
+  {
+   "obligation": "S2-033",
+   "probe": "keyboard reaches pay-submit with a visible focus indicator @375",
+   "pass": true,
+   "detail": {
+    "before": [
+     "none",
+     "3px",
+     "none"
+    ],
+    "after": [
+     "pay-submit",
+     "solid",
+     "3px",
+     "none"
+    ]
+   }
+  },
+  {
+   "obligation": "S2-033",
+   "probe": "inputs have visible labels @375",
+   "pass": true,
+   "detail": {
+    "labels": [
+     [
+      "pay-handle",
+      "Pay to",
+      true
+     ],
+     [
+      "pay-amount",
+      "Amount",
+      true
+     ],
+     [
+      "pay-note",
+      "Note (optional)",
+      true
+     ],
+     [
+      "request-handle",
+      "Ask",
+      true
+     ],
+     [
+      "request-amount",
+      "Amount",
+      true
+     ],
+     [
+      "authorize-handle",
+      "For",
+      true
+     ],
+     [
+      "authorize-amount",
+      "Amount",
+      true
+     ]
+    ]
+   }
+  },
+  {
+   "obligation": "S2-033/D2-07",
+   "probe": "sampled text contrast >= 4.5:1 @375",
+   "pass": true,
+   "detail": {
+    "ratios": [
+     [
+      "wallet-available",
+      7.53
+     ],
+     [
+      "wallet-balance",
+      7.53
+     ],
+     [
+      "wallet-held",
+      6.25
+     ],
+     [
+      "pay-submit",
+      7.53
+     ],
+     [
+      "current-user",
+      16.52
+     ],
+     [
+      "activity-list",
+      16.52
+     ]
+    ]
+   }
+  },
+  {
+   "obligation": "S2-013/S2-015/S2-026/S2-028",
+   "probe": "wallet total/available/held formatted, data-amount, available is headline @375",
+   "pass": true,
+   "detail": {
+    "text": [
+     "100.00 EUR",
+     "80.00 EUR",
+     "20.00 EUR"
+    ],
+    "data": [
+     "10000",
+     "8000",
+     "2000"
+    ],
+    "font_px": [
+     38.4,
+     16.8,
+     16.8
+    ]
+   }
+  },
+  {
+   "obligation": "S2-017",
+   "probe": "activity item testids @375",
+   "pass": true,
+   "detail": {
+    "note": "coffee",
+    "amt": "5.00 EUR",
+    "parties": "@aa → @bb",
+    "vis": "public"
+   }
+  },
+  {
+   "obligation": "S2-016",
+   "probe": "invalid decimals show pay-error and send no request @375",
+   "pass": true,
+   "detail": {
+    "15.005": {
+     "error": true,
+     "posted": 0
+    },
+    "abc": {
+     "error": true,
+     "posted": 0
+    },
+    "-5": {
+     "error": true,
+     "posted": 0
+    },
+    "1e3": {
+     "error": true,
+     "posted": 0
+    },
+    "": {
+     "error": true,
+     "posted": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-016/S2-014/S2-020",
+   "probe": "15.5 -> 1550; double submit moves money once; form kept; page refreshed @375",
+   "pass": true,
+   "detail": {
+    "body_amount": 1550,
+    "debit": 1550,
+    "kept": "15.5",
+    "shown": "84.50 EUR"
+   }
+  },
+  {
+   "obligation": "S2-022",
+   "probe": "refused payment: pay-error, inputs kept, balance refreshed @375",
+   "pass": true,
+   "detail": {
+    "err": true,
+    "vals": [
+     "bb",
+     "1",
+     "refused"
+    ],
+    "available_shown": "0"
+   }
+  },
+  {
+   "obligation": "S2-021",
+   "probe": "latest refresh wins over a delayed earlier read; pay form not cleared @375",
+   "pass": true,
+   "detail": {
+    "delayed_reads": 2,
+    "shown": "9889",
+    "truth": 9889,
+    "note": "keepme"
+   }
+  },
+  {
+   "obligation": "S2-024",
+   "probe": "lost response after commit: pay-uncertain, retry same key+body, money once, cleared @375",
+   "pass": true,
+   "detail": {
+    "uncertain": true,
+    "pay_error_first": 0,
+    "committed": 234,
+    "same_key_body": true,
+    "retries": 2,
+    "final_debit": 234,
+    "shown": "9766"
+   }
+  },
+  {
+   "obligation": "S2-018",
+   "probe": "request buttons only where allowed; status and amount @375",
+   "pass": true,
+   "detail": {
+    "buttons": {
+     "request-pay-rq_TjkRZSY3U4Iog6sn": 1,
+     "request-decline-rq_TjkRZSY3U4Iog6sn": 1,
+     "request-cancel-rq_TjkRZSY3U4Iog6sn": 0,
+     "request-cancel-rq_qdT4PLA5OZ1LsG7e": 1,
+     "request-pay-rq_qdT4PLA5OZ1LsG7e": 0
+    },
+    "status": "pending",
+    "amount": "3.00 EUR"
+   }
+  },
+  {
+   "obligation": "S2-023",
+   "probe": "stale pay after cancel elsewhere -> request-error, button disappears @375",
+   "pass": true,
+   "detail": {
+    "err": true,
+    "gone": true
+   }
+  },
+  {
+   "obligation": "S2-018/S2-020",
+   "probe": "cancel from UI updates status without reload @375",
+   "pass": true,
+   "detail": {
+    "status": "cancelled"
+   }
+  },
+  {
+   "obligation": "S2-019",
+   "probe": "split preview = server rule, submitted order kept @375",
+   "pass": true,
+   "detail": {
+    "shares": {
+     "bb": "3.34 EUR",
+     "aa": "3.33 EUR",
+     "cc": "3.33 EUR"
+    },
+    "body": {
+     "amount": 1000,
+     "participant_handles": [
+      "bb",
+      "aa",
+      "cc"
+     ],
+     "note": ""
+    }
+   }
+  },
+  {
+   "obligation": "S2-026/S2-027/S2-028",
+   "probe": "authorize from UI, held shown, refusal error, list newest first, expires RFC3339, void only for payer @375",
+   "pass": true,
+   "detail": {
+    "held": "2300",
+    "err": true,
+    "items": [
+     [
+      "authorization-item-a_XSpCkhslV_dF5HnD",
+      "open"
+     ],
+     [
+      "authorization-item-a_seed1",
+      "open"
+     ]
+    ],
+    "expires": "2026-09-29T01:31:30+00:00",
+    "void": 1,
+    "cap": 0
+   }
+  },
+  {
+   "obligation": "S2-027",
+   "probe": "capture from UI: prefill remaining, captured shown, remainder released @375",
+   "pass": true,
+   "detail": {
+    "prefill": "20.00",
+    "status": "captured",
+    "captured": "15.00 EUR",
+    "payer_held": 300
+   }
+  },
+  {
+   "obligation": "S2-012",
+   "probe": "auth-error only on error; current-handle exact; logout @375",
+   "pass": true,
+   "detail": {
+    "auth_error_initial": 0,
+    "auth_error_after": true,
+    "handle": "aa",
+    "user": "AA\n@aa",
+    "signed_out": true
+   }
+  },
+  {
+   "obligation": "S2-015/S2-016/S2-026",
+   "probe": "JPY: '100 JPY', no held element when zero, '15.0' rejected (D2-05), '15' -> 15 @375",
+   "pass": true,
+   "detail": {
+    "wallet": "100 JPY",
+    "held_el": 0,
+    "posted_bad": 0,
+    "body": {
+     "to_handle": "bb",
+     "amount": 15,
+     "note": "",
+     "visibility": "public"
+    }
+   }
+  },
+  {
+   "obligation": "S2-032",
+   "probe": "no horizontal scroll with worst-case content (200-char note, 20-char handle, 64-char name, max amounts, 55 items) @375",
+   "pass": true,
+   "detail": {
+    "/": [
+     375,
+     375
+    ],
+    "/requests": [
+     375,
+     375
+    ],
+    "/split": [
+     375,
+     375
+    ],
+    "/authorizations": [
+     375,
+     375
+    ]
+   }
+  },
+  {
+   "obligation": "S2-035",
+   "probe": "XSS payload rendered verbatim as text, nothing injected @375",
+   "pass": true,
+   "detail": {
+    "injected": {
+     "/": 0,
+     "/requests": 0,
+     "/split": 0,
+     "/authorizations": 0
+    },
+    "dialogs": [],
+    "note_exact": true
+   }
+  },
+  {
+   "obligation": "S2-015",
+   "probe": "no thousands grouping on large amounts @375",
+   "pass": true,
+   "detail": {
+    "feed": "9999999.99 EUR",
+    "req": "10000000.00 EUR"
+   }
+  },
+  {
+   "obligation": "S2-010/S2-032/S2-012",
+   "probe": "direct navigation, current-user on every signed-in screen, no horizontal scroll @1280",
+   "pass": true,
+   "detail": {
+    "/signup": {
+     "anchor": true,
+     "scroll": [
+      1280,
+      1280
+     ]
+    },
+    "/login": {
+     "anchor": true,
+     "scroll": [
+      1280,
+      1280
+     ]
+    },
+    "/": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      1280,
+      1280
+     ]
+    },
+    "/requests": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      1280,
+      1280
+     ]
+    },
+    "/split": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      1280,
+      1280
+     ]
+    },
+    "/authorizations": {
+     "anchor": true,
+     "current_user": true,
+     "scroll": [
+      1280,
+      1280
+     ]
+    }
+   }
+  },
+  {
+   "obligation": "S2-033",
+   "probe": "keyboard reaches pay-submit with a visible focus indicator @1280",
+   "pass": true,
+   "detail": {
+    "before": [
+     "none",
+     "3px",
+     "none"
+    ],
+    "after": [
+     "pay-submit",
+     "solid",
+     "3px",
+     "none"
+    ]
+   }
+  },
+  {
+   "obligation": "S2-033",
+   "probe": "inputs have visible labels @1280",
+   "pass": true,
+   "detail": {
+    "labels": [
+     [
+      "pay-handle",
+      "Pay to",
+      true
+     ],
+     [
+      "pay-amount",
+      "Amount",
+      true
+     ],
+     [
+      "pay-note",
+      "Note (optional)",
+      true
+     ],
+     [
+      "request-handle",
+      "Ask",
+      true
+     ],
+     [
+      "request-amount",
+      "Amount",
+      true
+     ],
+     [
+      "authorize-handle",
+      "For",
+      true
+     ],
+     [
+      "authorize-amount",
+      "Amount",
+      true
+     ]
+    ]
+   }
+  },
+  {
+   "obligation": "S2-033/D2-07",
+   "probe": "sampled text contrast >= 4.5:1 @1280",
+   "pass": true,
+   "detail": {
+    "ratios": [
+     [
+      "wallet-available",
+      7.53
+     ],
+     [
+      "wallet-balance",
+      7.53
+     ],
+     [
+      "wallet-held",
+      6.25
+     ],
+     [
+      "pay-submit",
+      7.53
+     ],
+     [
+      "current-user",
+      16.52
+     ],
+     [
+      "activity-list",
+      16.52
+     ]
+    ]
+   }
+  },
+  {
+   "obligation": "S2-013/S2-015/S2-026/S2-028",
+   "probe": "wallet total/available/held formatted, data-amount, available is headline @1280",
+   "pass": true,
+   "detail": {
+    "text": [
+     "100.00 EUR",
+     "80.00 EUR",
+     "20.00 EUR"
+    ],
+    "data": [
+     "10000",
+     "8000",
+     "2000"
+    ],
+    "font_px": [
+     38.4,
+     16.8,
+     16.8
+    ]
+   }
+  },
+  {
+   "obligation": "S2-017",
+   "probe": "activity item testids @1280",
+   "pass": true,
+   "detail": {
+    "note": "coffee",
+    "amt": "5.00 EUR",
+    "parties": "@aa → @bb",
+    "vis": "public"
+   }
+  },
+  {
+   "obligation": "S2-016",
+   "probe": "invalid decimals show pay-error and send no request @1280",
+   "pass": true,
+   "detail": {
+    "15.005": {
+     "error": true,
+     "posted": 0
+    },
+    "abc": {
+     "error": true,
+     "posted": 0
+    },
+    "-5": {
+     "error": true,
+     "posted": 0
+    },
+    "1e3": {
+     "error": true,
+     "posted": 0
+    },
+    "": {
+     "error": true,
+     "posted": 0
+    }
+   }
+  },
+  {
+   "obligation": "S2-016/S2-014/S2-020",
+   "probe": "15.5 -> 1550; double submit moves money once; form kept; page refreshed @1280",
+   "pass": true,
+   "detail": {
+    "body_amount": 1550,
+    "debit": 1550,
+    "kept": "15.5",
+    "shown": "84.50 EUR"
+   }
+  },
+  {
+   "obligation": "S2-022",
+   "probe": "refused payment: pay-error, inputs kept, balance refreshed @1280",
+   "pass": true,
+   "detail": {
+    "err": true,
+    "vals": [
+     "bb",
+     "1",
+     "refused"
+    ],
+    "available_shown": "0"
+   }
+  },
+  {
+   "obligation": "S2-021",
+   "probe": "latest refresh wins over a delayed earlier read; pay form not cleared @1280",
+   "pass": true,
+   "detail": {
+    "delayed_reads": 2,
+    "shown": "9889",
+    "truth": 9889,
+    "note": "keepme"
+   }
+  },
+  {
+   "obligation": "S2-024",
+   "probe": "lost response after commit: pay-uncertain, retry same key+body, money once, cleared @1280",
+   "pass": true,
+   "detail": {
+    "uncertain": true,
+    "pay_error_first": 0,
+    "committed": 234,
+    "same_key_body": true,
+    "retries": 2,
+    "final_debit": 234,
+    "shown": "9766"
+   }
+  },
+  {
+   "obligation": "S2-018",
+   "probe": "request buttons only where allowed; status and amount @1280",
+   "pass": true,
+   "detail": {
+    "buttons": {
+     "request-pay-rq_QmW3GeNOY3e6ItnZ": 1,
+     "request-decline-rq_QmW3GeNOY3e6ItnZ": 1,
+     "request-cancel-rq_QmW3GeNOY3e6ItnZ": 0,
+     "request-cancel-rq_XOE8XQsHP69FQWhq": 1,
+     "request-pay-rq_XOE8XQsHP69FQWhq": 0
+    },
+    "status": "pending",
+    "amount": "3.00 EUR"
+   }
+  },
+  {
+   "obligation": "S2-023",
+   "probe": "stale pay after cancel elsewhere -> request-error, button disappears @1280",
+   "pass": true,
+   "detail": {
+    "err": true,
+    "gone": true
+   }
+  },
+  {
+   "obligation": "S2-018/S2-020",
+   "probe": "cancel from UI updates status without reload @1280",
+   "pass": true,
+   "detail": {
+    "status": "cancelled"
+   }
+  },
+  {
+   "obligation": "S2-019",
+   "probe": "split preview = server rule, submitted order kept @1280",
+   "pass": true,
+   "detail": {
+    "shares": {
+     "bb": "3.34 EUR",
+     "aa": "3.33 EUR",
+     "cc": "3.33 EUR"
+    },
+    "body": {
+     "amount": 1000,
+     "participant_handles": [
+      "bb",
+      "aa",
+      "cc"
+     ],
+     "note": ""
+    }
+   }
+  },
+  {
+   "obligation": "S2-026/S2-027/S2-028",
+   "probe": "authorize from UI, held shown, refusal error, list newest first, expires RFC3339, void only for payer @1280",
+   "pass": true,
+   "detail": {
+    "held": "2300",
+    "err": true,
+    "items": [
+     [
+      "authorization-item-a_p5PG0XcmNBeggJhk",
+      "open"
+     ],
+     [
+      "authorization-item-a_seed1",
+      "open"
+     ]
+    ],
+    "expires": "2026-09-29T01:31:57+00:00",
+    "void": 1,
+    "cap": 0
+   }
+  },
+  {
+   "obligation": "S2-027",
+   "probe": "capture from UI: prefill remaining, captured shown, remainder released @1280",
+   "pass": true,
+   "detail": {
+    "prefill": "20.00",
+    "status": "captured",
+    "captured": "15.00 EUR",
+    "payer_held": 300
+   }
+  },
+  {
+   "obligation": "S2-012",
+   "probe": "auth-error only on error; current-handle exact; logout @1280",
+   "pass": true,
+   "detail": {
+    "auth_error_initial": 0,
+    "auth_error_after": true,
+    "handle": "aa",
+    "user": "AA\n@aa",
+    "signed_out": true
+   }
+  },
+  {
+   "obligation": "S2-015/S2-016/S2-026",
+   "probe": "JPY: '100 JPY', no held element when zero, '15.0' rejected (D2-05), '15' -> 15 @1280",
+   "pass": true,
+   "detail": {
+    "wallet": "100 JPY",
+    "held_el": 0,
+    "posted_bad": 0,
+    "body": {
+     "to_handle": "bb",
+     "amount": 15,
+     "note": "",
+     "visibility": "public"
+    }
+   }
+  },
+  {
+   "obligation": "S2-032",
+   "probe": "no horizontal scroll with worst-case content (200-char note, 20-char handle, 64-char name, max amounts, 55 items) @1280",
+   "pass": true,
+   "detail": {
+    "/": [
+     1280,
+     1280
+    ],
+    "/requests": [
+     1280,
+     1280
+    ],
+    "/split": [
+     1280,
+     1280
+    ],
+    "/authorizations": [
+     1280,
+     1280
+    ]
+   }
+  },
+  {
+   "obligation": "S2-035",
+   "probe": "XSS payload rendered verbatim as text, nothing injected @1280",
+   "pass": true,
+   "detail": {
+    "injected": {
+     "/": 0,
+     "/requests": 0,
+     "/split": 0,
+     "/authorizations": 0
+    },
+    "dialogs": [],
+    "note_exact": true
+   }
+  },
+  {
+   "obligation": "S2-015",
+   "probe": "no thousands grouping on large amounts @1280",
+   "pass": true,
+   "detail": {
+    "feed": "9999999.99 EUR",
+    "req": "10000000.00 EUR"
+   }
+  }
+ ]
+}

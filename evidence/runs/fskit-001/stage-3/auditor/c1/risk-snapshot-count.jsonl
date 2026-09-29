@@ -1,0 +1,2 @@
+{"payments": 500, "successful_reads": 4761, "first_failure": ["exception", "RemoteDisconnected('Remote end closed connection without response')", 4761], "wall_s": 72.0}
+{"payments": 100, "successful_reads": 20000, "first_failure": null, "wall_s": 45.3}
