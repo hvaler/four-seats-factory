@@ -17,7 +17,7 @@ Total deadline: 2026-09-29T20:40:47Z. Stop new work at 2026-09-29T20:10:47Z.
 | 1 | ACCEPTED (ACTIVE 20:40:47Z → accepted about 21:36Z) | beeaec72ff53fa75469c5f09236a786632f21fd8 | 347efba502629e5b5bbd730f35c34bdfe208c478 | ACCEPTED, 72be202b, auditor@fe7d0663 VERDICT-c1.md | 1 | fskit-001-s1-audit-2: 147/147, report fb03079c…a47b | same stage (XC export/import A→B reproduced by adversary and auditor) | about 55 min; tokens unknown | 72be202b |
 | 2 | ACCEPTED (c1 f1f0847d REJECTED 4fc4757a; c2 accepted) | 68583038e7ea52429b062af0f775d3cbfd96b7c3 | a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 | ACCEPTED 4ced8436, auditor@fa5f5186 VERDICT-c2.md | 1–2 | fskit-001-s2-audit-4: 147/147 + 35/35, report 36164d38…d2b9 | 1→2 PASS (auditor UPGRADE-1to2.md) | about 68 min; 1 of 5 repairs; tokens unknown | 4ced8436 |
 | 3 | ACCEPTED (c1 e4d35083 REJECTED b8d9c67c; c2 accepted) | 51a0bdd1c48207fb3e22fb163d1fd7972123aa3d | f586c4995f31122e887e462d54590b955f6b45a2 | ACCEPTED 11dbc577, auditor@b8b5a9dd VERDICT-c2.md | 1–3 | fskit-001-s3-audit-4: 147 + 35 + 6, report aa662080…4c891 | 1→3, 2→3 PASS (auditor UPGRADE-1to3-2to3.md) | about 81 min; 1 of 5 repairs; tokens unknown | 11dbc577 |
-| 4 | NOT_STARTED | | | | 1–4 | | 1→4, 2→4, 3→4 | | |
+| 4 | ACTIVE since 2026-09-29T00:08:35Z (deadline 2026-09-29T06:08:35Z) | | | | 1–4 | | 1→4, 2→4, 3→4 | | |
 
 ## Event log (append only)
 
@@ -54,3 +54,4 @@ Total deadline: 2026-09-29T20:40:47Z. Stop new work at 2026-09-29T20:10:47Z.
 - 2026-09-29T00:00:09Z 5daa5262 identified (a7260290) as the adversary's stage-3 candidate-1 bundle (evidence adversary@08a3b11c; F3-01 + F3-02), already covered by repair 1. The adversary's interim c2 results: harness 147 + 35 + 6; suites 325/325, 148/148, 50/50; the memory gate is running.
 - 2026-09-29T00:06:34Z adversary bundle c2 a80c6837 (test rev 9e49497e, evidence adversary@6bbed1a3): harness 147 + 35 + 6; suites 325/325, 148/148, 50/50; memory gate PASS (20,000 reads, peak 52.2 MiB, p99 0.21 s); F3-01 fixed; CONC 18/18; repair diff clean. No open finding. Auditor interim f69393e8 (auditor@c84ea3b5): all reproduced. Waiting for the verdict.
 - 2026-09-29T00:08:21Z **STAGE 3 ACCEPTED** by auditor-thgx (11dbc577; auditor@b8b5a9dd): candidate 51a0bdd1, stage-3 tree f586c499; stage-2 a8e6178d and stage-1 347efba5 unchanged; isolated harness 147 + 35 + 6 (fskit-001-s3-audit-4); 1 of 5 repairs; about 81 of 360 stage min; about 208 of 1440 run min. Stage 4 starts next.
+- 2026-09-29T00:08:35Z stage 4 ACTIVE. Specs 1–4 were re-read in full (stage-4 CRLF 1894b002…df1 / LF ff79140f…9a48). The evidence was merged into main at 4ce1c443; the stage-1/2/3 trees 347efba5/a8e6178d/f586c499 are unchanged. Stage-4 register r1 was written.
