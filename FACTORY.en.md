@@ -197,11 +197,30 @@ found both, which means the ceiling of this design is the imagination of one sea
 different specification, and this specification was published by the organisers, so a model may have
 had a head start on the domain.
 
-**The auditor does not run mutation.** A stronger gate would, for each criterion, break the
-behaviour that criterion describes in a private copy and confirm the mapped check is the one that
-fails. This factory reproduces instead. Reproduction caught a heap crash that every suite missed, so
-it is not nothing — but a check that passes against deliberately broken code would still look fine
-here.
+**The auditor does not run mutation, and we know what that costs.** A stronger gate would, for each
+criterion, break the behaviour that criterion describes in a private copy and confirm the mapped
+check is the one that fails. This factory reproduces instead. Reproduction caught a heap crash that
+every suite missed, so it is not nothing — but a check that passes against deliberately broken code
+would still look fine here.
+
+This is not a hypothesis. Before this run we operated **another band of ours**, also four seats, in
+which the verifier did mutate: for each criterion it deliberately broke the behaviour described and
+required the mapped check to be the one that failed. Across three stages it produced **thirteen
+rejections, and not one was a fault in the service**. All thirteen were check sets that ran green and
+did not test what they claimed. Three of them, because the pattern matters more than the anecdote:
+
+- A contrast meter that did not composite `opacity` down the tree, so text at 1.8:1 passed as
+  legible.
+- A load harness whose `except` caught only `HTTPError`, so forty-three unanswered requests left no
+  trace and the summary read `slow_responses: 0`.
+- An idempotency key built from the parsed amount, so `"15.00"` and `"15"` collided and the retry
+  moved no money.
+
+Reproduction would have found none of them: all three checks ran, finished, and reported that
+everything was fine. Breaking the behaviour was what revealed that the check was not holding it. That
+is the step this factory is missing, and it is where we would extend it first: mutate the criteria a
+delivery **adds**, not the whole accumulated set, and let the auditor's full reproduction stay as the
+regression gate.
 
 **Cost figures are estimates**, from token counts at list prices, and BAND's per-agent attribution
 moves across restarts. They are honest to an order of magnitude and no further.

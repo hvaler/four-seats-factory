@@ -207,11 +207,30 @@ imaginación de un solo asiento.
 contra otra especificación, y esta la publicaron los organizadores, así que un modelo pudo llegar
 con ventaja sobre el dominio.
 
-**El auditor no hace mutación.** Una puerta más exigente rompería, para cada criterio, el
-comportamiento que ese criterio describe en una copia privada, y confirmaría que el check mapeado es
-el que falla. Esta fábrica reproduce en vez de eso. Reproducir cazó una caída de heap que ninguna
-suite vio, así que no es poco — pero un check que pasara contra código roto a propósito seguiría
-pareciendo correcto aquí.
+**El auditor no hace mutación, y sabemos lo que eso cuesta.** Una puerta más exigente rompería, para
+cada criterio, el comportamiento que ese criterio describe en una copia privada, y confirmaría que el
+check mapeado es el que falla. Esta fábrica reproduce en vez de eso. Reproducir cazó una caída de
+heap que ninguna suite vio, así que no es poco — pero un check que pasara contra código roto a
+propósito seguiría pareciendo correcto aquí.
+
+No es una hipótesis. Antes de esta tirada corrimos **otra banda nuestra**, de cuatro asientos, en la
+que el verificador sí mutaba: para cada criterio rompía a propósito el comportamiento descrito y
+exigía que fallara justo el check mapeado. En tres stages produjo **trece rechazos, y ninguno era un
+fallo del servicio**. Los trece eran check sets que corrían en verde y no probaban lo que decían
+probar. Tres ejemplos, porque el patrón importa más que la anécdota:
+
+- Un medidor de contraste que no componía `opacity` hacia abajo en el árbol, así que texto a 1,8:1
+  pasaba como legible.
+- Un arnés de carga cuyo `except` solo capturaba `HTTPError`, así que cuarenta y tres peticiones sin
+  respuesta no dejaban rastro y el resumen decía `slow_responses: 0`.
+- Una clave de idempotencia construida desde el importe ya parseado, así que `"15.00"` y `"15"`
+  colisionaban y el reintento no movía dinero.
+
+Ninguno lo habría encontrado la reproducción: los tres checks se ejecutaban, terminaban y decían que
+todo estaba bien. Hacía falta romper el comportamiento para ver que el check no lo sujetaba. Ese es
+el escalón que le falta a esta fábrica, y es por donde la ampliaríamos primero: mutar los criterios
+que **añade** una entrega, no el conjunto acumulado, y dejar que la reproducción completa del auditor
+siga siendo la puerta de regresión.
 
 **Las cifras de coste son estimaciones**, sacadas de recuentos de tokens a precios de catálogo, y la
 atribución por agente de BAND se mueve entre reinicios. Son honestas en orden de magnitud y no más
