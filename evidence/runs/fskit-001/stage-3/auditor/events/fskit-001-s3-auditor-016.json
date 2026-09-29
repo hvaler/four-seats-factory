@@ -1,0 +1,94 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-016",
+ "sequence": 16,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:56:46Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-010..S3-085, S3-071/072/902 (upgrades), S3-904/S3-901 (regression)",
+  "section": null,
+  "obligation": "S3-010..S3-085, S3-071/072/902 (upgrades), S3-904/S3-901 (regression)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor probes on candidate 2",
+ "candidate_commit": "51a0bdd1c48207fb3e22fb163d1fd7972123aa3d",
+ "candidate_product_tree": "f586c4995f31122e887e462d54590b955f6b45a2",
+ "test_commit": "s3_probe @459189a7, s3_upgrade_probe @9abeae23, s2_api_probe @c66eae37, s2_ui_probe @9adf0051, audit_probe @9eeeae1d, audit_probe2 @236ecf35, timing_probe @31ba973b",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "see c2/*.json",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:9d61adde4e6eb1efa216b593d898cc63a270a946b0087b608c7bb79630604838",
+  "mode": "fresh containers; ACCEPTED stage-1 (sha256:cfb657fd…) and stage-2 (sha256:eb155dc9…) images for upgrades",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:55:31Z",
+  "finished_utc": "2026-09-28T23:56:46Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 197,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 197
+  }
+ },
+ "expected": "all pass",
+ "observed": "stage-3 33/33; upgrades 1->3 + 2->3 14/14; stage-2 API 31/31; UI 375+1280 44/44; stage-1 61/61 + 10/10 + 4/4",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/s3-probe-results.json",
+   "sha256": "f9405a1839c8812712913dfcdd358e3f2642c1c99209e603e40d91590b1b88f9"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/s3-upgrade-results.json",
+   "sha256": "64f8a5c05adefd95f523d1847ac79544295cf7d32ad20f3b93ba9e87004f2034"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/s2-api-on-s3.json",
+   "sha256": "422767884521bcf36e0d46cfa3b7b17948e10ea695497ca3dd0e0e4b3092a355"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/ui/ui-results.json",
+   "sha256": "8159a500e926f5ad5d8378630f3c2b0b9da1034c66affb3ac6249e690e21a1f9"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/s1-probe-on-s3.json",
+   "sha256": "5c363f199a32880ed8d55697b53bbcf561c2e61e1eef8c033ed619b089e6c314"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/s1-probe2-on-s3.json",
+   "sha256": "1b55ac532cc65f4a406fa6d8c02382e987f87cb9d65d8f854cfd1220f03c0414"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/s1-timing-on-s3.json",
+   "sha256": "6831bcb3f4e70de66cd10b2e2a6caa9742b51cd3b43520db213d03fd87906c11"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host; export contents never stored."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "47a2a349-2c9e-4087-acd1-e70a94c2cc07"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

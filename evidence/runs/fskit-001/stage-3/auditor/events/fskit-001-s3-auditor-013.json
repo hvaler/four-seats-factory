@@ -1,0 +1,76 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-013",
+ "sequence": 13,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:51:29Z",
+ "event_type": "FINDING_RECHECK",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S1-058,S1-013,S3-060 (F3-A01/F3-02)",
+  "section": null,
+  "obligation": "S1-058,S1-013,S3-060 (F3-A01/F3-02)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Memory gate: 20000 first statement reads over 500 payments",
+ "candidate_commit": "51a0bdd1c48207fb3e22fb163d1fd7972123aa3d",
+ "candidate_product_tree": "f586c4995f31122e887e462d54590b955f6b45a2",
+ "test_commit": "auditor tools/risk_snapshot_count.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "risk_snapshot_count.py :9305 500 20000 (20 in flight) + 5 s docker stats timeline",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:9d61adde4e6eb1efa216b593d898cc63a270a946b0087b608c7bb79630604838",
+  "mode": "--cpus 2 --memory 2g fresh container",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:49:39Z",
+  "finished_utc": "2026-09-28T23:51:29Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 20000,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 20000
+  }
+ },
+ "expected": "no crash, no 5xx (analyst gate 4c1e1466)",
+ "observed": "20000/20000 reads 200, no failure, wall 109 s; container running, exit 0, OOMKilled false, 39.67 MiB after (candidate 1: crash at 4761 reads, 1.06 GiB)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/risk-snapshot-count.jsonl",
+   "sha256": "4296b1c1bcadcca3749f8a4b420a00564594b8a7eb88c20e424046ad74e3493c"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c2/risk-mem-timeline.txt",
+   "sha256": "2bdc894035b6becdf37195754ef2db4ef3867435e822d7e4f88e17863e93e1ba"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host; 500-payment history."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "47a2a349-2c9e-4087-acd1-e70a94c2cc07"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s3-auditor-009"
+ ],
+ "reason": null
+}
