@@ -4,6 +4,10 @@
 
 **Track:** Pocketful · **Equipo:** four-seats · **Licencia:** MIT
 
+**[Demo en vivo](https://four-seats-factory.onrender.com/login)** ·
+**[Presentación (PDF, en inglés)](docs/presentation/four-seats-factory.pdf)** ·
+**[Índice de evidencia](EVIDENCE-INDEX.md)** · **[Cómo funciona la fábrica](FACTORY.es.md)**
+
 Cuatro asientos de agente en una sala de BAND Desktop: un **analyst** que convierte la
 especificación en obligaciones numeradas, un **implementer** que construye, un **adversary** que
 intenta refutar lo construido, y un **auditor** que reproduce la evidencia antes de que se acepte

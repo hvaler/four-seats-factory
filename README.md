@@ -4,6 +4,10 @@
 
 **Track:** Pocketful · **Team:** four-seats · **Licence:** MIT
 
+**[Live demo](https://four-seats-factory.onrender.com/login)** ·
+**[Presentation (PDF)](docs/presentation/four-seats-factory.pdf)** ·
+**[Evidence index](EVIDENCE-INDEX.md)** · **[How the factory works](FACTORY.md)**
+
 Four agent seats in one BAND Desktop room: an **analyst** who turns the specification into numbered
 obligations, an **implementer** who builds, an **adversary** who tries to refute what was built, and
 an **auditor** who reproduces the evidence before anything is accepted. No seat accepts its own
