@@ -7,8 +7,8 @@ Six source→target pairs are required: 1→2, 1→3, 2→3, 1→4, 2→4, 3→4
 | 1→2 | beeaec72 / stage-1 347efba5 | 68583038 / stage-2 a8e6178d | adversary@4abc62a9 BUNDLE-c2 (XC 1→2 in both D2-18 shapes, D2-13 byte-identical replays) | auditor@fa5f5186 UPGRADE-1to2.md (fresh containers; populated stage-1 export; receipts byte-identical; browser session continuity; lost pay recovered with money moved once; pending request paid from /requests) | PASS | verdict 4ced8436 |
 | 1→3 | beeaec72 / stage-1 347efba5 | 51a0bdd1 / stage-3 f586c499 | adversary@6bbed1a3 BUNDLE-c2 (XC 1→3) | auditor@b8b5a9dd UPGRADE-1to3-2to3.md (fresh containers; byte-identical receipts; history, corrections, linked 422s) | PASS | verdict 11dbc577 |
 | 2→3 | 68583038 / stage-2 a8e6178d | 51a0bdd1 / stage-3 f586c499 | adversary@6bbed1a3 BUNDLE-c2 (XC 2→3, D3-18) | auditor@b8b5a9dd UPGRADE-1to3-2to3.md (holds imported and capturable; D3-18 void at the import; history) | PASS | verdict 11dbc577 |
-| 1→4 | | | | | NOT_RUN | |
-| 2→4 | | | | | NOT_RUN | |
-| 3→4 | | | | | NOT_RUN | |
+| 1→4 | beeaec72 / stage-1 347efba5 | 18194706 / stage-4 c7d50a97 | adversary@2b8a4f2a BUNDLE-c1 | auditor@661a64d3 (fresh containers; byte-identical receipts) | PASS | verdict 10381cd3 |
+| 2→4 | 68583038 / stage-2 a8e6178d | 18194706 / stage-4 c7d50a97 | adversary@2b8a4f2a BUNDLE-c1 | auditor@661a64d3 (holds and captures imported; refunds of imported captures) | PASS | verdict 10381cd3 |
+| 3→4 | 51a0bdd1 / stage-3 f586c499 | 18194706 / stage-4 c7d50a97 | adversary@2b8a4f2a BUNDLE-c1 | auditor@661a64d3 (revision histories kept; snapshot per D4-13; batch reversal of an imported settlement) | PASS | verdict 10381cd3 |
 
 Snapshot contents and credentials are never stored here or in the room; the records hold only checksums and booleans.
