@@ -67,12 +67,12 @@ function selectedRevision(p, K, seqMax = Infinity) {
 
 const currentRevision = (p) => p.revisions[p.revisions.length - 1];
 
-// Payment movements for a user under known_at K, with an optional override
-// (payment -> revision) used to evaluate a proposed correction.
-function paymentEvents(user, K, override, seqMax = Infinity) {
+// Payment movements for a user under known_at K, with optional overrides
+// (Map payment -> revision) used to evaluate proposed corrections.
+function paymentEvents(user, K, overrides, seqMax = Infinity) {
   const out = [];
   for (const p of user.payments) {
-    const rev = override && override.payment === p ? override.revision : selectedRevision(p, K, seqMax);
+    const rev = overrides && overrides.has(p) ? overrides.get(p) : selectedRevision(p, K, seqMax);
     if (!rev) continue;
     const sign = p.fromId === user.id ? -1n : 1n;
     out.push({ t: rev.effNs, delta: sign * rev.amount, payment: p, revision: rev });
@@ -138,9 +138,9 @@ function heldAt(s, user, A, K) {
 
 // Evaluates (total, available) at every boundary of a user's history, with
 // all movements at one instant netted together. Returns a Map t -> {total, available}.
-function boundaries(s, user, override) {
+function boundaries(s, user, overrides) {
   const events = [
-    ...paymentEvents(user, Infinity, override).map((e) => ({ t: e.t, dt: e.delta, dh: 0n })),
+    ...paymentEvents(user, Infinity, overrides).map((e) => ({ t: e.t, dt: e.delta, dh: 0n })),
     ...holdEvents(s, user).map((e) => ({ t: e.t, dt: 0n, dh: e.delta })),
   ].sort((x, y) => (x.t < y.t ? -1 : x.t > y.t ? 1 : 0));
   const out = [];
@@ -168,13 +168,13 @@ function valueAt(steps, opening, t) {
   return v;
 }
 
-// D3-21. True when replacing `payment`'s current revision with `proposed` would make a
+// D3-21. True when replacing current revisions with the proposed ones (Map payment -> revision) would make a
 // user's total or available negative at some boundary where it is not already
 // at least that negative under the current history (so imprecise imported
 // history can never block an unrelated correction).
-function overdraws(s, user, payment, proposed, nowNs) {
+function overdraws(s, user, overrides, nowNs) {
   const before = boundaries(s, user, null);
-  const after = boundaries(s, user, { payment, revision: proposed });
+  const after = boundaries(s, user, overrides);
   for (const b of after) {
     if (b.t > nowNs) break; // D3-11: past boundaries only
     if (b.total >= 0n && b.available >= 0n) continue;

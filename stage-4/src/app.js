@@ -169,6 +169,7 @@ function paymentView(s, p) {
     request_id: p.requestId,
     settlement_id: p.settlementId,
     authorization_id: p.authorizationId,
+    refund_of: p.refundOf,
     created_at: p.createdAt,
   };
 }
@@ -219,6 +220,7 @@ function recordPayment(s, fields) {
     requestId: null,
     settlementId: null,
     authorizationId: null,
+    refundOf: null,
     ...fields,
   };
   store.addPayment(s, payment);
@@ -831,6 +833,7 @@ function revisionView(p, v) {
     effective_at: v.effectiveAt,
     recorded_at: v.recordedAt,
     reason: v.reason,
+    correction_batch_id: v.correctionBatchId,
   };
 }
 
@@ -864,13 +867,14 @@ function createCorrection(ctx) {
   const p = s.paymentById.get(ctx.params[0]);
   if (!p) throw notFound('no such payment');
   if (p.fromId !== user.id) throw forbidden('only the original sender may correct this payment');
-  if (p.settlementId !== null || p.authorizationId !== null) {
-    throw new ApiError(422, 'linked_payment_immutable', 'settlement members and captures cannot be corrected');
+  if (p.settlementId !== null || p.authorizationId !== null || p.refundOf !== null) {
+    throw new ApiError(422, 'linked_payment_immutable', 'settlement members, captures and refunds cannot be corrected here');
   }
   const current = ledger.currentRevision(p);
   if (f.expected !== BigInt(current.revision)) {
     throw conflict('stale_revision', `the current revision is ${current.revision}`);
   }
+  if (f.amount < p.refunded) throw refundExceeds('a payment cannot be corrected below its refunded amount');
   const sender = s.users.get(p.fromId);
   const receiver = s.users.get(p.toId);
   const diff = f.amount - current.amount;
@@ -881,11 +885,10 @@ function createCorrection(ctx) {
   }
 
   // Recorded times strictly increase per payment, as instants and as strings.
-  let recMs = nowMs;
-  const lastRecMs = Number(current.recNs / ledger.NS_PER_MS);
-  if (recMs <= lastRecMs) recMs = lastRecMs + 1;
+  const recMs = store.nextRecordedMs(s, nowMs, [current.recNs]);
   const proposed = store.revision(current.revision + 1, f.amount, f.effectiveAt, store.timestamp(new Date(recMs)), f.reason);
-  if (ledger.overdraws(s, sender, p, proposed, nowNs) || ledger.overdraws(s, receiver, p, proposed, nowNs)) {
+  const overrides = new Map([[p, proposed]]);
+  if (ledger.overdraws(s, sender, overrides, nowNs) || ledger.overdraws(s, receiver, overrides, nowNs)) {
     throw conflict('historical_overdraft', 'the correction would make a balance negative at a past instant');
   }
 
@@ -893,6 +896,139 @@ function createCorrection(ctx) {
   receiver.balance += diff;
   p.revisions.push(store.stamp(s, proposed));
   return idem.commit(revisionView(p, proposed));
+}
+
+const refundExceeds = (m) => new ApiError(422, 'refund_exceeds_payment', m);
+
+// Stage 4: a refund is a new payment from the original receiver back to the
+// original sender, limited to the target's current corrected amount (D4-01).
+function createRefund(ctx) {
+  const user = authenticate(ctx);
+  const body = bodyObject(ctx);
+  const idem = idempotency(ctx, user, body);
+  if (idem.replay) return idem.replay;
+
+  const amount = ruleAmount(body.amount);
+  const s = store.current();
+  const target = s.paymentById.get(ctx.params[0]);
+  if (!target) throw notFound('no such payment');
+  if (target.toId !== user.id) throw forbidden('only the original receiver may refund this payment');
+  if (target.refundOf !== null) throw new ApiError(422, 'invalid_refund_target', 'a refund cannot be refunded');
+  if (target.refunded + amount > ledger.currentRevision(target).amount) {
+    throw refundExceeds('refunds would exceed the payment\'s current amount');
+  }
+  const nowMs = Date.now();
+  if (store.available(s, user, nowMs) < amount) {
+    throw conflict('insufficient_funds', 'your available balance is below the amount');
+  }
+  const sender = s.users.get(target.fromId);
+  user.balance -= amount;
+  sender.balance += amount;
+  const refund = recordPayment(s, {
+    fromId: user.id,
+    toId: sender.id,
+    amount,
+    note: target.note,
+    visibility: target.visibility,
+    refundOf: target.id,
+    createdAt: store.timestamp(new Date(nowMs)),
+  });
+  return idem.commit(paymentView(s, refund));
+}
+
+// Stage 4: an operator corrects several payments atomically (D4-06 precedence).
+function createCorrectionBatch(ctx) {
+  const user = authenticate(ctx);
+  const s0 = store.current();
+  if (!s0.operators.has(user.id)) throw forbidden('only a settlement operator may do this');
+  const body = bodyObject(ctx);
+  const idem = idempotency(ctx, user, body);
+  if (idem.replay) return idem.replay;
+
+  // Batch shape.
+  const items = body.corrections;
+  if (!Array.isArray(items) || items.length < 1 || items.length > MAX_TRANSFERS) {
+    throw invalid(`corrections must be an array of 1 to ${MAX_TRANSFERS} entries`);
+  }
+  const seen = new Set();
+  items.forEach((it, i) => {
+    if (!isObject(it)) throw invalid(`corrections[${i}] must be an object`);
+    if (typeof it.payment_id !== 'string' || it.payment_id === '') throw invalid(`corrections[${i}].payment_id must be a string`);
+    if (seen.has(it.payment_id)) throw invalid('corrections must name distinct payments');
+    seen.add(it.payment_id);
+  });
+
+  // Items in input order, each in D3-01 order; the first failing item decides.
+  const nowMs = Date.now();
+  const nowNs = ledger.nowNs(nowMs);
+  const s = store.current();
+  const planned = items.map((it) => {
+    const f = correctionFields(it, nowNs);
+    const p = s.paymentById.get(it.payment_id);
+    if (!p) throw notFound(`no such payment: ${it.payment_id}`);
+    if (p.authorizationId !== null || p.refundOf !== null) {
+      throw new ApiError(422, 'linked_payment_immutable', 'captures and refunds cannot be corrected');
+    }
+    const current = ledger.currentRevision(p);
+    if (f.expected !== BigInt(current.revision)) {
+      throw conflict('stale_revision', `the current revision of ${p.id} is ${current.revision}`);
+    }
+    if (f.amount < p.refunded) throw refundExceeds(`${p.id} cannot be corrected below its refunded amount`);
+    return { p, f, current, effNs: ledger.parseInstant(f.effectiveAt) };
+  });
+
+  // Settlement completeness, then identical member instants.
+  const settlements = new Set(planned.filter((x) => x.p.settlementId !== null).map((x) => x.p.settlementId));
+  for (const sid of settlements) {
+    const members = s.settlements.get(sid);
+    const memberIds = members ? members.paymentIds : [];
+    if (!memberIds.every((pid) => seen.has(pid))) {
+      throw new ApiError(422, 'incomplete_settlement', `every member of settlement ${sid} must be corrected together`);
+    }
+  }
+  for (const sid of settlements) {
+    const instants = new Set(planned.filter((x) => x.p.settlementId === sid).map((x) => x.effNs.toString()));
+    if (instants.size !== 1) throw invalid(`members of settlement ${sid} must share one effective instant`);
+  }
+
+  // Combined current available funds.
+  const net = new Map();
+  for (const x of planned) {
+    const diff = x.f.amount - x.current.amount;
+    const sender = s.users.get(x.p.fromId);
+    const receiver = s.users.get(x.p.toId);
+    net.set(sender, (net.get(sender) || 0n) - diff);
+    net.set(receiver, (net.get(receiver) || 0n) + diff);
+  }
+  for (const [wallet, delta] of net) {
+    if (delta < 0n && store.available(s, wallet, nowMs) + delta < 0n) {
+      throw conflict('insufficient_funds', 'the batch is not affordable with current available funds');
+    }
+  }
+
+  // One shared recorded_at, strictly later than every member's previous one.
+  const recMs = store.nextRecordedMs(s, nowMs, planned.map((x) => x.current.recNs));
+  const recordedAt = store.timestamp(new Date(recMs));
+  const batchId = store.newId('cb_', new Set());
+  const overrides = new Map();
+  for (const x of planned) {
+    overrides.set(x.p, store.revision(x.current.revision + 1, x.f.amount, x.f.effectiveAt, recordedAt, x.f.reason, batchId));
+  }
+
+  // Combined historical total and available at every past boundary.
+  for (const wallet of net.keys()) {
+    if (ledger.overdraws(s, wallet, overrides, nowNs)) {
+      throw conflict('historical_overdraft', 'the batch would make a balance negative at a past instant');
+    }
+  }
+
+  for (const [wallet, delta] of net) wallet.balance += delta;
+  for (const [p, rev] of overrides) p.revisions.push(store.stamp(s, rev));
+  return idem.commit({
+    correction_batch_id: batchId,
+    recorded_at: recordedAt,
+    revisions: planned.map((x) => revisionView(x.p, overrides.get(x.p))),
+  });
 }
 
 function listRevisions(ctx) {
@@ -948,6 +1084,8 @@ const ROUTES = [
   ['GET', /^\/me$/, me],
   ['POST', /^\/payments$/, createPayment],
   ['POST', /^\/payments\/([^/]+)\/corrections$/, createCorrection],
+  ['POST', /^\/payments\/([^/]+)\/refunds$/, createRefund],
+  ['POST', /^\/correction-batches$/, createCorrectionBatch],
   ['GET', /^\/payments\/([^/]+)\/revisions$/, listRevisions],
   ['GET', /^\/statement$/, statement],
   ['POST', /^\/requests$/, createRequest],

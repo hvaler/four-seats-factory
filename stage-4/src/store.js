@@ -23,7 +23,7 @@ const VISIBILITIES = new Set(['public', 'private']);
 const MINOR_UNITS = new Set([0, 2, 3]);
 const MAX_ID = 64;
 const DEFAULT_TTL = 600;
-const SCHEMA = 3;
+const SCHEMA = 4;
 const RFC3339 = /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-]\d\d:\d\d)$/i;
 
 function newState(currency = 'EUR', minorUnits = 2) {
@@ -48,6 +48,7 @@ function newState(currency = 'EUR', minorUnits = 2) {
     idem: new Map(),
     snapshots: new Map(),
     seq: 0,
+    lastRecNs: 0n,
   };
 }
 
@@ -89,9 +90,10 @@ function addUser(s, user) {
 
 // Every payment has an immutable revision history; revision 1 is the original
 // amount with effective_at = recorded_at = created_at.
-function revision(number, amount, effectiveAt, recordedAt, reason) {
+function revision(number, amount, effectiveAt, recordedAt, reason, correctionBatchId = null) {
   return {
     revision: number,
+    correctionBatchId,
     amount,
     effectiveAt,
     effNs: ledger.ns(effectiveAt),
@@ -105,11 +107,27 @@ function revision(number, amount, effectiveAt, recordedAt, reason) {
 function stamp(s, rev) {
   if (rev.seq === undefined) rev.seq = (s.seq += 1);
   else if (rev.seq > s.seq) s.seq = rev.seq;
+  if (rev.recNs > s.lastRecNs) s.lastRecNs = rev.recNs;
   return rev;
+}
+
+// The next recorded time (ms): not before now, strictly after every recorded
+// time so far (service-wide) and after the given per-payment floors.
+function nextRecordedMs(s, nowMs, floorsNs) {
+  let ms = nowMs;
+  for (const ns of [s.lastRecNs, ...floorsNs]) {
+    const floor = Number(ns / ledger.NS_PER_MS);
+    if (ms <= floor) ms = floor + 1;
+  }
+  return ms;
 }
 
 function addPayment(s, payment) {
   payment.createdNs = ledger.ns(payment.createdAt);
+  if (payment.refundOf === undefined) payment.refundOf = null;
+  payment.refunded = 0n;
+  // A refund counts against its target's refundable amount (stage 4).
+  if (payment.refundOf !== null) s.paymentById.get(payment.refundOf).refunded += payment.amount;
   if (!payment.revisions) payment.revisions = [revision(1, payment.amount, payment.createdAt, payment.createdAt, '')];
   for (const rev of payment.revisions) stamp(s, rev);
   s.payments.push(payment);
@@ -432,6 +450,7 @@ function exportState(s) {
       request_id: p.requestId,
       settlement_id: p.settlementId,
       authorization_id: p.authorizationId,
+      refund_of: p.refundOf,
       created_at: p.createdAt,
       revisions: p.revisions.map((v) => ({
         revision: v.revision,
@@ -440,6 +459,7 @@ function exportState(s) {
         recorded_at: v.recordedAt,
         reason: v.reason,
         seq: v.seq,
+        correction_batch_id: v.correctionBatchId,
       })),
     })),
     requests: s.requests.map((r) => ({
@@ -511,7 +531,7 @@ function stateFromExport(doc) {
   const st = obj(doc.state, 'state');
 
   const schema = st.schema === undefined ? 1n : jint(st.schema, 'state.schema');
-  need(schema >= 1n && schema <= 3n, 'state.schema is not supported');
+  need(schema >= 1n && schema <= 4n, 'state.schema is not supported');
   const currency = str(st.currency, 'state.currency');
   need(currency.length > 0, 'state.currency must not be empty');
   const minorUnits = Number(jint(st.minor_units, 'state.minor_units'));
@@ -576,8 +596,10 @@ function stateFromExport(doc) {
       requestId: nullableId(p.request_id, 'payment request_id'),
       settlementId: nullableId(p.settlement_id, 'payment settlement_id'),
       authorizationId: nullableId(p.authorization_id, 'payment authorization_id'),
+      refundOf: nullableId(p.refund_of, 'payment refund_of'),
       createdAt: ts(p.created_at, 'payment created_at'),
     };
+    need(payment.refundOf === null || s.paymentById.has(payment.refundOf), 'refund refers to an unknown payment');
     if (schema >= 3n) {
       payment.revisions = arr(p.revisions, 'payment revisions').map((v, n) => {
         obj(v, 'payment revision');
@@ -586,6 +608,7 @@ function stateFromExport(doc) {
           ts(v.recorded_at, 'revision recorded_at'), str(v.reason, 'revision reason'));
         need(rev.amount >= 0n, 'revision amount must not be negative');
         if (v.seq !== undefined) rev.seq = Number(jint(v.seq, 'revision seq'));
+        if (v.correction_batch_id !== undefined) rev.correctionBatchId = nullableId(v.correction_batch_id, 'revision correction_batch_id');
         return rev;
       });
       need(payment.revisions.length >= 1, 'a payment needs revision 1');
@@ -752,6 +775,7 @@ module.exports = {
   addAuthorization,
   revision,
   stamp,
+  nextRecordedMs,
   sweep,
   close,
   remaining,

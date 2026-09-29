@@ -1,8 +1,8 @@
 {
-  "name": "pocketful-stage-3",
+  "name": "pocketful-stage-4",
   "version": "1.0.0",
   "private": true,
-  "description": "Pocketful stage 3: wallet screens, payments, authorizations, statements and payment corrections",
+  "description": "Pocketful stage 4: wallet screens, payments, authorizations, statements, corrections, refunds and batch corrections",
   "main": "src/server.js",
   "engines": {
     "node": ">=22"
