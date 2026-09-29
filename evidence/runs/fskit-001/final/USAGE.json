@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-09-29T04:40:24Z",
+  "source": "band usage agents --json (Band 0.4.11, ccusage-backed)",
+  "method": "catalog-estimated USD at provider list prices from runtime token counts; not a bill; no spend cap was applied during the run; BAND attribution can move across restarts",
+  "room": "83139981-6931-481f-b8a4-d6f6ca9d41eb",
+  "agents": [
+    {
+      "agentId": "f6bf20d6-c769-4d36-bb79-47d5e384287a",
+      "peerId": "default/auditor-thgx",
+      "peerName": "hugo.valer/auditor-thgx",
+      "sessionCount": 1,
+      "inputTokens": 716,
+      "outputTokens": 335048,
+      "cacheCreationTokens": 726650,
+      "cacheReadTokens": 129927045,
+      "reasoningTokens": 0,
+      "totalCost": 38.50243300000001,
+      "lastActivity": "2026-09-29T02:23:28.924Z"
+    },
+    {
+      "agentId": "f603ac21-88ea-434a-844e-bb621f8da63e",
+      "peerId": "default/adversary-thgz",
+      "peerName": "hugo.valer/adversary-thgz",
+      "sessionCount": 1,
+      "inputTokens": 664,
+      "outputTokens": 377432,
+      "cacheCreationTokens": 721558,
+      "cacheReadTokens": 124895387,
+      "reasoningTokens": 0,
+      "totalCost": 38.302837400000016,
+      "lastActivity": "2026-09-29T01:12:46.936Z"
+    },
+    {
+      "agentId": "156a2fed-f92e-4453-8e6c-75ecdb48ef20",
+      "peerId": "default/implementer-thgt",
+      "peerName": "hugo.valer/implementer-thgt",
+      "sessionCount": 1,
+      "inputTokens": 628,
+      "outputTokens": 325382,
+      "cacheCreationTokens": 635114,
+      "cacheReadTokens": 106104870,
+      "reasoningTokens": 0,
+      "totalCost": 32.81203800000001,
+      "lastActivity": "2026-09-29T01:12:50.989Z"
+    },
+    {
+      "agentId": "fd5095ef-bafa-4039-b597-3f160b75cf21",
+      "peerId": "default/analyst-thgs",
+      "peerName": "hugo.valer/analyst-thgs",
+      "sessionCount": 1,
+      "inputTokens": 762,
+      "outputTokens": 200909,
+      "cacheCreationTokens": 479992,
+      "cacheReadTokens": 92254044,
+      "reasoningTokens": 0,
+      "totalCost": 26.3119728,
+      "lastActivity": "2026-09-29T02:42:59.024Z"
+    }
+  ],
+  "totals": {
+    "inputTokens": 2770,
+    "outputTokens": 1238771,
+    "cacheCreationTokens": 2563314,
+    "cacheReadTokens": 453181346,
+    "totalCost": 135.92928120000005
+  }
+}

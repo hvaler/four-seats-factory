@@ -10,31 +10,40 @@ intenta refutar lo construido, y un **auditor** que reproduce la evidencia antes
 nada. Ningún asiento acepta su propio trabajo.
 
 **En esta sala existe un solo mensaje humano.** Autorizó los cuatro stages y no dijo nada más. Cada
-stage posterior al primero lo abrió el propio analyst, cuatro minutos después de que se aceptara el
-anterior.
+stage posterior al primero lo abrió el propio analyst, sin intervención humana.
 
 ## Qué hay aquí
 
 | | |
 |---|---|
-| Stages | **4 de 4**, cada uno congelado y auditado de forma independiente |
-| Harness público, `--all --mode isolated`, desde un clon nuevo | cada carpeta reclama su stage, **el 100% de sus checks**, sin desbordar al siguiente |
-| Rechazos del auditor | **2**, los dos reparados y reauditados dentro de la tirada |
+| Stages | **4 de 4**, cada uno congelado y aceptado por el auditor |
+| Harness público, `--all --mode isolated`, desde un clon nuevo | cada carpeta reclama su stage con **el 100% de sus checks públicos**; los stages 1 a 3 fallan la suite siguiente, como deben |
+| Candidatos rechazados | **2**, con **3 hallazgos** —dos del adversary, uno del auditor—, todos reparados y reauditados dentro de la tirada |
 | Tiempo de pared | **4 h 14 min**, del despacho al informe final |
-| Gasto en modelo | **~136 $**, estimado a precios de catálogo |
+| Gasto en modelo | **~136 $**, estimado a precios de catálogo; no es una factura |
+
+Las cifras del harness son los checks **públicos** del kickoff. Son una parte de lo que se aplica
+antes de juzgar, y no afirmamos nada sobre la evaluación oculta.
 
 Uno de esos rechazos es la razón por la que merece la pena leer este repositorio. Sobre un candidato
 del stage 3 el harness oficial lo pasó todo —147 + 35 + 6 checks en modo aislado, cero omitidos, más
 150/150 de regresión y 14/14 de migraciones— y el auditor lo rechazó igualmente, porque su propia
 sonda hizo que el servicio **se cayera con un desbordamiento de heap tras 4.761 lecturas de
-extracto** y perdiera todo el estado. `FACTORY.es.md` los cuenta enteros.
+extracto** y perdiera todo el estado. Tras la reparación, 20.000 lecturas devolvieron 200 y el
+contenedor se quedó en 39,7 MiB. `FACTORY.es.md` cuenta los tres hallazgos enteros.
 
 ## Mapa
 
-- **`FACTORY.es.md`** — el diseño, los resultados medidos, los dos rechazos, lo que costó y las cuatro
-  cosas que le diríamos al siguiente equipo. Empieza por ahí.
-- `mandates/` — las cuatro instrucciones permanentes, tal cual se cargaron en los asientos. Lee una
-  entera: en ningún momento dice cuál es el producto.
+- **`FACTORY.es.md`** — el diseño, los resultados medidos, los dos rechazos, lo que costó y lo que le
+  diríamos al siguiente equipo. Empieza por ahí.
+- **[`EVIDENCE-INDEX.md`](EVIDENCE-INDEX.md)** — cada afirmación de este README, con el fichero que la
+  respalda y el comando que la reproduce (en inglés).
+- **[`RUNBOOK.es.md`](RUNBOOK.es.md)** y `setup/` — cómo volver a levantar la fábrica y apuntarla a
+  otro problema.
+- `mandates/` — las cuatro instrucciones permanentes. El cuerpo de cada una es el texto que se cargó en
+  su asiento; las líneas de cabecera `Harness` / `Model` se normalizaron después al ID exacto que
+  registraron los asientos (`claude-opus-5-5`, ver la decisión D-17). Lee una entera: en ningún
+  momento dice cuál es el producto.
 - `stage-1/` … `stage-4/` — un servicio autónomo por stage. Cada uno se construye y arranca solo,
   sin depender de los demás.
 - `verification/adversary/stage-N/` — las suites propias del adversary, versionadas y separadas del
@@ -42,7 +51,9 @@ extracto** y perdiera todo el estado. `FACTORY.es.md` los cuenta enteros.
 - `evidence/runs/fskit-001/` — el registro: obligaciones, handoffs, veredictos, tiradas del harness
   e informes de migración. Cada afirmación enlaza una obligación, una revisión de producto, una
   revisión de tests, un comando y un resultado real.
-- `room.json` — la sesión completa exportada de BAND. El único mensaje humano es fácil de encontrar.
+- `room.json` — la sesión completa exportada de BAND. El único mensaje humano es `3f95ab60`. Se
+  redactaron cuatro leases de receptor; [`REDACTION.md`](REDACTION.md) deja constancia de qué y prueba
+  que nada más cambió.
 
 ## Cómo ejecutarlo
 
@@ -56,10 +67,19 @@ python -m harness run --track pocketful --repo <este repo> --stage 1 --mode isol
 `--stage 2`, `3` y `4` hacen lo mismo con las carpetas posteriores, y `--all` verifica la cadena
 entera. Los stages 2 a 4 sirven una interfaz de navegador; el harness la recorre a 375 px y 1280 px.
 
+## Licencia
+
+Todo el repositorio, carpetas de stage incluidas, está bajo la licencia MIT de [`LICENSE`](LICENSE).
+El implementer escribió el `package.json` de cada stage con `"private": true` y
+`"license": "UNLICENSED"`, los metadatos de npm para un paquete que no se va a publicar. Ese campo no
+es la licencia de este repositorio. No lo tocamos porque editarlo cambiaría árboles de producto que
+el auditor ya había aceptado, y una edición humana sobre trabajo aceptado es justo lo que esta tirada
+evitó. Si parecen contradecirse, manda el `LICENSE` de la raíz.
+
 ## Lo que no afirmamos
 
-Dos rechazos no son muchos, y desde dentro de la tirada no podemos saber si un tercer defecto se
-coló entre los cuatro filtros. Una tirada es un solo dato. El auditor reproduce, pero no hace
+Tres hallazgos no son muchos, y desde dentro de la tirada no podemos saber si un cuarto se coló entre
+los cuatro filtros. Una tirada es un solo dato. El auditor reproduce, pero no hace
 pruebas de mutación: un check que pasara contra código roto a propósito seguiría pareciendo correcto
 aquí. Las cifras de coste son estimaciones a partir de recuentos de tokens, no una factura.
 `FACTORY.es.md` dice todo esto con más detalle, porque una fábrica que esconde sus límites no es una

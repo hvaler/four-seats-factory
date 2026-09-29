@@ -13,23 +13,28 @@ En toda la sala existe un solo mensaje humano. Autorizó cuatro stages y no volv
 
 | | |
 |---|---|
-| Stages entregados | **4 de 4**, cada uno congelado y auditado de forma independiente |
-| Harness público, `--all --mode isolated`, clon nuevo | **cada carpeta reclama su stage, el 100% de sus checks, sin desbordar** |
-| Rechazos del auditor | **2**, los dos reparados y reauditados dentro de la tirada |
+| Stages entregados | **4 de 4**, cada uno congelado y aceptado por el auditor |
+| Harness público, `--all --mode isolated`, clon nuevo | cada carpeta reclama su stage con **el 100% de sus checks públicos** |
+| Candidatos rechazados | **2**, con **3 hallazgos distintos**, todos reparados y reauditados dentro de la tirada |
 | Mensajes humanos en la sala | **1** |
 | Tiempo de pared, del despacho al informe final | **4 h 14 min** |
-| Gasto en modelo, precios de catálogo | **~136 $** |
+| Gasto en modelo, precios de catálogo | **~136 $** (estimación, no factura) |
 
-```
-stage-1 -> reclama 1   share 1.0   overshoot null
-stage-2 -> reclama 2   share 1.0   overshoot null
-stage-3 -> reclama 3   share 1.0   overshoot null
-stage-4 -> reclama 4   share 1.0   overshoot null
-```
+Lo que pasó cada carpeta en la tirada final del auditor, según los informes originales en
+[`evidence/runs/fskit-001/final/harness-isolated/`](evidence/runs/fskit-001/final/harness-isolated/INDEX.md):
 
-`share 1.0` es la totalidad de los checks de ese stage. `overshoot null` es la regla de congelación
-aguantando: ninguna carpeta pasa la suite del stage siguiente, así que cada una es la solución de su
-propio stage y no de uno posterior.
+| Carpeta | Suite 1 | Suite 2 | Suite 3 | Suite 4 | Reclama |
+|---|---|---|---|---|---|
+| `stage-1/` | 147/147 | *falla, como debe* | | | stage 1 |
+| `stage-2/` | 147/147 | 35/35 | *falla, como debe* | | stage 2 |
+| `stage-3/` | 147/147 | 35/35 | 6/6 | *falla, como debe* | stage 3 |
+| `stage-4/` | 147/147 | 35/35 | 6/6 | 5/5 | stage 4 |
+
+Que los stages 1 a 3 fallen la suite siguiente es la regla de congelación aguantando: cada carpeta es
+la solución de su propio stage y no de uno posterior. El stage 4 no tiene suite siguiente, así que no
+hay nada que pueda fallar. Son los checks **públicos** del kickoff (`preview: true`); el propio
+harness avisa de que son una parte de lo que se aplica antes de juzgar, y no afirmamos nada sobre la
+evaluación oculta.
 
 ## Los asientos
 
@@ -44,15 +49,22 @@ El roster de esta tirada:
 
 | Nombre visible | @handle | Id de agente en Band | Harness | Modelo |
 |---|---|---|---|---|
-| analyst | hugo.valer/analyst-thgs | fd5095ef-bafa-4039-b597-3f160b75cf21 | Claude Code | claude-opus-5 |
-| implementer | hugo.valer/implementer-thgt | 156a2fed-f92e-4453-8e6c-75ecdb48ef20 | Claude Code | claude-opus-5 |
-| adversary | hugo.valer/adversary-thgz | f603ac21-88ea-434a-844e-bb621f8da63e | Claude Code | claude-opus-5 |
-| auditor | hugo.valer/auditor-thgx | f6bf20d6-c769-4d36-bb79-47d5e384287a | Claude Code | claude-opus-5 |
+| analyst | hugo.valer/analyst-thgs | fd5095ef-bafa-4039-b597-3f160b75cf21 | Claude Code | claude-opus-5-5 |
+| implementer | hugo.valer/implementer-thgt | 156a2fed-f92e-4453-8e6c-75ecdb48ef20 | Claude Code | claude-opus-5-5 |
+| adversary | hugo.valer/adversary-thgz | f603ac21-88ea-434a-844e-bb621f8da63e | Claude Code | claude-opus-5-5 |
+| auditor | hugo.valer/auditor-thgx | f6bf20d6-c769-4d36-bb79-47d5e384287a | Claude Code | claude-opus-5-5 |
 
 Nombre visible, @handle e id de agente son tres cosas distintas. Los mandatos se dirigen entre sí
 por el segundo y la sala registra el tercero. Nada en `mandates/` nombra un pago, una pantalla, una
 ruta ni este track: para apuntar la fábrica a otro problema se cambia el despacho, y ningún mandato
-necesita edición.
+necesita edición. [`RUNBOOK.es.md`](RUNBOOK.es.md) explica cómo.
+
+**Sobre el modelo.** Claude Code es el runtime; el modelo que ejecutó cada sesión fue
+`claude-opus-5-5`, que es lo que los asientos registran en su propia evidencia (63 veces). Antes del
+despacho, la configuración del operador decía `claude-opus-5` y las cabeceras de los mandatos solo
+`Model: Opus`, nombrando la familia y no el ID exacto. El analyst lo advirtió y registró la
+discrepancia como decisión D-17 del registro del stage 1, en vez de resolverla adivinando. Las
+cabeceras llevan ahora el ID exacto; el cuerpo de cada mandato es el texto que se cargó, sin cambios.
 
 ## Por qué caza cosas
 
@@ -81,14 +93,16 @@ stage 1:
 
 ## Los dos rechazos
 
-Los dos los encontraron las sondas del propio auditor, sobre candidatos en los que el harness
-oficial ya había pasado. Ese es el argumento entero de este diseño, así que van completos.
+Se rechazaron dos candidatos, con tres hallazgos distintos. **El adversary encontró `F2-01` y
+`F3-01`; el auditor reprodujo los dos y encontró él mismo `F3-A01`.** Todos estaban en candidatos en
+los que el harness oficial ya había pasado. Ese es el argumento entero de este diseño, así que van
+completos.
 
 ### Stage 3 — el servicio se moría y todas las suites estaban en verde
 
-`F3-A01`. Con lecturas sostenidas de extracto, el proceso **se caía por desbordamiento del heap de
-V8**. Con 500 pagos de historial murió tras **4.761 lecturas**, exit 139, y perdió todo el estado.
-La memoria no se liberaba nunca.
+`F3-A01`, encontrado por la sonda del propio auditor. Con lecturas sostenidas de extracto, el
+proceso **se caía por desbordamiento del heap de V8**. Con 500 pagos de historial murió tras **4.761
+lecturas**, exit 139, con 1,06 GiB, y perdió todo el estado. La memoria no se liberaba nunca.
 
 Lo que ese mismo candidato ya había pasado, todo reproducido por el auditor en contenedores nuevos:
 
@@ -100,36 +114,48 @@ Lo que ese mismo candidato ya había pasado, todo reproducido por el auditor en 
 | Migraciones 1→3 y 2→3 en contenedores nuevos | 14/14 |
 
 Todo verde, y el servicio no aguantaba que lo usaran. La suite entregada nunca leía suficientes
-extractos para enterarse. En el mismo veredicto viajó un segundo defecto: `F3-01`, una retención
-cerrada vista a través de un `known_at` anterior no expiraba nunca en su fecha límite — `held` se
-quedaba en 1000 en `expires_at` + 1 ms, y seguía ahí en el año 2099.
+extractos para enterarse. En el mismo veredicto viajó un segundo defecto: `F3-01`, que informó el
+adversary y reprodujo el auditor — una retención cerrada vista a través de un `known_at` anterior no
+expiraba nunca en su fecha límite. `held` se quedaba en 1000 en `expires_at` + 1 ms, y seguía ahí en
+el año 2099.
 
-La reparación se enrutó junto con la obligación incumplida, se reconstruyó y se reauditó contra un
-commit nuevo. `stage-3/test/perf/statement_memory.js` existe por esto.
+La reparación se enrutó junto con las obligaciones incumplidas, se reconstruyó y se reauditó contra
+un commit nuevo. El analyst fijó la puerta: **20.000 lecturas de extracto** sobre 500 pagos, 20 en
+vuelo, en un contenedor limitado a 2 CPU y 2 GiB. En el candidato reparado las 20.000 devolvieron 200
+y el contenedor seguía corriendo con **39,7 MiB**. `stage-3/test/perf/statement_memory.js` existe por
+esto, y lo llevan todos los stages posteriores.
 
 ### Stage 2 — pequeño, y aun así bloqueó
 
-`F2-01`. Un capture rechazado no conservaba el importe tecleado: prellenado `20.00`, tecleado
-`25.00`, se muestra el rechazo, y el campo volvía sin avisar a `20.00`. No se movía dinero;
-severidad baja. El analyst había dictaminado que la fila del registro vincula, así que el candidato
-no se podía aceptar con ella abierta.
+`F2-01`, encontrado por la suite del adversary (sus dos únicos fallos en ese candidato) y reproducido
+por el auditor a 375 px y 1280 px. Un capture rechazado no conservaba el importe tecleado:
+prellenado `20.00`, tecleado `25.00`, se muestra el rechazo, y el campo volvía sin avisar a `20.00`.
+No se movía dinero; severidad baja.
 
-Lo dejamos escrito porque lo interesante es lo que **no** pasó: nadie negoció la severidad a la baja
-para entregar a tiempo.
+No es un incumplimiento del texto de la especificación. Rompía **D2-19**, una decisión que la propia
+banda había hecho vinculante en su registro. El candidato no podía aceptarse con ella abierta, así que
+la fábrica hizo cumplir sus propios criterios con el mismo rigor que los de los organizadores. Y nadie
+negoció la severidad a la baja para entregar a tiempo.
 
 ## Lo que costó
 
-Estimado a precios de catálogo del proveedor a partir de los recuentos de tokens del runtime.
-**Esto no es una factura**, y la atribución de BAND no es estable entre reinicios, así que trátese
-como un orden de magnitud.
+Estimado por BAND (`band usage agents`, que usa ccusage) a precios de catálogo del proveedor a partir
+de los recuentos de tokens del runtime. **Esto no es una factura**, no se aplicó ningún límite de
+gasto, y la atribución de BAND puede moverse entre reinicios, así que trátese como un orden de
+magnitud. Las cifras en bruto, con la hora de captura, están en
+[`evidence/runs/fskit-001/final/USAGE.json`](evidence/runs/fskit-001/final/USAGE.json).
 
-| Asiento | Tokens | Estimación |
-|---|---|---|
-| auditor | 130.989.459 | 38,50 $ |
-| adversary | 125.995.041 | 38,30 $ |
-| implementer | 107.065.994 | 32,81 $ |
-| analyst | 92.935.707 | 26,31 $ |
-| **Total** | **456.986.201** | **~136 $** |
+| Asiento | Entrada | Salida | Escritura caché | Lectura caché | Estimación |
+|---|---:|---:|---:|---:|---:|
+| auditor | 716 | 335.048 | 726.650 | 129.927.045 | 38,50 $ |
+| adversary | 664 | 377.432 | 721.558 | 124.895.387 | 38,30 $ |
+| implementer | 628 | 325.382 | 635.114 | 106.104.870 | 32,81 $ |
+| analyst | 762 | 200.909 | 479.992 | 92.254.044 | 26,31 $ |
+| **Total** | **2.770** | **1.238.771** | **2.563.314** | **453.181.346** | **135,93 $** |
+
+Más del 99 % de los tokens son lecturas de caché, que se cobran muy por debajo de la entrada nueva.
+Por eso 457 millones de tokens salen por unos 136 $: cada asiento relee su propio contexto largo en
+cada turno, y el proveedor cobra poco por eso.
 
 El gasto es casi plano entre los cuatro asientos, y los dos de verificación juntos cuestan más que
 el que construye. Eso es el diseño apareciendo en la factura: la mayor parte del dinero se va en
@@ -145,18 +171,25 @@ Horas UTC, del 2026-09-28 al 2026-09-29.
 
 | | |
 |---|---|
-| 20:40 | Despacho. Un mensaje, cuatro stages autorizados |
-| 21:35 | Stage 1 **ACEPTADO**, sin ciclo de reparación |
-| 21:39 | El analyst abre el stage 2 por su cuenta, handoff en 10 partes, sin intervención humana |
-| 22:22 | Candidato 1 del stage 2 **RECHAZADO** (`F2-01`) |
-| 22:45 | Stage 2 **ACEPTADO**, migración 1→2 verificada |
-| 23:41 | Candidato 1 del stage 3 **RECHAZADO** (`F3-A01` heap OOM, y `F3-01`) |
-| 00:07 | Stage 3 **ACEPTADO**, migraciones 1→3 y 2→3 |
-| 00:42 | Stage 4 **ACEPTADO**, migraciones 1→4, 2→4, 3→4 |
+| 20:40:49 | Despacho. Un mensaje, cuatro stages autorizados (`3f95ab60`) |
+| 21:34:58 | Stage 1 **ACEPTADO**, sin ciclo de reparación (`72be202b`) |
+| 21:39:14 | El analyst abre el stage 2 por su cuenta, handoff en 10 partes |
+| 22:23:08 | Candidato 1 del stage 2 **RECHAZADO**, `F2-01` (`4fc4757a`) |
+| 22:45:46 | Stage 2 **ACEPTADO**, migración 1→2 verificada (`4ced8436`) |
+| 23:10:50 | El analyst abre el stage 3, handoff en 13 partes |
+| 23:41:10 | Candidato 1 del stage 3 **RECHAZADO**, `F3-A01` heap OOM y `F3-01` (`b8d9c67c`) |
+| 00:08:00 | Stage 3 **ACEPTADO**, migraciones 1→3 y 2→3 (`11dbc577`) |
+| 00:10:43 | El analyst abre el stage 4 |
+| 00:42:52 | Stage 4 **ACEPTADO**, migraciones 1→4, 2→4, 3→4 (`10381cd3`) |
 | 00:54 | Verificación global **PASS** sobre un clon nuevo; informe final del analyst |
-| 00:55 | El auditor verifica el informe final de forma independiente |
+| 00:55:10 | El auditor verifica el informe final de forma independiente (`d828d505`) |
 
-Cuatro minutos entre aceptar un stage y despachar el siguiente, todas las veces, sin nadie mirando.
+Los ids son ids de mensaje de `room.json`. El analyst abrió cada stage siguiente sin ninguna
+intervención humana. Los tiempos entre aceptación y handoff fueron **4 min 16 s, 25 min 4 s y 2 min
+43 s**. El largo es el del stage 3: su handoff llevaba tres especificaciones literales en 13 partes. A
+las 23:10:02 el implementer señaló la espera en la sala —*"I am idle and listening… I have received
+no stage-3 handoff since"*— y el handoff llegó 48 segundos después. La coordinación no salió de la
+banda.
 
 ## Cómo se levanta
 
@@ -198,10 +231,23 @@ remoto ni purgar Docker. Son cuatro líneas y no cuestan nada.
 
 ## Límites honestos
 
-**Dos rechazos no son muchos.** Son reales y los dos se reprodujeron, pero desde dentro de la tirada
-no podemos saber si existe un tercer defecto que los cuatro filtros dejaron pasar. Los dos los
-encontraron las sondas del propio auditor, lo que significa que el techo de este diseño es la
-imaginación de un solo asiento.
+**Tres hallazgos no son muchos.** Son reales y los tres se reprodujeron, pero desde dentro de la
+tirada no podemos saber si existe un cuarto defecto que los cuatro filtros dejaron pasar. Los
+encontraron dos asientos —el adversary dos, el auditor uno—, así que el techo de este diseño es la
+imaginación de dos asientos independientes, y no más.
+
+**Dos áreas merecen trabajo en una siguiente tirada**, señaladas por una auditoría externa y no
+reproducidas como defectos:
+
+- *Memoria de los snapshots.* La reparación de `F3-A01` dejó de copiar el extracto entero por token,
+  pero cada lectura nueva sigue guardando un registro pequeño y nada borra tokens. El espacio por
+  token es constante; el total crece con el número de tokens emitidos. La puerta de 20.000 lecturas
+  pasó con 39,7 MiB, pero el crecimiento sostenido más allá no está medido. Cualquier arreglo tiene
+  que mantener vivos los tokens anteriores, como exige la especificación.
+- *Sobregiro histórico.* La decisión D3-21 acepta una corrección cuando una frontera pasada ya era
+  negativa y la corrección no la empeora. Es una interpretación del texto del stage 3, implementada
+  en `ledger.overdraws`, y debería probarse de forma explícita con fixtures que reconstruyan un saldo
+  de apertura negativo.
 
 **Una tirada es un solo dato.** Nada de esto demuestra que la fábrica sea repetible a esta velocidad
 contra otra especificación, y esta la publicaron los organizadores, así que un modelo pudo llegar

@@ -1,5 +1,5 @@
 Harness: Claude Code
-Model: Opus
+Model: claude-opus-5-5
 
 # Adversary
 

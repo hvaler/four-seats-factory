@@ -10,31 +10,40 @@ an **auditor** who reproduces the evidence before anything is accepted. No seat 
 work.
 
 **One human message exists in this room.** It authorised all four stages and said nothing
-afterwards. Every stage after the first was opened by the analyst itself, four minutes after the
-previous one was accepted.
+afterwards. Every stage after the first was opened by the analyst itself, with no human input.
 
 ## What is here
 
 | | |
 |---|---|
-| Stages | **4 of 4**, each frozen, each independently audited |
-| Public harness, `--all --mode isolated`, from a fresh clone | every folder claims its own stage, **100% of its checks**, no overshoot |
-| Auditor rejections | **2**, both repaired and re-audited inside the run |
+| Stages | **4 of 4**, each frozen, each accepted by the auditor |
+| Public harness, `--all --mode isolated`, from a fresh clone | every folder claims its own stage with **100% of its public checks**; stages 1–3 fail the next suite, as they must |
+| Candidates rejected | **2**, carrying **3 findings** — two found by the adversary, one by the auditor — all repaired and re-audited inside the run |
 | Wall-clock | **4 h 14 min**, dispatch to final report |
-| Model spend | **~$136**, estimated at list prices |
+| Model spend | **~$136**, estimated at list prices; not a bill |
+
+The harness figures are the **public** checks shipped with the kickoff. They are a portion of what is
+applied before judging, and we make no claim about the hidden evaluation.
 
 One of those rejections is the reason this repository is worth reading. On a stage-3 candidate the
 official harness passed everything — 147 + 35 + 6 checks, isolated mode, zero skipped, plus 150/150
 of regression and 14/14 of migrations — and the auditor rejected it anyway, because its own probe
 made the service **crash with a heap out-of-memory after 4,761 statement reads** and lose all state.
-`FACTORY.md` has both in full.
+After the repair, 20,000 reads returned 200 and the container sat at 39.7 MiB. `FACTORY.md` has all
+three findings in full.
 
 ## Map
 
-- **`FACTORY.md`** — the design, the measured results, both rejections, what it cost, and the four
-  things we would tell the next team. Start here.
-- `mandates/` — the four standing instructions, exactly as loaded into the seats. Read one end to
-  end: it never says what the product is.
+- **`FACTORY.md`** — the design, the measured results, both rejections, what it cost, and what we
+  would tell the next team. Start here.
+- **[`EVIDENCE-INDEX.md`](EVIDENCE-INDEX.md)** — every claim in this README, with the file that backs
+  it and the command that reproduces it.
+- **[`RUNBOOK.md`](RUNBOOK.md)** and `setup/` — how to stand the factory up again and point it at a
+  different problem.
+- `mandates/` — the four standing instructions. The body of each is the text loaded into its seat;
+  the `Harness` / `Model` header lines were normalised afterwards to the exact model ID the seats
+  recorded (`claude-opus-5-5`, see decision D-17). Read one end to end: it never says what the
+  product is.
 - `stage-1/` … `stage-4/` — one self-contained service per stage. Each builds and runs on its own,
   with no dependency on the others.
 - `verification/adversary/stage-N/` — the adversary's own test suites, versioned, separate from
@@ -42,7 +51,9 @@ made the service **crash with a heap out-of-memory after 4,761 statement reads**
 - `evidence/runs/fskit-001/` — the record: obligations, handoffs, verdicts, harness runs, upgrade
   reports. Every claim links an obligation, a product revision, a test revision, a command and a
   real result.
-- `room.json` — the complete session exported from BAND. The single human message is easy to find.
+- `room.json` — the complete session exported from BAND. The single human message is `3f95ab60`.
+  Four receiver leases were redacted; [`REDACTION.md`](REDACTION.md) records exactly what and proves
+  nothing else changed.
 
 ## Running it
 
@@ -56,10 +67,19 @@ python -m harness run --track pocketful --repo <this repo> --stage 1 --mode isol
 `--stage 2`, `3` and `4` do the same for the later folders, and `--all` verifies the whole chain.
 Stages 2 to 4 serve a browser UI; the harness exercises it at 375 px and 1280 px.
 
+## Licence
+
+Everything in this repository, every stage folder included, is under the MIT licence in
+[`LICENSE`](LICENSE). Each stage's `package.json` was written by the implementer with
+`"private": true` and `"license": "UNLICENSED"`, npm's metadata for a package that is not meant to be
+published. That field is not the licence of this repository. We left it untouched because editing it
+would change product trees the auditor had already accepted, and a human edit to accepted work is
+exactly what this run avoided. Where the two seem to disagree, the root `LICENSE` governs.
+
 ## What we are not claiming
 
-Two rejections is not many, and we cannot tell from inside the run whether a third defect slipped
-past all four filters. One run is one data point. The auditor reproduces but does not run mutation
+Three findings is not many, and we cannot tell from inside the run whether a fourth slipped past all
+four filters. One run is one data point. The auditor reproduces but does not run mutation
 testing, so a check that passes against deliberately broken code would still look fine here. The
 cost figures are estimates from token counts, not a bill. `FACTORY.md` says all of this at greater
 length, because a factory that hides its limits is not one you would reuse.

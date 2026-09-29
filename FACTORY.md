@@ -12,22 +12,27 @@ One human message exists in the whole room. It authorised four stages and said n
 
 | | |
 |---|---|
-| Stages delivered | **4 of 4**, each frozen and independently audited |
-| Public harness, `--all --mode isolated`, fresh clone | **every folder claims its own stage, 100% of its checks, no overshoot** |
-| Rejections by the auditor | **2**, both repaired and re-audited inside the run |
+| Stages delivered | **4 of 4**, each frozen and accepted by the auditor |
+| Public harness, `--all --mode isolated`, fresh clone | every folder claims its own stage with **100% of its public checks** |
+| Candidates rejected | **2**, carrying **3 distinct findings**, all repaired and re-audited inside the run |
 | Human messages in the room | **1** |
 | Wall-clock, dispatch to final report | **4 h 14 min** |
-| Model spend, list prices | **~$136** |
+| Model spend, list prices | **~$136** (estimate, not a bill) |
 
-```
-stage-1 -> claims 1   share 1.0   overshoot null
-stage-2 -> claims 2   share 1.0   overshoot null
-stage-3 -> claims 3   share 1.0   overshoot null
-stage-4 -> claims 4   share 1.0   overshoot null
-```
+What each folder passed in the auditor's final run, from the original reports in
+[`evidence/runs/fskit-001/final/harness-isolated/`](evidence/runs/fskit-001/final/harness-isolated/INDEX.md):
 
-`share 1.0` is every check of that stage. `overshoot null` is the freeze rule holding: no folder
-passes a later stage's suite, so each one is the solution to its own stage and not a later one.
+| Folder | Suite 1 | Suite 2 | Suite 3 | Suite 4 | Claims |
+|---|---|---|---|---|---|
+| `stage-1/` | 147/147 | *fails, as it must* | | | stage 1 |
+| `stage-2/` | 147/147 | 35/35 | *fails, as it must* | | stage 2 |
+| `stage-3/` | 147/147 | 35/35 | 6/6 | *fails, as it must* | stage 3 |
+| `stage-4/` | 147/147 | 35/35 | 6/6 | 5/5 | stage 4 |
+
+Stages 1–3 failing the next suite is the freeze rule holding: each folder is the solution to its own
+stage, not a later one. Stage 4 has no next suite, so there is nothing for it to fail. These are the
+**public** checks shipped with the kickoff (`preview: true`); the harness says itself that they are a
+portion of what is applied before judging, and we make no claim about the hidden evaluation.
 
 ## The seats
 
@@ -42,15 +47,22 @@ The roster for this run:
 
 | Visible name | @handle | Band agent id | Harness | Model |
 |---|---|---|---|---|
-| analyst | hugo.valer/analyst-thgs | fd5095ef-bafa-4039-b597-3f160b75cf21 | Claude Code | claude-opus-5 |
-| implementer | hugo.valer/implementer-thgt | 156a2fed-f92e-4453-8e6c-75ecdb48ef20 | Claude Code | claude-opus-5 |
-| adversary | hugo.valer/adversary-thgz | f603ac21-88ea-434a-844e-bb621f8da63e | Claude Code | claude-opus-5 |
-| auditor | hugo.valer/auditor-thgx | f6bf20d6-c769-4d36-bb79-47d5e384287a | Claude Code | claude-opus-5 |
+| analyst | hugo.valer/analyst-thgs | fd5095ef-bafa-4039-b597-3f160b75cf21 | Claude Code | claude-opus-5-5 |
+| implementer | hugo.valer/implementer-thgt | 156a2fed-f92e-4453-8e6c-75ecdb48ef20 | Claude Code | claude-opus-5-5 |
+| adversary | hugo.valer/adversary-thgz | f603ac21-88ea-434a-844e-bb621f8da63e | Claude Code | claude-opus-5-5 |
+| auditor | hugo.valer/auditor-thgx | f6bf20d6-c769-4d36-bb79-47d5e384287a | Claude Code | claude-opus-5-5 |
 
 Visible name, @handle and agent id are three different things. The mandates address each other by
 the second and the room records the third. Nothing in `mandates/` names a payment, a screen, an
 endpoint or this track: point the factory at a different problem by changing the dispatch, and no
-mandate needs editing.
+mandate needs editing. [`RUNBOOK.md`](RUNBOOK.md) says how.
+
+**About the model.** Claude Code is the runtime; the model each session ran was
+`claude-opus-5-5`, which is what the seats record in their own evidence (63 times). Before dispatch
+the operator's configuration listed `claude-opus-5` and the mandate headers said only `Model: Opus`,
+naming the family rather than the exact ID. The analyst noticed and recorded the discrepancy as
+decision D-17 in the stage-1 register rather than resolve it by guessing. The headers now carry the
+exact ID; the body of every mandate is the text that was loaded, unchanged.
 
 ## Why it catches things
 
@@ -77,14 +89,16 @@ test passes. The analyst had to say so out loud during stage 1:
 
 ## The two rejections
 
-Both were found by the auditor's own probes, on candidates where the official harness had already
-passed. That is the whole argument for this design, so here it is in full.
+Two candidates were rejected, carrying three distinct findings. **The adversary found `F2-01` and
+`F3-01`; the auditor reproduced both, and found `F3-A01` itself.** Every one of them sat on a
+candidate where the official harness had already passed. That is the whole argument for this design,
+so here they are in full.
 
 ### Stage 3 — the service died and every suite was green
 
-`F3-A01`. Under sustained statement reads the process **crashed with a V8 heap out-of-memory**.
-With 500 payments of history it died after **4,761 reads**, exit 139, and lost all state. Memory
-was never released.
+`F3-A01`, found by the auditor's own probe. Under sustained statement reads the process **crashed
+with a V8 heap out-of-memory**. With 500 payments of history it died after **4,761 reads**, exit
+139, at 1.06 GiB, and lost all state. Memory was never released.
 
 What that same candidate had already passed, all reproduced by the auditor in fresh containers:
 
@@ -96,34 +110,46 @@ What that same candidate had already passed, all reproduced by the auditor in fr
 | Upgrades 1 to 3 and 2 to 3 in fresh containers | 14/14 |
 
 Everything green, and the service could not survive being used. The shipped suite never read enough
-statements to find out. A second defect rode along in the same verdict: `F3-01`, a closed hold seen
-through an earlier `known_at` never expired at its deadline — `held` stayed at 1000 at
-`expires_at` + 1 ms, and still at the year 2099.
+statements to find out. A second defect rode in the same verdict: `F3-01`, reported by the adversary
+and reproduced by the auditor — a closed hold seen through an earlier `known_at` never expired at its
+deadline. `held` stayed at 1000 at `expires_at` + 1 ms, and still at the year 2099.
 
-The repair was routed with the obligation it broke, rebuilt, and re-audited against a new commit.
-`stage-3/test/perf/statement_memory.js` exists because of this.
+The repair was routed with the obligations it broke, rebuilt, and re-audited against a new commit.
+The analyst set the gate: **20,000 statement reads** over 500 payments, 20 in flight, in a container
+capped at 2 CPUs and 2 GiB. On the repaired candidate all 20,000 returned 200, and the container was
+still running at **39.7 MiB**. `stage-3/test/perf/statement_memory.js` exists because of this, and
+every later stage carries it.
 
 ### Stage 2 — small, and it still blocked
 
-`F2-01`. A refused capture did not keep the amount the user had typed: prefill `20.00`, typed
-`25.00`, refusal shown, and the field silently reset to `20.00`. No money moved; severity low. The
-analyst had ruled that the register row binds, so the candidate could not be accepted with it open.
+`F2-01`, found by the adversary's suite (its only two failures on that candidate) and reproduced by
+the auditor at 375 px and 1280 px. A refused capture did not keep the amount the user had typed:
+prefill `20.00`, typed `25.00`, refusal shown, and the field silently reset to `20.00`. No money
+moved; severity low.
 
-We record it because the interesting part is what did **not** happen: nobody argued the severity
-down in order to ship on time.
+It is not a failure of the specification's text. It broke **D2-19**, a decision the band itself had
+made binding in its register. The candidate could not be accepted with it open, so the factory
+enforced its own criteria as strictly as the organisers'. And nobody argued the severity down in
+order to ship on time.
 
 ## What it cost
 
-Estimated at provider list prices from runtime token counts. **This is not a bill**, and BAND's
-attribution is not stable across restarts, so treat it as an order of magnitude.
+Estimated by BAND (`band usage agents`, backed by ccusage) at provider list prices from the runtime's
+token counts. **This is not a bill**, no spending limit was applied, and BAND's attribution can move
+across restarts, so treat it as an order of magnitude. The raw figures, with the time they were
+captured, are in [`evidence/runs/fskit-001/final/USAGE.json`](evidence/runs/fskit-001/final/USAGE.json).
 
-| Seat | Tokens | Estimate |
-|---|---|---|
-| auditor | 130,989,459 | $38.50 |
-| adversary | 125,995,041 | $38.30 |
-| implementer | 107,065,994 | $32.81 |
-| analyst | 92,935,707 | $26.31 |
-| **Total** | **456,986,201** | **~$136** |
+| Seat | Input | Output | Cache write | Cache read | Estimate |
+|---|---:|---:|---:|---:|---:|
+| auditor | 716 | 335,048 | 726,650 | 129,927,045 | $38.50 |
+| adversary | 664 | 377,432 | 721,558 | 124,895,387 | $38.30 |
+| implementer | 628 | 325,382 | 635,114 | 106,104,870 | $32.81 |
+| analyst | 762 | 200,909 | 479,992 | 92,254,044 | $26.31 |
+| **Total** | **2,770** | **1,238,771** | **2,563,314** | **453,181,346** | **$135.93** |
+
+More than 99% of the tokens are cache reads, which are priced far below fresh input. That is why 457
+million tokens come to about $136: each seat re-reads its own long context on every turn, and the
+provider charges little for that.
 
 The spend is almost flat across the four seats, and the two verification seats together cost more
 than the builder. That is the design showing up in the bill: most of the money goes into deciding
@@ -138,18 +164,24 @@ All times UTC, 2026-09-28 into 2026-09-29.
 
 | | |
 |---|---|
-| 20:40 | Dispatch. One message, four stages authorised |
-| 21:35 | Stage 1 **ACCEPTED**, no repair cycle |
-| 21:39 | Analyst opens stage 2 by itself, 10-part handoff, no human input |
-| 22:22 | Stage 2 candidate 1 **REJECTED** (`F2-01`) |
-| 22:45 | Stage 2 **ACCEPTED**, upgrade 1 to 2 verified |
-| 23:41 | Stage 3 candidate 1 **REJECTED** (`F3-A01` heap OOM, and `F3-01`) |
-| 00:07 | Stage 3 **ACCEPTED**, upgrades 1 to 3 and 2 to 3 |
-| 00:42 | Stage 4 **ACCEPTED**, upgrades 1 to 4, 2 to 4, 3 to 4 |
+| 20:40:49 | Dispatch. One message, four stages authorised (`3f95ab60`) |
+| 21:34:58 | Stage 1 **ACCEPTED**, no repair cycle (`72be202b`) |
+| 21:39:14 | Analyst opens stage 2 by itself, 10-part handoff |
+| 22:23:08 | Stage 2 candidate 1 **REJECTED**, `F2-01` (`4fc4757a`) |
+| 22:45:46 | Stage 2 **ACCEPTED**, upgrade 1 to 2 verified (`4ced8436`) |
+| 23:10:50 | Analyst opens stage 3, 13-part handoff |
+| 23:41:10 | Stage 3 candidate 1 **REJECTED**, `F3-A01` heap OOM and `F3-01` (`b8d9c67c`) |
+| 00:08:00 | Stage 3 **ACCEPTED**, upgrades 1 to 3 and 2 to 3 (`11dbc577`) |
+| 00:10:43 | Analyst opens stage 4 |
+| 00:42:52 | Stage 4 **ACCEPTED**, upgrades 1 to 4, 2 to 4, 3 to 4 (`10381cd3`) |
 | 00:54 | All-stage verification **PASS** on a fresh clone; analyst final report |
-| 00:55 | Auditor verifies the final report independently |
+| 00:55:10 | Auditor verifies the final report independently (`d828d505`) |
 
-Four minutes between accepting a stage and dispatching the next, every time, with nobody watching.
+The ids are message ids in `room.json`. The analyst opened every next stage without any human input.
+The gaps from acceptance to handoff were **4 min 16 s, 25 min 4 s and 2 min 43 s**. The long one is
+stage 3: its handoff carried three specifications verbatim in 13 parts. At 23:10:02 the implementer
+flagged the wait in the room — *"I am idle and listening… I have received no stage-3 handoff since"* —
+and the handoff arrived 48 seconds later. Coordination stayed inside the band.
 
 ## Standing it up
 
@@ -189,9 +221,22 @@ four lines and they cost nothing.
 
 ## Honest limits
 
-**Two rejections is not many.** They are real and both were reproduced, but we cannot tell from
-inside the run whether a third defect exists that all four filters missed. The auditor's own probes
-found both, which means the ceiling of this design is the imagination of one seat.
+**Three findings is not many.** They are real and all three were reproduced, but we cannot tell from
+inside the run whether a fourth defect exists that all four filters missed. Two seats found them —
+the adversary two, the auditor one — so the ceiling of this design is the imagination of two
+independent seats, and no more than that.
+
+**Two areas deserve work in a next run**, raised by an external audit and not reproduced as defects:
+
+- *Snapshot memory.* The `F3-A01` repair stopped copying a whole statement per token, but each new
+  read still stores a small record and nothing deletes tokens. Space per token is constant; the total
+  grows with the number of tokens issued. The 20,000-read gate passed at 39.7 MiB, but sustained
+  growth beyond that is unmeasured. Any fix has to keep earlier tokens working, as the specification
+  requires.
+- *Historical overdraft.* Decision D3-21 accepts a correction when a past boundary was already
+  negative and the correction does not make it worse. That is an interpretation of the stage-3 text,
+  implemented in `ledger.overdraws`, and it should be tested explicitly with fixtures that rebuild a
+  negative opening balance.
 
 **One run is one data point.** Nothing here shows the factory is repeatable at this speed against a
 different specification, and this specification was published by the organisers, so a model may have
