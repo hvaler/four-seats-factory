@@ -1,0 +1,130 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-auditor-009",
+ "sequence": 9,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:41:37Z",
+ "event_type": "CHALLENGE_REPRODUCTION",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1..4.md",
+  "spec_sha256": "65497dea… + 39aaf9d7… + 2255d3f2… + 1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "id": "S4-025,S4-026,S4-030,S4-036,S4-038,S4-040 (adversary v2)",
+  "section": null,
+  "obligation": "S4-025,S4-026,S4-030,S4-036,S4-038,S4-040 (adversary v2)"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Auditor re-run of adversary c60966f8 stage-4 suite",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": "adversary@c60966f83cb56a0ef5772890cc6b0d9cb6066e20 (diff vs 854b2cc4: test_s4_v2.py +98)",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "ADV_ONLY4=1 run.sh … checks/fskit-001-s4-audit-advsuite-2",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:32dce302a57309712a5d28cf6d67254cb25369120eef3dd5678d67a1a459671d",
+  "mode": "runner fresh image",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:40:53Z",
+  "finished_utc": "2026-09-29T00:41:37Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 30,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 30
+  }
+ },
+ "expected": "30/30",
+ "observed": "stage-4 suite v2 30 passed",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/SHA256SUMS",
+   "sha256": "759dda01b7f840e51c968406d0ff83eb4c014b46cc654cffde012e3a844cbd88"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/build-stage-1.log",
+   "sha256": "792b9acc6e8a657bb2f9a679225d8b579f715dc7ebe67a1094fde78f8ad8411c"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/build-stage-2.log",
+   "sha256": "d57faac708af207c8444677cbf8d25a3a8ad29c2e50c6385418b5c3a379b99bd"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/build-stage-3.log",
+   "sha256": "6b8e688e04ee747e7e9933e8616c6083bbfa8ea380982ac8ca1c955d3dc6b930"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/build-stage-4.log",
+   "sha256": "8f2964f1d9bdaa5d872022c2ea5479575d796365f7fb16d1b9a3cb7902ddd948"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/container-adv4-a.log",
+   "sha256": "0ab93312a8880d2d5fce7f6512235369497a343b8668f114beb8d4e564b2a15f"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/container-adv4-b.log",
+   "sha256": "2b404df96cbe33d25573c174a9397d46902207c9a1850c7ea3612fc0272fba3d"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/container-adv4-c.log",
+   "sha256": "5f1527c37c25adb24058a276a44e7cc856ef13ffb346424e2b5e5261da1def2b"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/container-adv4-s1.log",
+   "sha256": "94c59932f4f4ac5199cffe57f7855fcb91a93a3b53aacb163962e13bfcc2293b"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/container-adv4-s2.log",
+   "sha256": "f7c32e360b1c0da402851ccf04b84a9a7b661c5c05508d2a2603b0e10d0c7bcd"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/container-adv4-s3.log",
+   "sha256": "7fd59b1fab18ffd64701f47ae87b008946c2dc6a9f7e45cf6b528b5d93a4e5b5"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/junit-stage4.xml",
+   "sha256": "159ab533f63a044168fae52f3dde55fa2cf3f97cc2b77ad3fa455dd4a6753a5e"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/pytest-stage4.log",
+   "sha256": "34186bcae0a0c660f0894aade3620e54381ecb9b1780f5fa3aa03de7cf065843"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/results-stage4.json",
+   "sha256": "914362fbcd89b86d1d9f6cae565193a133529f18493bbd72b8992e4543d46e22"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/runner.log",
+   "sha256": "b689f56feed3ced2e9f625ca9b895bc7c0d6dc60b9878d5a7c0bcfb8bda7bd12"
+  },
+  {
+   "path": "checks/fskit-001-s4-audit-advsuite-2/summary-stage4.md",
+   "sha256": "b5814e4b5c9a71153a92a4e0bcaef217e6903ff466040ba7fac7adb961d202f1"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": ""
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "cc537cc7-f574-416c-b14d-499fc5aeaf06"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

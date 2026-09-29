@@ -1,0 +1,70 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-auditor-005",
+ "sequence": 5,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:27:15Z",
+ "event_type": "UPGRADE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1..4.md",
+  "spec_sha256": "65497dea… + 39aaf9d7… + 2255d3f2… + 1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "id": "S4-050",
+  "section": null,
+  "obligation": "S4-050"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "upgrade run 1",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": "auditor@7dd26224 tools/s4_upgrade_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "s4_upgrade_probe.py (fresh containers)",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:32dce302a57309712a5d28cf6d67254cb25369120eef3dd5678d67a1a459671d",
+  "mode": "ACCEPTED images + candidate",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:27:14Z",
+  "finished_utc": "2026-09-29T00:27:15Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": 6,
+   "failed": 2,
+   "skipped": 0,
+   "collected": 8
+  }
+ },
+ "expected": "all pass",
+ "observed": "6/8; 2->4 and 3->4 errored on an auditor TOOL BUG (raw_call called without the HTTP method)",
+ "result": "FAIL_TOOL",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s4-upgrade-results.json",
+   "sha256": "118436f4578e625216d872b9c8c156291f5abdaea45e8127257d27c1b0e9c33b"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Preserved; superseded by 006."
+ },
+ "state": "OPEN",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

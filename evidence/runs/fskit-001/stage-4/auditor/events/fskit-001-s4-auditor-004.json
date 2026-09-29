@@ -1,0 +1,70 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-auditor-004",
+ "sequence": 4,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:27:05Z",
+ "event_type": "INDEPENDENT_PROBE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1..4.md",
+  "spec_sha256": "65497dea… + 39aaf9d7… + 2255d3f2… + 1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "id": "S4-010..S4-047, S4-024, D4-01..D4-13",
+  "section": null,
+  "obligation": "S4-010..S4-047, S4-024, D4-01..D4-13"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "s4_probe (refunds, batches)",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": "auditor@7dd26224 tools/s4_probe.py (s4_probe unchanged since cba82a2d)",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "s4_probe.py --base :9401 --out ../c1/s4-probe-results.json",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:32dce302a57309712a5d28cf6d67254cb25369120eef3dd5678d67a1a459671d",
+  "mode": "fresh container",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:26:40Z",
+  "finished_utc": "2026-09-29T00:27:05Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 29,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 29
+  }
+ },
+ "expected": "all pass",
+ "observed": "29/29: refund access/targets/limits/available/immutability/no-reopen/feed/history/CONC/same-key; batch access/shape/completeness/instants/precedence/combined affordability/no-trace rejection/shared recorded_at/receipts/snapshots/member refund/overlap CONC/same-key/conservation",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s4-probe-results.json",
+   "sha256": "8badd850e12cee207905e1e9a2e22b7b5eef67045b9beb9a5169c3a05ca111b9"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Single host."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

@@ -1,0 +1,70 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-auditor-006",
+ "sequence": 6,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:27:40Z",
+ "event_type": "UPGRADE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1..4.md",
+  "spec_sha256": "65497dea… + 39aaf9d7… + 2255d3f2… + 1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "id": "S4-050,S4-051,S4-052,D2-13,D4-13",
+  "section": null,
+  "obligation": "S4-050,S4-051,S4-052,D2-13,D4-13"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "upgrades 1->4, 2->4, 3->4 run 2",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": "auditor@cd52dc55 tools/s4_upgrade_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "s4_upgrade_probe.py (fresh s1u/s2u/s3u from ACCEPTED images sha256:cfb657fd…, eb155dc9…, 9d61adde…; t14/t24/t34 candidate)",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:32dce302a57309712a5d28cf6d67254cb25369120eef3dd5678d67a1a459671d",
+  "mode": "fresh containers",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:27:39Z",
+  "finished_utc": "2026-09-29T00:27:40Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 14,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 14
+  }
+ },
+ "expected": "all pass",
+ "observed": "14/14: imports, tokens, balances, dest creds removed; byte-identical receipts (3/5/6 per pair incl. authorize, capture, stage-3 correction); refund of imported payment; batch reversal of imported settlement; imported rev1 correction_batch_id null; conservation; pending request payable; 3->4 snapshot pages same entries with only refund_of added (D4-13), revision history preserved. Observation: byte-exact page equality false (refund_of added)",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-4/auditor/c1/s4-upgrade-results-2.json",
+   "sha256": "09aafe719da7b16bb85ccefc65b187a5a3e2c07ee35babad978a8ea5e57a229d"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Export contents in memory only."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
