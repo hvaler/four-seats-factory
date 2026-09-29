@@ -1,0 +1,30 @@
+{
+ "reset100": {
+  "status": 204,
+  "seconds": 0.553,
+  "ok": true
+ },
+ "login50": {
+  "statuses": [
+   200
+  ],
+  "max_s": 0.261,
+  "ok": true
+ },
+ "signup_same_email": {
+  "201": 1,
+  "codes": [
+   "email_taken"
+  ],
+  "ok": true
+ },
+ "signup_same_handle": {
+  "201": 1,
+  "codes": [
+   "handle_taken"
+  ],
+  "login200": 1,
+  "ok": true
+ },
+ "no5xx": true
+}
