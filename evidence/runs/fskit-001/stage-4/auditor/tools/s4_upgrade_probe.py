@@ -22,7 +22,7 @@ def migrate(tag, src, tgt, st, extra=()):
     ok = si == 204 and all(call("GET", "/me", token=t[h], base=tgt)[1]["balance"] == bal[h] for h in t) and call("GET", "/me", token=tz, base=tgt)[0] == 401
     record("S4-050 " + tag, "import; tokens; balances; destination creds removed", ok, {"import": si, "export_sha256": hashlib.sha256(json.dumps(ex, sort_keys=True).encode()).hexdigest()})
     reps = [raw_call("POST", "/payments", st["k1"][1], t["aa"], st["k1"][0], tgt), raw_call("POST", "/payments", st["k2"][1], t["aa"], st["k2"][0], tgt),
-            raw_call("POST", "/settlements", st["sk"][1], t["op"], st["sk"][0], tgt)] + [raw_call(p, b, tk, kk, tgt) for p, b, tk, kk, _ in extra]
+            raw_call("POST", "/settlements", st["sk"][1], t["op"], st["sk"][0], tgt)] + [raw_call("POST", p, b, tk, kk, tgt) for p, b, tk, kk, _ in extra]
     origs = [st["r1"][1], st["r2"][1], st["rs"][1]] + [o for *_, o in extra]
     record("D2-13/S4-042 " + tag, "source receipts replay byte-identical", all(r[0] == 200 for r in reps) and [r[1] for r in reps] == origs,
            {"byte_equal": [r[1] == o for r, o in zip(reps, origs)]})

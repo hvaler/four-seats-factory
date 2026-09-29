@@ -1,0 +1,85 @@
+{
+ "started_utc": "2026-09-29T00:27:15Z",
+ "finished_utc": "2026-09-29T00:27:15Z",
+ "passed": 6,
+ "failed": 2,
+ "total": 8,
+ "results": [
+  {
+   "obligation": "S4-050 1->4",
+   "probe": "import; tokens; balances; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "c83aac2002c080f15588227356137e55f41e7304ddc8394bfe255e223f21135a"
+   }
+  },
+  {
+   "obligation": "D2-13/S4-042 1->4",
+   "probe": "source receipts replay byte-identical",
+   "pass": true,
+   "detail": {
+    "byte_equal": [
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  {
+   "obligation": "S4-050 1->4",
+   "probe": "refund of imported payment; batch reversal of imported settlement; imported rev1 correction_batch_id null; conservation",
+   "pass": true,
+   "detail": {
+    "refund": 201,
+    "batch": 201,
+    "c": null,
+    "total": 15000
+   }
+  },
+  {
+   "obligation": "S4-050 1->4",
+   "probe": "imported pending request payable",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S4-050 2->4",
+   "probe": "import; tokens; balances; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "d1fb839ea3098663ac3700c863b8bb19febb0df38d8c1f5265c5d8005536b98b"
+   }
+  },
+  {
+   "obligation": "ERROR",
+   "probe": "2->4",
+   "pass": false,
+   "detail": {
+    "exception": "TypeError(\"raw_call() missing 1 required positional argument: 'base'\")",
+    "at": "    raw_call(\"POST\", \"/settlements\", st[\"sk\"][1], t[\"op\"], st[\"sk\"][0], tgt)] + [raw_call(p, b, tk, kk, tgt) for p, b, tk, kk, _ in extra]"
+   }
+  },
+  {
+   "obligation": "S4-050 3->4",
+   "probe": "import; tokens; balances; destination creds removed",
+   "pass": true,
+   "detail": {
+    "import": 204,
+    "export_sha256": "2808cfc4fe829492a905dc4ad0585dfb1926296ab6e44b839fd48e556a43a946"
+   }
+  },
+  {
+   "obligation": "ERROR",
+   "probe": "3->4",
+   "pass": false,
+   "detail": {
+    "exception": "TypeError(\"raw_call() missing 1 required positional argument: 'base'\")",
+    "at": "    raw_call(\"POST\", \"/settlements\", st[\"sk\"][1], t[\"op\"], st[\"sk\"][0], tgt)] + [raw_call(p, b, tk, kk, tgt) for p, b, tk, kk, _ in extra]"
+   }
+  }
+ ]
+}

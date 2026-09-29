@@ -1,0 +1,331 @@
+{
+ "started_utc": "2026-09-29T00:26:49Z",
+ "finished_utc": "2026-09-29T00:26:50Z",
+ "passed": 29,
+ "failed": 0,
+ "total": 29,
+ "results": [
+  {
+   "obligation": "S4-010/S4-011",
+   "probe": "sender/third/operator 403, unknown 404, no token 401, no key 400",
+   "pass": true,
+   "detail": {
+    "got": [
+     403,
+     403,
+     403,
+     404,
+     401,
+     400
+    ]
+   }
+  },
+  {
+   "obligation": "S4-013",
+   "probe": "invalid refund amounts 422",
+   "pass": true,
+   "detail": {
+    "0": 422,
+    "-1": 422,
+    "1000000001": 422,
+    "1.5": 422,
+    "\"10\"": 422,
+    "true": 422
+   }
+  },
+  {
+   "obligation": "S4-015/D4-02/D4-11",
+   "probe": "refund shape (reverse direction, refund_of, links null, note/visibility copied); replay 200; key reuse 409",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     200,
+     409
+    ],
+    "refund": {
+     "from_handle": "bb",
+     "to_handle": "aa",
+     "refund_of": "p1",
+     "visibility": "private"
+    }
+   }
+  },
+  {
+   "obligation": "S4-018/S4-019",
+   "probe": "refund in feed by visibility (private: parties only); others refund_of null",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S4-014",
+   "probe": "cumulative refunds limit = current amount (300+700 ok, +1 -> 422)",
+   "pass": true,
+   "detail": {
+    "s": [
+     422,
+     201,
+     422
+    ]
+   }
+  },
+  {
+   "obligation": "S4-012",
+   "probe": "refund of a refund -> 422 invalid_refund_target",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "invalid_refund_target"
+   }
+  },
+  {
+   "obligation": "S4-020/E3",
+   "probe": "refund payment not correctable (422 linked_payment_immutable); revisions has rev 1 only",
+   "pass": true,
+   "detail": {
+    "s": 422
+   }
+  },
+  {
+   "obligation": "S4-021",
+   "probe": "correction below refunded total -> 422 refund_exceeds_payment; exactly equal OK",
+   "pass": true,
+   "detail": {
+    "s": [
+     422,
+     201
+    ]
+   }
+  },
+  {
+   "obligation": "S4-014/D4-03",
+   "probe": "refund limit follows current corrected amount (200 refunded of 200 -> +1 422)",
+   "pass": true,
+   "detail": {
+    "s": 422
+   }
+  },
+  {
+   "obligation": "S4-016",
+   "probe": "refund checks available (held funds can't pay) -> 409; within available 201",
+   "pass": true,
+   "detail": {
+    "s": [
+     409,
+     201
+    ],
+    "dd": {
+     "user_id": "u_dd",
+     "display_name": "DD",
+     "handle": "dd",
+     "balance": 300,
+     "total": 300,
+     "available": 0,
+     "held": 300,
+     "currency": "EUR",
+     "minor_units": 2
+    }
+   }
+  },
+  {
+   "obligation": "S4-012/S4-017/D4-09",
+   "probe": "refund of capture and of request payment: 201; hold stays closed, request stays paid",
+   "pass": true,
+   "detail": {
+    "s": [
+     201,
+     201
+    ],
+    "auth": "captured"
+   }
+  },
+  {
+   "obligation": "S4-023/S4-024",
+   "probe": "20 concurrent refunds of 150 on 1000 -> exactly 6; same-key x15 -> one 201 + 14x200 identical, effect once",
+   "pass": true,
+   "detail": {
+    "ok": 6,
+    "same_key": {
+     "200": 14,
+     "201": 1
+    },
+    "identical": true,
+    "refunds_made": 1
+   }
+  },
+  {
+   "obligation": "S4-019/E2",
+   "probe": "refund applies in history at its created_at",
+   "pass": true,
+   "detail": {
+    "before": 5000,
+    "at": 4700
+   }
+  },
+  {
+   "obligation": "S4-030",
+   "probe": "non-operator 403, no token 401, no key 400",
+   "pass": true,
+   "detail": {
+    "got": [
+     403,
+     401,
+     400
+    ]
+   }
+  },
+  {
+   "obligation": "S4-031/S4-041",
+   "probe": "0 items / duplicate / 33 / not array / bad field / future effective -> 422",
+   "pass": true,
+   "detail": {
+    "got": [
+     422,
+     422,
+     422,
+     422,
+     422,
+     422
+    ]
+   }
+  },
+  {
+   "obligation": "S4-034",
+   "probe": "partial settlement -> 422 incomplete_settlement",
+   "pass": true,
+   "detail": {
+    "s": 422,
+    "c": "incomplete_settlement"
+   }
+  },
+  {
+   "obligation": "S4-035",
+   "probe": "members with different effective instants -> 422",
+   "pass": true,
+   "detail": {
+    "s": 422
+   }
+  },
+  {
+   "obligation": "S4-037/D4-06",
+   "probe": "item errors in input order (stale then unknown -> 409; reverse -> 404)",
+   "pass": true,
+   "detail": {
+    "got": [
+     409,
+     "stale_revision",
+     404
+    ]
+   }
+  },
+  {
+   "obligation": "S4-037/S4-039",
+   "probe": "unaffordable batch -> 409 insufficient_funds; nothing changes; key unclaimed",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "insufficient_funds"
+   }
+  },
+  {
+   "obligation": "S4-038",
+   "probe": "one correction alone unaffordable (409), combined batch affordable (201, reuses unclaimed key)",
+   "pass": true,
+   "detail": {
+    "alone": 409,
+    "batch": 201,
+    "c": null
+   }
+  },
+  {
+   "obligation": "S4-040/S4-033/D4-10",
+   "probe": "complete settlement + non-member batch: 201 shape, input order, one shared recorded_at, correction_batch_id",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "batch": {
+     "correction_batch_id": "cb_yPDJaWpmRP2MvIAV",
+     "recorded_at": "2026-09-29T00:26:50.611+00:00"
+    }
+   }
+  },
+  {
+   "obligation": "S4-044/S4-042",
+   "probe": "batch replay 200 identical; different body 409; settlement receipt retry unchanged",
+   "pass": true,
+   "detail": {
+    "s": [
+     200,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S4-040/D4-05",
+   "probe": "revisions show batch revision with correction_batch_id; rev1 null",
+   "pass": true,
+   "detail": {
+    "revs": 2
+   }
+  },
+  {
+   "obligation": "S4-043",
+   "probe": "old snapshot frozen; new statement shows batch revision (amount 0)",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S4-036",
+   "probe": "single correction of settlement member still 422 linked_payment_immutable",
+   "pass": true,
+   "detail": {
+    "s": 422
+   }
+  },
+  {
+   "obligation": "S4-045",
+   "probe": "settlement member refundable; refund has settlement_id null; member keeps settlement_id",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S4-046",
+   "probe": "12 concurrent batch/single corrections on one revision -> exactly one 201, rest 409 stale",
+   "pass": true,
+   "detail": {
+    "outcomes": [
+     "(201, None)",
+     "(409, 'stale_revision')"
+    ]
+   }
+  },
+  {
+   "obligation": "S4-024",
+   "probe": "15 concurrent same-key batches -> one 201 + 14x200 identical; one revision appended",
+   "pass": true,
+   "detail": {
+    "st": {
+     "200": 14,
+     "201": 1
+    },
+    "revs": 2
+   }
+  },
+  {
+   "obligation": "S4-047",
+   "probe": "conservation in historical views after batches",
+   "pass": true,
+   "detail": {
+    "grid": [
+     18000,
+     18000,
+     18000,
+     18000
+    ],
+    "TOT": 18000
+   }
+  }
+ ]
+}
