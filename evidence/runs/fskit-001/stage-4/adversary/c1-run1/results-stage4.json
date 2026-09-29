@@ -1,0 +1,334 @@
+[
+ {
+  "test": "test_s4_api.py::test_refund_access_and_validation",
+  "obligations": [
+   "S4-010",
+   "S4-011",
+   "S4-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.035,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_refund_shape_limits_and_feed",
+  "obligations": [
+   "S4-014",
+   "S4-015",
+   "S4-018",
+   "S4-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.017,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_refund_targets",
+  "obligations": [
+   "S4-012"
+  ],
+  "decisions": [
+   "D4-01"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.019,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_refund_limit_follows_corrections",
+  "obligations": [
+   "S4-014"
+  ],
+  "decisions": [
+   "D4-03",
+   "D4-04"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.044,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_refund_uses_available",
+  "obligations": [
+   "S4-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.062,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_refund_never_restores_closed_hold",
+  "obligations": [
+   "S4-017"
+  ],
+  "decisions": [
+   "D4-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.009,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_correction_floor_and_immutables",
+  "obligations": [
+   "S4-020",
+   "S4-021",
+   "S4-022"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.04,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_access_and_shape",
+  "obligations": [
+   "S4-030",
+   "S4-031",
+   "S4-032"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.621,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_item_precedence_in_input_order",
+  "obligations": [
+   "S4-037"
+  ],
+  "decisions": [
+   "D4-06"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.029,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_settlements",
+  "obligations": [
+   "S4-033",
+   "S4-034",
+   "S4-035",
+   "S4-036",
+   "S4-042"
+  ],
+  "decisions": [
+   "D4-10",
+   "D4-12"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.045,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_combined_affordability_and_no_trace",
+  "obligations": [
+   "S4-038",
+   "S4-039",
+   "S4-047"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.085,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_current_available_before_historical",
+  "obligations": [
+   "S4-037"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.027,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_snapshot_and_known_at",
+  "obligations": [
+   "S4-043"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.046,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_replay_and_reuse",
+  "obligations": [
+   "S4-044"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.026,
+  "error": null
+ },
+ {
+  "test": "test_s4_api.py::test_batch_refund_floor_on_settlement_member",
+  "obligations": [
+   "S4-021",
+   "S4-045"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.016,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_same_key_refunds_and_batches",
+  "obligations": [
+   "S4-024"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.872,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_concurrent_refunds_never_exceed[0]",
+  "obligations": [
+   "S4-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.52,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_concurrent_refunds_never_exceed[1]",
+  "obligations": [
+   "S4-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.558,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_concurrent_refunds_never_exceed[2]",
+  "obligations": [
+   "S4-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.624,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_overlapping_corrections_one_wins[0]",
+  "obligations": [
+   "S4-046"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.442,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_overlapping_corrections_one_wins[1]",
+  "obligations": [
+   "S4-046"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.422,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_overlapping_corrections_one_wins[2]",
+  "obligations": [
+   "S4-046"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.435,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_upgrade_1_to_4",
+  "obligations": [
+   "S4-050",
+   "S4-051"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.143,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_upgrade_2_to_4",
+  "obligations": [
+   "S4-050",
+   "S4-051"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.138,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_upgrade_3_to_4",
+  "obligations": [
+   "S4-050",
+   "S4-051",
+   "S4-052"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.166,
+  "error": null
+ }
+]

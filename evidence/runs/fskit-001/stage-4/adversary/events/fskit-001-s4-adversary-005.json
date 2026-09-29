@@ -1,0 +1,84 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-adversary-005",
+ "sequence": 5,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:39:02Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S1-013,S1-058",
+  "spec_path": "pocketful/spec/stage-4.md",
+  "spec_sha256": "1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "section": null,
+  "obligation": "S1-013,S1-058"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "statement memory gate on stage 4",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "bash c1_memgate.sh (20000 reads, 20 in flight, 500 payments)",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s4-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:37:10Z",
+  "finished_utc": "2026-09-29T00:39:02Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 1,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 1
+  }
+ },
+ "expected": "no crash, no 5xx",
+ "observed": "20000/20000 200; p99 0.276 s; max 0.696 s; peak 50.43 MiB; running",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-4/adversary/c1_memgate.log",
+   "sha256": "2c7d553587406850f1521bd824b0268d8515f29f1d797ee7d398adac7080da86"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-4/adversary/c2-probes/mem20k-container.log",
+   "sha256": "e26e73322ec74da05d2a14d4f879ed6da4e9bad307763fb561fe0d622d2338b3"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-4/adversary/c2-probes/mem20k-mem.txt",
+   "sha256": "1853f91e90604cd605675956556cbdbfa342467d244e16665b47dff1744bedf3"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": ""
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4",
+  "0b413031-f977-4f42-8242-edef4a169d4b"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

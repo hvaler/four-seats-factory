@@ -1,0 +1,29 @@
+== adversary stage-4 run 2026-09-29T00:25:23Z
+candidate_sha=181947069ba933c39661835296e89a891847c2a3 clone_head=181947069ba933c39661835296e89a891847c2a3
+trees stage4=c7d50a979b158832f15055289bf8f44b5f5edb8b stage3=f586c4995f31122e887e462d54590b955f6b45a2 stage2=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 stage1=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_begin
+clone_status_end
+s1_source=beeaec72ff53fa75469c5f09236a786632f21fd8 tree=347efba502629e5b5bbd730f35c34bdfe208c478
+s2_source=68583038e7ea52429b062af0f775d3cbfd96b7c3 tree=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2
+s3_source=51a0bdd1c48207fb3e22fb163d1fd7972123aa3d tree=f586c4995f31122e887e462d54590b955f6b45a2
+test_rev=854b2cc4446cda1b05d3f67fd1f9cca4777fad65 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+build stage-4 exit=0 seconds=4
+build stage-1 exit=0 seconds=8
+build stage-2 exit=0 seconds=9
+build stage-3 exit=0 seconds=5
+stage4_a port=62400 health_s=0
+stage4_b port=62401 health_s=1
+stage1_accepted port=62402 health_s=1
+stage2_accepted port=62404 health_s=0
+stage3_accepted port=62405 health_s=2
+stage4_c(PORT unset) port=62406 health_s=1 body={"status":"ok"}
+suite_stage1 exit=0 seconds=73 325 passed, 1 warning in 71.60s (0:01:11)
+suite_stage2 exit=0 seconds=270 148 passed, 3 warnings in 269.63s (0:04:29)
+suite_stage3 exit=0 seconds=24 50 passed in 22.55s
+suite_stage4 exit=0 seconds=10 25 passed, 1 warning in 9.21s
+stats adv4-a-719522 cpu=0.01% mem=26.04MiB / 2GiB
+stats adv4-b-719522 cpu=0.01% mem=21.55MiB / 2GiB
+stage4_a restarts=0 oom=false running=true
+== done 2026-09-29T00:32:45Z

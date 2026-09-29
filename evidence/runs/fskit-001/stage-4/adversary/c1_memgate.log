@@ -1,0 +1,10 @@
+candidate=181947069ba933c39661835296e89a891847c2a3 stage4_tree=c7d50a979b158832f15055289bf8f44b5f5edb8b image=sha256:7e1d18e9335ffbf0d7b7cec195ce449645835c20d30007aec24b0c99879bf460
+== mem20k N=20000 TH=20 start 2026-09-29T00:37:10Z mem_before=12.56MiB / 2GiB
+payments_created 500
+reads=20000 wall_s=104.7 codes={200: 20000}
+latency_s p50=0.087 p95=0.191 p99=0.276 max=0.696 mean=0.100
+over_5s=0
+health_after 200
+peak_mem=50.43MiB samples=34
+state running=true exit=0 oom=false restarts=0
+end 2026-09-29T00:39:02Z
