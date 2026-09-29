@@ -1,0 +1,12 @@
+........................................................................ [ 48%]
+........................................................................ [ 97%]
+....                                                                     [100%]
+=============================== warnings summary ===============================
+test_s2_v3.py::test_capture_at_or_just_after_deadline[0]
+test_s2_v3.py::test_capture_at_or_just_after_deadline[50]
+test_s2_v3.py::test_capture_at_or_just_after_deadline[250]
+  test_s2_v3.py:15: PytestWarning: record_property is incompatible with junit_family 'xunit2' (use 'legacy' or 'xunit1')
+    @pytest.mark.slow
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+148 passed, 3 warnings in 269.63s (0:04:29)

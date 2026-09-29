@@ -1,0 +1,108 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-adversary-001",
+ "sequence": 1,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:25:11Z",
+ "event_type": "HARNESS_RUN",
+ "requirement": {
+  "id": "S4-900",
+  "spec_path": "pocketful/spec/stage-4.md",
+  "spec_sha256": "1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "section": null,
+  "obligation": "S4-900"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "official harness --stage 4 on adversary clean clone",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "wsl -e bash -lc 'cd /mnt/c/nexus/dev/dark-factory-wearedevs && ~/df-venv/bin/python -m harness run --track pocketful --repo /mnt/c/nexus/dev/band-kit/clones/adversary-s4-1 --stage 4 --out /mnt/c/nexus/dev/band-kit/checks/fskit-001-s4-adversary-1'",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s4-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:23:23Z",
+  "finished_utc": "2026-09-29T00:25:11Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 193,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 193
+  }
+ },
+ "expected": "suites 1-4 pass, 0 skipped",
+ "observed": "147/147, 35/35, 6/6, 5/5, 0 skipped; highest contiguous 4; claimed 4",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "checks/fskit-001-s4-adversary-1/report.json",
+   "sha256": "4e09d2db7b0d971547ad6addd179a1325df1d5d76e3d95da87569e66df0674b7"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-1.counts.json",
+   "sha256": "6250f0fd1251afe620a1f77f720deecc44479bd1466308da32a9204809c34546"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-1.log",
+   "sha256": "c6094d384d7f7659097fbc6686610401fc71e4b94d1a252f2915ba2be36c1ff8"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-2.counts.json",
+   "sha256": "6edc7d42b81b03606624ab2c38143073c7abd23f98ed846791b8ab91824add54"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-2.log",
+   "sha256": "062756cafd3b0e1596e54eb1ca7e6201376d97199982dab96209a9aa5ffed5c4"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-3.counts.json",
+   "sha256": "8241d0e80683a5feb47ba8b31953d93938cc0fe28eeb0dc92740756568e6123b"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-3.log",
+   "sha256": "52433a5835d11f2aa208a84fbc989560f334a41917332d826be9247aeb81feb7"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-4.counts.json",
+   "sha256": "b6bd19161d2f1f91c7e6345431076e0671030eea9965f952cc78314942ccaba6"
+  },
+  {
+   "path": "checks/fskit-001-s4-adversary-1/stage-4.log",
+   "sha256": "825c5b38cc6ddb22e1a168990c56a5dc1e8b043f3696676dc66e922e79c37510"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "host mode; partial public sample"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4",
+  "0b413031-f977-4f42-8242-edef4a169d4b"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

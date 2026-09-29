@@ -1,0 +1,126 @@
+[
+ {
+  "test": "test_s4_conc_upgrade.py::test_same_key_refunds_and_batches",
+  "obligations": [
+   "S4-024"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.955,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_concurrent_refunds_never_exceed[0]",
+  "obligations": [
+   "S4-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.642,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_concurrent_refunds_never_exceed[1]",
+  "obligations": [
+   "S4-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.615,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_concurrent_refunds_never_exceed[2]",
+  "obligations": [
+   "S4-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.513,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_overlapping_corrections_one_wins[0]",
+  "obligations": [
+   "S4-046"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.409,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_overlapping_corrections_one_wins[1]",
+  "obligations": [
+   "S4-046"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.421,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_overlapping_corrections_one_wins[2]",
+  "obligations": [
+   "S4-046"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.408,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_upgrade_1_to_4",
+  "obligations": [
+   "S4-050",
+   "S4-051"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.173,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_upgrade_2_to_4",
+  "obligations": [
+   "S4-050",
+   "S4-051"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.189,
+  "error": null
+ },
+ {
+  "test": "test_s4_conc_upgrade.py::test_upgrade_3_to_4",
+  "obligations": [
+   "S4-050",
+   "S4-051",
+   "S4-052"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.164,
+  "error": null
+ }
+]

@@ -1,0 +1,8 @@
+..........                                                               [100%]
+=============================== warnings summary ===============================
+test_s4_conc_upgrade.py::test_upgrade_3_to_4
+  test_s4_conc_upgrade.py:189: PytestWarning: record_property is incompatible with junit_family 'xunit2' (use 'legacy' or 'xunit1')
+    @pytest.mark.xc
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+10 passed, 20 deselected, 1 warning in 5.93s

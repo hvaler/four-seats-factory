@@ -1,0 +1,71 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s4-adversary-006",
+ "sequence": 6,
+ "run_id": "fskit-001",
+ "stage": 4,
+ "timestamp_utc": "2026-09-29T00:23:00Z",
+ "event_type": "INSPECTION",
+ "requirement": {
+  "id": "S4-001,S4-002",
+  "spec_path": "pocketful/spec/stage-4.md",
+  "spec_sha256": "1894b002f8827fd36623df4ecf3deb204e20d7fafbbfa671894a114db80e6df1",
+  "section": null,
+  "obligation": "S4-001,S4-002"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "stage-4 provenance",
+ "candidate_commit": "181947069ba933c39661835296e89a891847c2a3",
+ "candidate_product_tree": "c7d50a979b158832f15055289bf8f44b5f5edb8b",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "git rev-parse 0a2ee743:stage-4, HEAD:stage-{1,2,3,4}; git diff --stat f586c499 HEAD:stage-4",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s4-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-29T00:22:00Z",
+  "finished_utc": "2026-09-29T00:23:00Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 1,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 1
+  }
+ },
+ "expected": "copy commit == f586c499; earlier trees unchanged",
+ "observed": "0a2ee743:stage-4 == f586c499; stage-3/2/1 unchanged; diff: app/store/ledger + tests + RUN.md; UI and Dockerfile unchanged",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": ""
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "2179e8a2-d709-4f89-96dd-146b1cf12ae4",
+  "0b413031-f977-4f42-8242-edef4a169d4b"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

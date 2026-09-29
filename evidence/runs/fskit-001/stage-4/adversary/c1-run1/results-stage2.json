@@ -1,0 +1,1955 @@
+[
+ {
+  "test": "test_s2_api.py::test_me_fields_without_holds",
+  "obligations": [
+   "S2-052",
+   "S1-090"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.001,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_hold_moves_no_money",
+  "obligations": [
+   "S2-052",
+   "S2-050",
+   "S1-001"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.011,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_authorization_shape_and_expiry_arithmetic",
+  "obligations": [
+   "S2-058",
+   "S2-055"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_authorization_defaults",
+  "obligations": [
+   "S2-058"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.003,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_authorization_errors",
+  "obligations": [
+   "S2-059",
+   "S1-002"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.043,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_held_funds_fund_nothing_else",
+  "obligations": [
+   "S1-002",
+   "S1-092",
+   "S1-112",
+   "S1-196"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.043,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_authorizations_not_in_feed",
+  "obligations": [
+   "S2-060",
+   "S2-069"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.019,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_default_final_capture_releases_rest",
+  "obligations": [
+   "S2-061",
+   "S2-062",
+   "S2-063",
+   "S1-091"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.021,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_capture_amount_defaults_to_remainder",
+  "obligations": [
+   "S2-061",
+   "S2-064"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.013,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_extended_capture_700_700_600",
+  "obligations": [
+   "S2-064",
+   "S2-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.023,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_final_after_partial_releases_rest",
+  "obligations": [
+   "S2-064"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.017,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_void_after_partial_keeps_records",
+  "obligations": [
+   "S2-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.012,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_capture_errors",
+  "obligations": [
+   "S2-067"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.032,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_final_wrong_type",
+  "obligations": [
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-04"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.01,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_void_rules",
+  "obligations": [
+   "S2-068"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.016,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_capture_spends_own_reservation_at_zero_available",
+  "obligations": [
+   "S2-072"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.045,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_capture_idempotency",
+  "obligations": [
+   "S2-061",
+   "S2-066",
+   "S2-073"
+  ],
+  "decisions": [
+   "D2-03"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.029,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_replays_after_closure",
+  "obligations": [
+   "S2-073"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.009,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_failed_capture_key_reusable",
+  "obligations": [
+   "S2-073"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.027,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_expiry_without_a_request_at_the_deadline",
+  "obligations": [
+   "S2-057",
+   "S2-055",
+   "S2-050"
+  ],
+  "decisions": [
+   "D2-02",
+   "D2-08",
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.415,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_seeded_authorizations",
+  "obligations": [
+   "S2-054",
+   "S2-056"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.109,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_seeded_holds_exceed_or_equal_balance",
+  "obligations": [
+   "S2-056"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.183,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_ttl[0]",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.085,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_ttl[-1]",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.084,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_ttl[1.5]",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.082,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_ttl[600]",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.08,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_ttl[True]",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.078,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_ttl[None]",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.077,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_ttl_default_600",
+  "obligations": [
+   "S2-055"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.072,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[unknown_from]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.076,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[self]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.072,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[amount0]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.071,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[amount_big]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.069,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[amount_frac]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.073,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[status]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.075,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[no_expiry]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.076,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[bad_expiry]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.076,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[no_offset]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.074,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_bad_seeded_authorization[dup_id]",
+  "obligations": [
+   "S2-054"
+  ],
+  "decisions": [
+   "D2-15"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.072,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_list_scope_filters_pagination",
+  "obligations": [
+   "S2-069"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.021,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_every_payment_has_authorization_id",
+  "obligations": [
+   "S1-091",
+   "S1-199",
+   "S2-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.006,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_split_unchanged_and_requests_can_exceed_available",
+  "obligations": [
+   "S2-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.003,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_content_negotiation[/requests]",
+  "obligations": [
+   "S2-011"
+  ],
+  "decisions": [
+   "D2-14"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.007,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_content_negotiation[/authorizations]",
+  "obligations": [
+   "S2-011"
+  ],
+  "decisions": [
+   "D2-14"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.005,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_ui_routes_serve_html[/]",
+  "obligations": [
+   "S2-010",
+   "S2-011"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.001,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_ui_routes_serve_html[/split]",
+  "obligations": [
+   "S2-010",
+   "S2-011"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.001,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_ui_routes_serve_html[/signup]",
+  "obligations": [
+   "S2-010",
+   "S2-011"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_ui_routes_serve_html[/login]",
+  "obligations": [
+   "S2-010",
+   "S2-011"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.001,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_export_import_keeps_holds_and_retries",
+  "obligations": [
+   "S1-176",
+   "S2-040"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.029,
+  "error": null
+ },
+ {
+  "test": "test_s2_api.py::test_hold_exported_before_expiry_imported_after",
+  "obligations": [
+   "S2-074",
+   "S2-057"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.29,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_partial_captures_never_exceed",
+  "obligations": [
+   "S2-051",
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.319,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_final_captures_one_wins",
+  "obligations": [
+   "S2-051"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.396,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_same_capture_key",
+  "obligations": [
+   "S2-051",
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.415,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_concurrent_same_authorization_key",
+  "obligations": [
+   "S1-078"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.442,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_capture_races_void[0]",
+  "obligations": [
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.654,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_capture_races_void[1]",
+  "obligations": [
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.635,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_capture_races_void[2]",
+  "obligations": [
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.622,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_authorizations_and_payments_compete_for_available",
+  "obligations": [
+   "S2-070",
+   "S1-002"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.342,
+  "error": null
+ },
+ {
+  "test": "test_s2_conc.py::test_mixed_load_conserves_and_never_negative",
+  "obligations": [
+   "S2-071",
+   "S1-001",
+   "S1-002",
+   "S2-070"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 5.276,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_routes_deep_link_signed_in[w375]",
+  "obligations": [
+   "S2-010",
+   "S2-012",
+   "S2-032",
+   "S2-034",
+   "S2-901"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 5.14,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_routes_deep_link_signed_in[w1280]",
+  "obligations": [
+   "S2-010",
+   "S2-012",
+   "S2-032",
+   "S2-034",
+   "S2-901"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 5.615,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_login_error_logout_and_signed_out[w375]",
+  "obligations": [
+   "S2-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.897,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_login_error_logout_and_signed_out[w1280]",
+  "obligations": [
+   "S2-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.865,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_signup_ui[w375]",
+  "obligations": [
+   "S2-012",
+   "S1-033"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.014,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_signup_ui[w1280]",
+  "obligations": [
+   "S2-012",
+   "S1-033"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.08,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w375-EUR-2-10000-100.00 EUR]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.447,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w375-JPY-0-1200-1200 JPY]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.379,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w375-BHD-3-1500-1.500 BHD]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.428,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w375-EUR-2-123456789-1234567.89 EUR]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.112,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w1280-EUR-2-10000-100.00 EUR]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.865,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w1280-JPY-0-1200-1200 JPY]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.5,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w1280-BHD-3-1500-1.500 BHD]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.472,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_wallet_formatting[w1280-EUR-2-123456789-1234567.89 EUR]",
+  "obligations": [
+   "S2-013",
+   "S2-015",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.392,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_decimal_keep_values_no_duplicate[w375]",
+  "obligations": [
+   "S2-014",
+   "S2-016",
+   "S2-020",
+   "S2-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.191,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_decimal_keep_values_no_duplicate[w1280]",
+  "obligations": [
+   "S2-014",
+   "S2-016",
+   "S2-020",
+   "S2-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.147,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_double_click_one_payment[w375]",
+  "obligations": [
+   "S2-014"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.418,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_double_click_one_payment[w1280]",
+  "obligations": [
+   "S2-014"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.925,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375-15.005]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.501,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375-abc]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.055,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375--5]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.186,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375-1e3]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.942,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375-]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.999,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375-1,000.00]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.94,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w375-12.3.4]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.059,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280-15.005]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.949,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280-abc]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.041,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280--5]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.981,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280-1e3]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.985,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280-]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.97,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280-1,000.00]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.703,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_pay_bad_decimal_sends_nothing[w1280-12.3.4]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.475,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w375-JPY-0-15-15]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.81,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w375-BHD-3-1.5-1500]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.818,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w375-EUR-2-15-1500]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.524,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w375-EUR-2- 2.50 -250]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.6,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w1280-JPY-0-15-15]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.48,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w1280-BHD-3-1.5-1500]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.435,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w1280-EUR-2-15-1500]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.521,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_decimal_conversion[w1280-EUR-2- 2.50 -250]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.439,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_jpy_rejects_decimal_point[w375]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.359,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_jpy_rejects_decimal_point[w1280]",
+  "obligations": [
+   "S2-016"
+  ],
+  "decisions": [
+   "D2-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.358,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_refused_payment_other_client_spent[w375]",
+  "obligations": [
+   "S2-022",
+   "S2-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.37,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_refused_payment_other_client_spent[w1280]",
+  "obligations": [
+   "S2-022",
+   "S2-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.446,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_request_form[w375]",
+  "obligations": [
+   "S2-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.944,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_request_form[w1280]",
+  "obligations": [
+   "S2-013"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.01,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_feed_items[w375]",
+  "obligations": [
+   "S2-017",
+   "S1-039"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.62,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_feed_items[w1280]",
+  "obligations": [
+   "S2-017",
+   "S1-039"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.844,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_empty_activity[w375]",
+  "obligations": [
+   "S2-017"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.439,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_empty_activity[w1280]",
+  "obligations": [
+   "S2-017"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.493,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_notes_render_as_text[w375]",
+  "obligations": [
+   "S2-035",
+   "S1-098"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.181,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_notes_render_as_text[w1280]",
+  "obligations": [
+   "S2-035",
+   "S1-098"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.904,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_requests_screen[w375]",
+  "obligations": [
+   "S2-018",
+   "S2-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.511,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_requests_screen[w1280]",
+  "obligations": [
+   "S2-018",
+   "S2-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.552,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_stale_request_pay_button[w375]",
+  "obligations": [
+   "S2-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.431,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_stale_request_pay_button[w1280]",
+  "obligations": [
+   "S2-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.33,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_preview_matches_server[w375-10.00-bob, ada ,cy-expect_shares0]",
+  "obligations": [
+   "S2-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.894,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_preview_matches_server[w375-10.00-cy,bob,ada-expect_shares1]",
+  "obligations": [
+   "S2-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.904,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_preview_matches_server[w375-0.01-bob,cy,dee-expect_shares2]",
+  "obligations": [
+   "S2-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.835,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_preview_matches_server[w1280-10.00-bob, ada ,cy-expect_shares0]",
+  "obligations": [
+   "S2-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.999,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_preview_matches_server[w1280-10.00-cy,bob,ada-expect_shares1]",
+  "obligations": [
+   "S2-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.936,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_preview_matches_server[w1280-0.01-bob,cy,dee-expect_shares2]",
+  "obligations": [
+   "S2-019"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.145,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_errors[w375]",
+  "obligations": [
+   "S2-019",
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.446,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_split_errors[w1280]",
+  "obligations": [
+   "S2-019",
+   "S2-016"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.444,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_latest_refresh_wins[w375]",
+  "obligations": [
+   "S2-021"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.608,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_latest_refresh_wins[w1280]",
+  "obligations": [
+   "S2-021"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.589,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_lost_payment_response_after_commit[w375]",
+  "obligations": [
+   "S2-024"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.537,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_lost_payment_response_after_commit[w1280]",
+  "obligations": [
+   "S2-024"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.644,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_seeded_hold_headline[w375]",
+  "obligations": [
+   "S2-026",
+   "S2-028",
+   "S2-030"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.547,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_seeded_hold_headline[w1280]",
+  "obligations": [
+   "S2-026",
+   "S2-028",
+   "S2-030"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.701,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_authorize_capture_void_ui[w375]",
+  "obligations": [
+   "S2-026",
+   "S2-027",
+   "S2-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 6.832,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_authorize_capture_void_ui[w1280]",
+  "obligations": [
+   "S2-026",
+   "S2-027",
+   "S2-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 7.497,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_partial_capture_prefill_follows_remainder[w375]",
+  "obligations": [
+   "S2-027"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.411,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_partial_capture_prefill_follows_remainder[w1280]",
+  "obligations": [
+   "S2-027"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.291,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_inputs_have_visible_labels_and_focus_ring[w375]",
+  "obligations": [
+   "S2-033"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.86,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_inputs_have_visible_labels_and_focus_ring[w1280]",
+  "obligations": [
+   "S2-033"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.889,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_no_horizontal_scroll_worst_case[w375]",
+  "obligations": [
+   "S2-032"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 7.767,
+  "error": null
+ },
+ {
+  "test": "test_s2_ui.py::test_no_horizontal_scroll_worst_case[w1280]",
+  "obligations": [
+   "S2-032"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 8.718,
+  "error": null
+ },
+ {
+  "test": "test_s2_upgrade.py::test_upgrade_1_to_2_from_stage1_container",
+  "obligations": [
+   "S2-040",
+   "S2-041",
+   "S2-042",
+   "S2-043",
+   "S2-044",
+   "S2-902"
+  ],
+  "decisions": [
+   "D2-18",
+   "D2-13"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.386,
+  "error": null
+ },
+ {
+  "test": "test_s2_upgrade.py::test_upgrade_2_to_2_after_stage1_import",
+  "obligations": [
+   "S2-040",
+   "S2-041",
+   "S2-042",
+   "S2-043"
+  ],
+  "decisions": [
+   "D2-18"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.102,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_display_name_renders_as_text[w375]",
+  "obligations": [
+   "S2-035",
+   "S2-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.774,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_display_name_renders_as_text[w1280]",
+  "obligations": [
+   "S2-035",
+   "S2-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.443,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_latest_refresh_wins_on_authorizations[w375]",
+  "obligations": [
+   "S2-021",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.358,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_latest_refresh_wins_on_authorizations[w1280]",
+  "obligations": [
+   "S2-021",
+   "S2-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.836,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_refused_capture_keeps_input_then_success_resets_prefill[w375]",
+  "obligations": [
+   "S2-027"
+  ],
+  "decisions": [
+   "D2-19"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.964,
+  "error": null
+ },
+ {
+  "test": "test_s2_v2.py::test_refused_capture_keeps_input_then_success_resets_prefill[w1280]",
+  "obligations": [
+   "S2-027"
+  ],
+  "decisions": [
+   "D2-19"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.903,
+  "error": null
+ },
+ {
+  "test": "test_s2_v3.py::test_capture_at_or_just_after_deadline[0]",
+  "obligations": [
+   "S2-057",
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.158,
+  "error": null
+ },
+ {
+  "test": "test_s2_v3.py::test_capture_at_or_just_after_deadline[50]",
+  "obligations": [
+   "S2-057",
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.302,
+  "error": null
+ },
+ {
+  "test": "test_s2_v3.py::test_capture_at_or_just_after_deadline[250]",
+  "obligations": [
+   "S2-057",
+   "S2-067"
+  ],
+  "decisions": [
+   "D2-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.578,
+  "error": null
+ }
+]

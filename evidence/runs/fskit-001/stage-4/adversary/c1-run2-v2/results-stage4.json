@@ -1,0 +1,65 @@
+[
+ {
+  "test": "test_s4_v2.py::test_refund_counts_in_history_and_boundaries",
+  "obligations": [
+   "S4-025",
+   "S4-021"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.068,
+  "error": null
+ },
+ {
+  "test": "test_s4_v2.py::test_refund_revisions_readers",
+  "obligations": [
+   "S4-026"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.029,
+  "error": null
+ },
+ {
+  "test": "test_s4_v2.py::test_operator_sender_and_non_operator_paths",
+  "obligations": [
+   "S4-030",
+   "S4-036"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.126,
+  "error": null
+ },
+ {
+  "test": "test_s4_v2.py::test_two_instant_combined_batch",
+  "obligations": [
+   "S4-038",
+   "S4-047"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.192,
+  "error": null
+ },
+ {
+  "test": "test_s4_v2.py::test_recorded_at_across_batches_and_singles",
+  "obligations": [
+   "S4-040"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.042,
+  "error": null
+ }
+]
