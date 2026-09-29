@@ -1,0 +1,29 @@
+{
+  "currency": "EUR",
+  "minor_units": 2,
+  "authorization_ttl_seconds": 604800,
+  "users": [
+    { "id": "u_ada", "email": "ada@example.com", "password": "correct horse",
+      "display_name": "Ada", "handle": "ada", "balance": 10000 },
+    { "id": "u_bob", "email": "bob@example.com", "password": "correct horse",
+      "display_name": "Bob", "handle": "bob", "balance": 2500 },
+    { "id": "u_cy", "email": "cy@example.com", "password": "correct horse",
+      "display_name": "Cy", "handle": "cy", "balance": 500 }
+  ],
+  "settlement_operator_ids": ["u_ada"],
+  "payments": [
+    { "id": "p_1", "from_user_id": "u_ada", "to_user_id": "u_bob",
+      "amount": 500, "note": "coffee", "visibility": "public" },
+    { "id": "p_2", "from_user_id": "u_bob", "to_user_id": "u_cy",
+      "amount": 250, "note": "bus fare", "visibility": "public" }
+  ],
+  "requests": [
+    { "id": "rq_1", "requester_id": "u_bob", "payer_id": "u_ada",
+      "amount": 1200, "note": "taxi", "status": "pending" }
+  ],
+  "authorizations": [
+    { "id": "au_1", "from_user_id": "u_ada", "to_user_id": "u_cy",
+      "amount": 3000, "note": "deposit", "visibility": "public",
+      "status": "active", "captured_amount": 0 }
+  ]
+}
