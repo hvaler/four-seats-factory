@@ -1,0 +1,65 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-011",
+ "sequence": 11,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:49:30Z",
+ "event_type": "PROVENANCE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-001,S3-002",
+  "section": null,
+  "obligation": "S3-001,S3-002"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "Candidate 2 provenance",
+ "candidate_commit": "51a0bdd1c48207fb3e22fb163d1fd7972123aa3d",
+ "candidate_product_tree": "f586c4995f31122e887e462d54590b955f6b45a2",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "clone; checkout 51a0bdd1; rev-parse; log e4d35083..HEAD; diff --stat",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:9d61adde4e6eb1efa216b593d898cc63a270a946b0087b608c7bb79630604838",
+  "mode": null,
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:49:00Z",
+  "finished_utc": "2026-09-28T23:49:30Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "repair confined to stage-3; stage-1/2 unchanged",
+ "observed": "stage-3 f586c499, stage-2 a8e6178d, stage-1 347efba5; 3 repair commits by implementer-thgt; diff vs e4d35083: app.js, ledger.js, store.js, 2 new tests (5 files +279/-15); clean",
+ "result": "PASS",
+ "artifacts": [],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Inspection."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "47a2a349-2c9e-4087-acd1-e70a94c2cc07"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

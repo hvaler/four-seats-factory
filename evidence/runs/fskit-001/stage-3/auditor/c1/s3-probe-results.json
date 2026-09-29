@@ -1,0 +1,527 @@
+{
+ "started_utc": "2026-09-28T23:29:10Z",
+ "finished_utc": "2026-09-28T23:29:14Z",
+ "passed": 32,
+ "failed": 1,
+ "total": 33,
+ "results": [
+  {
+   "obligation": "S3-010/S3-011/S3-012",
+   "probe": "seeded created_at verbatim, fixture balance unchanged",
+   "pass": true,
+   "detail": {
+    "p1": "2026-09-01T10:00:00+00:00"
+   }
+  },
+  {
+   "obligation": "S3-021/S3-022",
+   "probe": "as_of inclusive, opening before earliest, echo exact",
+   "pass": true,
+   "detail": {
+    "before T1": [
+     200,
+     10900,
+     true,
+     10900
+    ],
+    "at T1 (inclusive)": [
+     200,
+     9900,
+     true,
+     9900
+    ],
+    "T1 as +02:00": [
+     200,
+     9900,
+     true,
+     9900
+    ],
+    "at T2": [
+     200,
+     9500,
+     true,
+     9500
+    ],
+    "at T3": [
+     200,
+     10000,
+     true,
+     10000
+    ],
+    "far future": [
+     200,
+     10000,
+     true,
+     10000
+    ]
+   }
+  },
+  {
+   "obligation": "S3-020",
+   "probe": "invalid as_of -> 422",
+   "pass": true,
+   "detail": {
+    "2026-09-01T10:00:00": 422,
+    "2026-09-01": 422,
+    "": 422,
+    "yesterday": 422
+   }
+  },
+  {
+   "obligation": "S3-031/S3-032/S3-033/S3-034",
+   "probe": "window [T1,T3): opening, entries (time then id), closing; T3 excluded",
+   "pass": true,
+   "detail": {
+    "s": 200,
+    "opening": 10900,
+    "entries": [
+     [
+      "p1",
+      -1000,
+      9900
+     ],
+     [
+      "p2",
+      300,
+      10200
+     ],
+     [
+      "p4",
+      -700,
+      9500
+     ]
+    ],
+    "closing": 9500
+   }
+  },
+  {
+   "obligation": "S3-035/S3-064",
+   "probe": "pagination invariant; has_more",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S3-036",
+   "probe": "statement only own payments (private included, others' public excluded)",
+   "pass": true,
+   "detail": {
+    "bb": [
+     "p1",
+     "p2"
+    ],
+    "cc": [
+     "p3",
+     "p5"
+    ]
+   }
+  },
+  {
+   "obligation": "S3-030/D3-08/C2",
+   "probe": "statement invalid instants / from>to / limit -> 422",
+   "pass": true,
+   "detail": {
+    "2026-09-01": 422,
+    "": 422,
+    "to naive": 422,
+    "from>to": 422,
+    "limit 0": 422
+   }
+  },
+  {
+   "obligation": "S3-040/S3-052",
+   "probe": "revision 1 shape; third party 404; no token 401",
+   "pass": true,
+   "detail": {
+    "r1": {
+     "payment_id": "p1",
+     "revision": 1,
+     "amount": 1000,
+     "effective_at": "2026-09-01T10:00:00+00:00",
+     "recorded_at": "2026-09-01T10:00:00+00:00",
+     "reason": ""
+    },
+    "s": [
+     200,
+     404,
+     401
+    ]
+   }
+  },
+  {
+   "obligation": "S3-044/S3-048",
+   "probe": "decrease 1000->800 moves 200 back from receiver; 201 shape",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "body": {
+     "payment_id": "p1",
+     "revision": 2,
+     "amount": 800,
+     "effective_at": "2026-09-01T10:00:00+00:00",
+     "recorded_at": "2026-09-28T23:29:11.068+00:00",
+     "reason": "fix"
+    },
+    "aa": 10200,
+    "bb": 4800
+   }
+  },
+  {
+   "obligation": "S3-053/D3-07",
+   "probe": "as_of T1 after correction 10100; with known_at before correction 9900 (echoed)",
+   "pass": true,
+   "detail": {
+    "now_view": 10100,
+    "known_view": 9900
+   }
+  },
+  {
+   "obligation": "S3-054/D3-12",
+   "probe": "statement uses selected revision; known_at selects older",
+   "pass": true,
+   "detail": {
+    "now": [
+     2,
+     -800
+    ],
+    "known": [
+     1,
+     -1000
+    ]
+   }
+  },
+  {
+   "obligation": "S3-051/D3-06",
+   "probe": "activity shows original amount; no new feed items",
+   "pass": true,
+   "detail": {
+    "amount": 1000,
+    "feed": 5
+   }
+  },
+  {
+   "obligation": "S3-050/D3-14",
+   "probe": "conservation in every historical view",
+   "pass": true,
+   "detail": {
+    "2026-09-01T09:59:59.999+00:00": [
+     22100,
+     22100
+    ],
+    "2026-09-01T10:00:00+00:00": [
+     22100,
+     22100
+    ],
+    "2026-09-02T10:00:00+00:00": [
+     22100,
+     22100
+    ],
+    "2026-09-03T10:00:00+00:00": [
+     22100,
+     22100
+    ],
+    "2030-01-01T00:00:00+00:00": [
+     22100,
+     22100
+    ]
+   }
+  },
+  {
+   "obligation": "S3-046/S3-047",
+   "probe": "stale 409; replay 200 original; different body 409",
+   "pass": true,
+   "detail": {
+    "s": [
+     409,
+     200,
+     409
+    ]
+   }
+  },
+  {
+   "obligation": "S3-042",
+   "probe": "receiver 403, third 403, unknown 404, no token 401, no key 400",
+   "pass": true,
+   "detail": {
+    "got": [
+     403,
+     403,
+     404,
+     401,
+     400
+    ]
+   }
+  },
+  {
+   "obligation": "S3-043/D3-02",
+   "probe": "invalid correction fields -> 422",
+   "pass": true,
+   "detail": {
+    "amount -1": [
+     422,
+     "validation_failed"
+    ],
+    "amount 1e9+1": [
+     422,
+     "validation_failed"
+    ],
+    "reason empty": [
+     422,
+     "validation_failed"
+    ],
+    "reason 201": [
+     422,
+     "validation_failed"
+    ],
+    "future eff": [
+     422,
+     "validation_failed"
+    ],
+    "no offset": [
+     422,
+     "validation_failed"
+    ],
+    "rev 0": [
+     422,
+     "validation_failed"
+    ],
+    "rev string": [
+     422,
+     "validation_failed"
+    ],
+    "reason number": [
+     422,
+     "validation_failed"
+    ],
+    "missing expected_revision": [
+     422,
+     "validation_failed"
+    ],
+    "missing amount": [
+     422,
+     "validation_failed"
+    ],
+    "missing effective_at": [
+     422,
+     "validation_failed"
+    ],
+    "missing reason": [
+     422,
+     "validation_failed"
+    ]
+   }
+  },
+  {
+   "obligation": "S3-049",
+   "probe": "currently unaffordable increase -> 409 insufficient_funds",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "insufficient_funds"
+   }
+  },
+  {
+   "obligation": "S3-049/D3-11",
+   "probe": "backdated decrease making dd negative at T3 -> 409 historical_overdraft; nothing changes; key reusable",
+   "pass": false,
+   "detail": {
+    "s": 409,
+    "c": "historical_overdraft",
+    "retry_ok": 201
+   }
+  },
+  {
+   "obligation": "D3-03",
+   "probe": "same-amount correction appends revision (201)",
+   "pass": true,
+   "detail": {
+    "s": 201
+   }
+  },
+  {
+   "obligation": "S3-043/S3-054",
+   "probe": "zero-amount reversal allowed when affordable",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "c": null,
+    "note": "201 expected unless dd's later history makes it an overdraft"
+   }
+  },
+  {
+   "obligation": "S3-070/S3-071/D3-05",
+   "probe": "settlement member and capture -> 422 linked_payment_immutable; member rev1 at committed_at",
+   "pass": true,
+   "detail": {
+    "got": [
+     422,
+     "linked_payment_immutable",
+     422,
+     "linked_payment_immutable"
+    ]
+   }
+  },
+  {
+   "obligation": "S3-084/C6",
+   "probe": "capture appears exactly once in statement with authorization link; no authorization entries",
+   "pass": true,
+   "detail": {
+    "entries": 2
+   }
+  },
+  {
+   "obligation": "S3-060/S3-061/S3-064",
+   "probe": "snapshot frozen across payment + correction",
+   "pass": true,
+   "detail": {
+    "first_page_same": true,
+    "full": 4
+   }
+  },
+  {
+   "obligation": "S3-062/S3-063/D3-09",
+   "probe": "snapshot + from/to/known_at 422; other user / unknown 404; unknown param ignored",
+   "pass": true,
+   "detail": {
+    "422": [
+     422,
+     422,
+     422
+    ],
+    "404": [
+     404,
+     404
+    ],
+    "ignored": 200
+   }
+  },
+  {
+   "obligation": "S3-065/S3-045",
+   "probe": "12 concurrent same-revision corrections: exactly one 201, rest stale; recorded_at strictly increasing",
+   "pass": true,
+   "detail": {
+    "outcomes": [
+     "(201, None)",
+     "(409, 'stale_revision')"
+    ],
+    "revisions": 2
+   }
+  },
+  {
+   "obligation": "S3-063",
+   "probe": "snapshot from before reset -> 404",
+   "pass": true,
+   "detail": {}
+  },
+  {
+   "obligation": "S3-080/S3-082/S3-023",
+   "probe": "historical holds: create, non-final capture, expiry at expires_at; closed_at = expires_at; four fields one view",
+   "pass": true,
+   "detail": {
+    "got": {
+     "before create": [
+      5000,
+      5000,
+      0
+     ],
+     "at create": [
+      5000,
+      4000,
+      1000
+     ],
+     "at capture": [
+      4700,
+      4000,
+      700
+     ],
+     "at expiry": [
+      4700,
+      4700,
+      0
+     ],
+     "now": [
+      4700,
+      4700,
+      0
+     ]
+    },
+    "closed_at": "2026-09-28T23:29:13.430+00:00",
+    "expires": "2026-09-28T23:29:13.430+00:00"
+   }
+  },
+  {
+   "obligation": "S3-081",
+   "probe": "future as_of beyond deadline -> expired (held 0); known_at before creation -> hold unknown",
+   "pass": true,
+   "detail": {
+    "future_held": 0,
+    "known_before_held": 0
+   }
+  },
+  {
+   "obligation": "S3-082",
+   "probe": "void sets closed_at to the void time",
+   "pass": true,
+   "detail": {
+    "closed_at": "2026-09-28T23:29:14.086+00:00"
+   }
+  },
+  {
+   "obligation": "S3-083",
+   "probe": "correction making historical AVAILABLE negative (total fine) -> 409 historical_overdraft",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "historical_overdraft",
+    "ee_now": {
+     "user_id": "u_ee",
+     "display_name": "EE",
+     "handle": "ee",
+     "balance": 1000,
+     "total": 1000,
+     "available": 1000,
+     "held": 0,
+     "currency": "EUR",
+     "minor_units": 2
+    }
+   }
+  },
+  {
+   "obligation": "S3-055/R3-01",
+   "probe": "same-amount time move: current unchanged, history shifted, entry enters window",
+   "pass": true,
+   "detail": {
+    "s": 201,
+    "cur": 10000,
+    "mid": 10000,
+    "ids": [
+     "p1",
+     "p2",
+     "p3",
+     "p4"
+    ]
+   }
+  },
+  {
+   "obligation": "S3-053/S3-021/S3-031/R3-04",
+   "probe": "known_at == recorded_at selects it; as_of == effective_at counts; to == effective_at excludes",
+   "pass": true,
+   "detail": {
+    "kn_eq": 10000,
+    "kn_before": 9500,
+    "as_of_eq": 10000,
+    "ids_to_T2": [
+     "p1"
+    ]
+   }
+  },
+  {
+   "obligation": "S3-049/R3-02",
+   "probe": "backdated time move before funding -> 409 historical_overdraft",
+   "pass": true,
+   "detail": {
+    "s": 409,
+    "c": "historical_overdraft"
+   }
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-007",
+ "sequence": 7,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:30:39Z",
+ "event_type": "UPGRADE",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S3-071,S3-072,S3-058,S3-902,D2-13,D3-13,D3-18",
+  "section": null,
+  "obligation": "S3-071,S3-072,S3-058,S3-902,D2-13,D3-13,D3-18"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "upgrade 1->3 and 2->3 run 2",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "auditor@9abeae23 tools/s3_upgrade_probe.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "s3_upgrade_probe.py (fresh containers)",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "s1u=ACCEPTED stage-1 image sha256:cfb657fd…, s2u=ACCEPTED stage-2 image sha256:eb155dc9…, t13/t23=candidate",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:30:38Z",
+  "finished_utc": "2026-09-28T23:30:39Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 14,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 14
+  }
+ },
+ "expected": "all pass",
+ "observed": "14/14: imports, old tokens, byte-identical receipts (incl. stage-2 authorize and capture), historical /me and statements with exact openings, corrections of imported payments, linked 422 for member and capture, D3-18 void closed at import, imported open hold capturable",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/s3-upgrade-results-2.json",
+   "sha256": "befaa961fa4b41d7fe76555073139b75785a646fb584ef420e3d91d68b32c0cb"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Export bodies in memory only."
+ },
+ "state": "REPRODUCED",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s3-auditor-006"
+ ],
+ "reason": null
+}

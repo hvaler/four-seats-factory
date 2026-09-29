@@ -1,0 +1,82 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-auditor-009",
+ "sequence": 9,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:36:30Z",
+ "event_type": "FINDING",
+ "requirement": {
+  "spec_path": "pocketful/spec/stage-1.md + stage-2.md + stage-3.md",
+  "spec_sha256": "65497dea…0aa4 + 39aaf9d7…b13f + 2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "id": "S1-058,S1-013 (st1 §2, §5), S3-060",
+  "section": null,
+  "obligation": "S1-058,S1-013 (st1 §2, §5), S3-060"
+ },
+ "actor": {
+  "role": "auditor",
+  "seat_id": "auditor-thgx",
+  "handle": "hugo.valer/auditor-thgx"
+ },
+ "claim": "F3-A01: JS heap OOM crash under sustained statement reads (auditor-found)",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": "auditor tools risk_snapshot_mem.py, risk_snapshot_count.py",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "docker run --cpus 2 --memory 2g; 500 payments; GET /statement?limit=1 x 20 in flight until failure",
+  "environment": "Windows 11 host; WSL2; Docker 29.8.0; Python 3.12.3; Playwright 1.63.0 / Chromium 153",
+  "tool_versions": {
+   "python": "3.12.3",
+   "docker": "29.8.0"
+  },
+  "container_image_digest": "sha256:6b35c215d0c0f4eea192705c6f17ffa76fad4f44c251548b76dac7327531dc8c",
+  "mode": "fresh container per run",
+  "input_artifact": null,
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:33:52Z",
+  "finished_utc": "2026-09-28T23:36:30Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": null,
+   "failed": null,
+   "skipped": null,
+   "collected": null
+  }
+ },
+ "expected": "service stays up and within 2 GiB, no 5xx",
+ "observed": "500 payments: 4761 successful reads then RemoteDisconnected; container exit 139, OOMKilled=false; log 'FATAL ERROR: Ineffective mark-compacts near heap limit … JavaScript heap out of memory'; memory 11.5 MiB -> 1.06 GiB in ~60 s. 100 payments: 20000 reads OK but 933 MiB retained",
+ "result": "FAIL",
+ "artifacts": [
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/risk-snapshot-count.jsonl",
+   "sha256": "e06417e85c263241d9367454b05fe81cb537c6f7e0bd8c6ec66e2f62cad6b3c3"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/risk-container-t3r.log",
+   "sha256": "5852c629ffa8b433e53912906f1a0238e54f614b05f94e98001312fc14d2f531"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/risk-mem-timeline.txt",
+   "sha256": "7a463cfa748b21974962bb935339f21c49cbdd01082bd542da33f7eb032333e8"
+  },
+  {
+   "path": "evidence/runs/fskit-001/stage-3/auditor/c1/risk-snapshot-mem-run2.txt",
+   "sha256": "e7a8a685c12abe3bfb4bfe5a23984a563d71b773899a57d8f46a9f8a04e4d9bd"
+  }
+ ],
+ "audit": {
+  "reproduced": true,
+  "reproduction_event_id": null,
+  "limitations": "Workload intensity chosen by the auditor (analyst risk note 88e934d1); crash within stated limits."
+ },
+ "state": "REJECTED",
+ "room_message_ids": [
+  "52d6d177-4348-46f9-b810-a984eba47a2c"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}
