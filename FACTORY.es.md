@@ -94,15 +94,26 @@ stage 1:
 ## Los dos rechazos
 
 Se rechazaron dos candidatos, con tres hallazgos distintos. **El adversary encontró `F2-01` y
-`F3-01`; el auditor reprodujo los dos y encontró él mismo `F3-A01`.** Todos estaban en candidatos en
+`F3-01`; el auditor reprodujo los dos y encontró él mismo `F3-A01`, al que el adversary llegó después
+por su cuenta.** Todos estaban en candidatos en
 los que el harness oficial ya había pasado. Ese es el argumento entero de este diseño, así que van
 completos.
 
 ### Stage 3 — el servicio se moría y todas las suites estaban en verde
 
-`F3-A01`, encontrado por la sonda del propio auditor. Con lecturas sostenidas de extracto, el
-proceso **se caía por desbordamiento del heap de V8**. Con 500 pagos de historial murió tras **4.761
-lecturas**, exit 139, con 1,06 GiB, y perdió todo el estado. La memoria no se liberaba nunca.
+`F3-A01`. Con lecturas sostenidas de extracto, el proceso **se caía por desbordamiento del heap de
+V8**. Con 500 pagos de historial murió tras **4.761 lecturas**, exit 139, con 1,06 GiB, y perdió todo
+el estado. La memoria no se liberaba nunca.
+
+Cómo se encontró es el diseño funcionando en pequeño. **El implementer declaró el riesgo él mismo**,
+en su propio candidato —*"every first statement read stores a snapshot… Memory grows with the number of
+reads… unbounded within one reset"*— y lo dio por aceptable. **El analyst no se fió de su palabra**: lo
+convirtió en una sonda para los dos revisores, unas 5.000 lecturas dentro de los límites de 2 CPU y
+2 GiB. **El auditor y el adversary tumbaron el servicio cada uno por su lado**, con scripts,
+contenedores, tamaños de página y concurrencia distintos: el auditor a las 4.761 lecturas y el
+adversary hacia las 4.800, que lo informó tres minutos después como `F3-02`. La respuesta del auditor:
+*"The two reproductions are independent… so they corroborate each other."* El analyst lo contó una
+sola vez, como corroboración y no como un segundo hallazgo.
 
 Lo que ese mismo candidato ya había pasado, todo reproducido por el auditor en contenedores nuevos:
 

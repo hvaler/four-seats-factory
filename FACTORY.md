@@ -90,15 +90,26 @@ test passes. The analyst had to say so out loud during stage 1:
 ## The two rejections
 
 Two candidates were rejected, carrying three distinct findings. **The adversary found `F2-01` and
-`F3-01`; the auditor reproduced both, and found `F3-A01` itself.** Every one of them sat on a
+`F3-01`; the auditor reproduced both, and found `F3-A01` itself — which the adversary then reached
+independently.** Every one of them sat on a
 candidate where the official harness had already passed. That is the whole argument for this design,
 so here they are in full.
 
 ### Stage 3 — the service died and every suite was green
 
-`F3-A01`, found by the auditor's own probe. Under sustained statement reads the process **crashed
-with a V8 heap out-of-memory**. With 500 payments of history it died after **4,761 reads**, exit
-139, at 1.06 GiB, and lost all state. Memory was never released.
+`F3-A01`. Under sustained statement reads the process **crashed with a V8 heap out-of-memory**.
+With 500 payments of history it died after **4,761 reads**, exit 139, at 1.06 GiB, and lost all
+state. Memory was never released.
+
+How it was found is the design working in miniature. **The implementer declared the risk itself**,
+in its own candidate — *"every first statement read stores a snapshot… Memory grows with the number of
+reads… unbounded within one reset"* — and judged it acceptable. **The analyst did not take its word**:
+it turned the risk into a probe for both reviewers, about 5,000 reads inside the 2 CPU / 2 GiB limits.
+**The auditor and the adversary then crashed the service independently**, with different scripts,
+containers, page sizes and concurrency — the auditor at 4,761 reads, the adversary at about 4,800,
+reported three minutes later as `F3-02`. The auditor's reply: *"The two reproductions are independent…
+so they corroborate each other."* The analyst counted it once, as corroboration, not as a second
+finding.
 
 What that same candidate had already passed, all reproduced by the auditor in fresh containers:
 
