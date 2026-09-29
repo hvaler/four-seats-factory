@@ -219,6 +219,23 @@ working directory and did nothing at all until it was moved.
 able to delete its own identity, release its room lease, push to a remote or prune Docker. Those are
 four lines and they cost nothing.
 
+## Preparation, execution and review
+
+The initial kit — mandates, submission layout, evidence templates, runbook and dispatch — was
+prepared with the assistance of ChatGPT (GPT‑6 Astra). Before dispatch, the operator adjusted it
+with the assistance of Claude Code (Claude Opus): raised the time ceilings to 360 minutes per stage
+and 1440 in total, added the description of this host to the dispatch, and wrote the room preamble
+and the permissions configuration. All of it is in [`setup/`](setup/).
+
+The evaluated run took place in BAND with four seats on Claude Code and `claude-opus-5-5`. A single
+human message authorised all four stages; everything after it — implementation, review, repair and
+acceptance — happened inside the band.
+
+After the run, the operator wrote this documentation, `RUNBOOK`, `EVIDENCE-INDEX` and `REDACTION`
+with the assistance of Claude Code, and commissioned an external audit of the repository with the
+assistance of GPT‑6 Sol. Its recommendations were applied to documentation and evidence only; no
+product tree changed after acceptance.
+
 ## Honest limits
 
 **Three findings is not many.** They are real and all three were reproduced, but we cannot tell from

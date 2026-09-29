@@ -229,6 +229,23 @@ movió.
 vigilancia no debería poder borrar su propia identidad, soltar el lease de su sala, empujar a un
 remoto ni purgar Docker. Son cuatro líneas y no cuestan nada.
 
+## Preparación, ejecución y revisión
+
+El kit inicial —mandatos, estructura de entrega, plantillas de evidencia, runbook y despacho— se
+preparó con asistencia de ChatGPT (GPT‑6 Astra). Antes del despacho, el operador lo ajustó con
+asistencia de Claude Code (Claude Opus): subió los techos de tiempo a 360 minutos por stage y 1440
+en total, añadió al despacho la descripción del host, y escribió el preámbulo de sala y la
+configuración de permisos. Todo está en [`setup/`](setup/).
+
+La ejecución evaluada se hizo en BAND con cuatro asientos en Claude Code y `claude-opus-5-5`. Un único
+mensaje humano autorizó los cuatro stages; la implementación, revisión, reparación y aceptación
+posteriores ocurrieron dentro de la banda.
+
+Después de la ejecución, el operador redactó esta documentación, `RUNBOOK`, `EVIDENCE-INDEX` y
+`REDACTION` con asistencia de Claude Code, y encargó una auditoría externa del repositorio con
+asistencia de GPT‑6 Sol. Sus recomendaciones se aplicaron solo a documentación y evidencia; ningún
+árbol de producto cambió tras la aceptación.
+
 ## Límites honestos
 
 **Tres hallazgos no son muchos.** Son reales y los tres se reprodujeron, pero desde dentro de la
