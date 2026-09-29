@@ -1,111 +1,218 @@
-# Evidence-Driven Autonomous Factory
+# Cuatro asientos que no se creen la palabra del otro
 
-## Estado y objetivo
+*[Read in English](FACTORY.en.md)*
 
-Diseño preparado para una ejecución en BAND; no hay todavía resultados medidos. La aplicación objetivo es Pocketful, pero los mandates no contienen conocimiento del track. Para reutilizar la factory se cambia el dispatch, la especificación y el entorno, manteniendo el procedimiento de los seats.
+Una fábrica de software levantada sobre BAND Desktop. Cuatro asientos de agente en una sala: uno
+decide cuál es el trabajo, otro lo construye, otro intenta romperlo, y otro reproduce todo antes de
+que se acepte nada. Ningún asiento acepta su propio trabajo, y una afirmación nunca mueve un
+artefacto — lo mueve una reproducción.
 
-La regla de aceptación es: una afirmación solo puede convertirse en aceptación cuando otro seat reproduce evidencia suficiente sobre la misma revisión. Esta es una política interna más exigente que el umbral de puntuación del evento; no promete superar tests que no hemos visto.
+En toda la sala existe un solo mensaje humano. Autorizó cuatro stages y no volvió a hablar.
 
-## Seats y propiedad
+## Lo que produjo
 
-| Seat visible | Propiedad | Puede escribir | No puede decidir |
+| | |
+|---|---|
+| Stages entregados | **4 de 4**, cada uno congelado y auditado de forma independiente |
+| Harness público, `--all --mode isolated`, clon nuevo | **cada carpeta reclama su stage, el 100% de sus checks, sin desbordar** |
+| Rechazos del auditor | **2**, los dos reparados y reauditados dentro de la tirada |
+| Mensajes humanos en la sala | **1** |
+| Tiempo de pared, del despacho al informe final | **4 h 14 min** |
+| Gasto en modelo, precios de catálogo | **~136 $** |
+
+```
+stage-1 -> reclama 1   share 1.0   overshoot null
+stage-2 -> reclama 2   share 1.0   overshoot null
+stage-3 -> reclama 3   share 1.0   overshoot null
+stage-4 -> reclama 4   share 1.0   overshoot null
+```
+
+`share 1.0` es la totalidad de los checks de ese stage. `overshoot null` es la regla de congelación
+aguantando: ninguna carpeta pasa la suite del stage siguiente, así que cada una es la solución de su
+propio stage y no de uno posterior.
+
+## Los asientos
+
+| Asiento | Posee | Escribe | No puede decidir |
 |---|---|---|---|
-| analyst | cobertura, coordinación, límites | obligaciones, decisiones, índice de evidencia | aceptación del producto |
-| implementer | implementación y empaquetado | código de producción, Dockerfile, RUN.md y tests propios | aceptación de su trabajo |
-| adversary | crítica de cobertura y comprobaciones independientes | tests independientes y reportes de fallo | arreglos de producción o release |
-| auditor | reproducción e integridad | registros de auditoría y veredictos | modificar producto o tests para pasar |
+| analyst | cobertura, coordinación, límites | obligaciones, decisiones, índice de evidencia | si el producto se acepta |
+| implementer | implementación y empaquetado | código de producción, Dockerfile, RUN.md, sus propios tests | si su propio trabajo vale |
+| adversary | crítica independiente | sus propias suites y sus informes de fallo | arreglos de producción, ni publicar |
+| auditor | reproducción e integridad | registros de auditoría y veredictos | no puede tocar producto ni tests para que pasen |
 
-Registrar antes del dispatch, sin inventar valores:
+El roster de esta tirada:
 
-| Nombre visible real | @handle real | Seat ID | Harness real | Modelo exacto |
+| Nombre visible | @handle | Id de agente en Band | Harness | Modelo |
 |---|---|---|---|---|
 | analyst | hugo.valer/analyst-thgs | fd5095ef-bafa-4039-b597-3f160b75cf21 | Claude Code | claude-opus-5 |
 | implementer | hugo.valer/implementer-thgt | 156a2fed-f92e-4453-8e6c-75ecdb48ef20 | Claude Code | claude-opus-5 |
 | adversary | hugo.valer/adversary-thgz | f603ac21-88ea-434a-844e-bb621f8da63e | Claude Code | claude-opus-5 |
 | auditor | hugo.valer/auditor-thgx | f6bf20d6-c769-4d36-bb79-47d5e384287a | Claude Code | claude-opus-5 |
 
-La identidad visible determina el nombre de su mandate. El handle real determina las menciones. No suponer que son iguales. Todo seat participante debe tener su mandate correspondiente.
+Nombre visible, @handle e id de agente son tres cosas distintas. Los mandatos se dirigen entre sí
+por el segundo y la sala registra el tercero. Nada en `mandates/` nombra un pago, una pantalla, una
+ruta ni este track: para apuntar la fábrica a otro problema se cambia el despacho, y ningún mandato
+necesita edición.
 
-## Montaje reproducible
+## Por qué caza cosas
 
-1. Preparar Python 3.12+, Git, Docker en ejecución, BAND Desktop y acceso al proveedor de modelos. En Windows, los comandos del harness se preparan en WSL2. El lenguaje del servicio lo elige la banda según los requisitos.
-2. Obtener el kickoff oficial de `band-ai/dark-factory-wearedevs`, registrar su commit y crear allí un entorno Python. Instalar `harness/requirements.txt` y Chromium de Playwright. Verificar `python -m harness --help`.
-3. Mantener tres ubicaciones distintas: kickoff oficial, repo de resultados y salidas de checks. Dar rutas absolutas accesibles para todos los seats. Mantener las credenciales fuera del repo y de la room.
-4. Configurar los cuatro seats con los mandates de este directorio, completando primero Harness y Model reales. Configurar sus identidades Git. Comprobar permisos para crear archivos, commits, contenedores y clones de revisión sin prompts durante el run.
-5. Ensayar toda la cadena, incluidas menciones y exportación, en una room y repo de práctica. Para la ejecución evaluada usar una room nueva y repo nuevo, sin código reutilizado del ensayo.
-6. Cargar el dispatch con rutas, handles, especificación, límites y destino. Tras enviarlo no introducir steering humano. Analyst coordina y concluye sin pedir decisiones humanas.
+Cuatro filtros, en orden, y cada uno lo posee un asiento que no posee el anterior.
 
-Los permisos en los mandates son una separación procedimental. Si la plataforma permite restringir rutas por seat, configurarlos también allí. No se afirma que los prompts impongan aislamiento técnico. Los clones de revisión impiden que una edición en curso se confunda con el candidato auditado.
+1. **El registro de obligaciones va antes que el código.** El analyst convierte cada sección de la
+   especificación en obligaciones numeradas, con su referencia de origen y su método de aceptación.
+   El adversary impugna ese registro buscando omisiones *antes* de que se acepte implementación
+   alguna. En el stage 2 presentó veinte objeciones de cobertura antes de que se escribiera una
+   línea.
+2. **Un candidato se congela en un commit.** El implementer publica el identificador completo y deja
+   de tocarlo. Ningún revisor lee un árbol de trabajo.
+3. **El adversary verifica desde su propio clon limpio**, con sus propias suites, versionadas en
+   `verification/adversary/stage-N/`, y entrega un paquete que incluye la lista explícita de lo que
+   **no** probó.
+4. **El auditor reproduce todo él mismo** en un clon nuevo, con sus propias imágenes `--no-cache` y
+   sus propios contenedores, y solo entonces decide. Copiar el informe de otro no es reproducir.
 
-## Flujo y evidencia
+La regla que convierte esto en algo más que ceremonia: **un check set en verde no es evidencia de
+que un requisito se cumpla.** Bajo este despacho, una fila de la especificación sin evidencia sigue
+abierta aunque pasen todos los tests públicos. El analyst tuvo que decirlo en voz alta durante el
+stage 1:
 
-El alcance autorizado es Stage 1 → Stage 2 → Stage 3 → Stage 4 mediante un único dispatch inicial. Una aceptación de etapa es un checkpoint interno: analyst inicia la siguiente sin pedir confirmación. Solo termina tras verificar la cadena completa o registrar un límite/bloqueo. Por cada etapa se suministran las specs completas acumuladas; la carpeta anterior se conserva y su copia se amplía. Se registra una decisión por etapa y las migraciones 1→2, 1→3, 2→3, 1→4, 2→4 y 3→4. La auditoría final ejecuta todas las carpetas en modo isolated desde un clone nuevo. Los formatos STAGE-REGISTER y UPGRADE-REPORT están en evidence/templates.
+> Some items on your "untested" list are spec rows, not decisions. Under the dispatch they count as
+> open until evidence exists, even though every public test passes.
 
-```text
-analyst: contrato y obligaciones
-   -> adversary: crítica de cobertura
-   -> implementer: candidato comprometido
-   -> adversary: comprobación independiente
-   -> auditor: reproducción y decisión
-        REJECTED -> analyst -> implementer -> nueva revisión y nueva auditoría
-        BLOCKED  -> analyst -> resultado final con evidencia disponible
-        ACCEPTED -> analyst -> siguiente etapa autorizada
-        etapa 4 aceptada -> auditoría global -> analyst -> informe final
-```
+## Los dos rechazos
 
-Cada handoff contiene la tarea y la spec completas, alcance, restricciones, rutas absolutas, revisión de entrada, resultados esperados y límites. Se dirige al @handle literal y requiere respuesta al emisor. Los mensajes largos se numeran; el receptor confirma que recibió todos antes de actuar. El enlace a una spec o mensaje no sustituye su contenido.
+Los dos los encontraron las sondas del propio auditor, sobre candidatos en los que el harness
+oficial ya había pasado. Ese es el argumento entero de este diseño, así que van completos.
 
-Cada obligación enlaza sección de spec, claim de implementer, evidencia de adversary, reproducción de auditor y decisión. Los formatos están en `evidence/templates/`; `evidence/README.md` define estados y reglas de integridad. Ningún ejemplo o plantilla cuenta como evidencia.
+### Stage 3 — el servicio se moría y todas las suites estaban en verde
 
-## Git y concurrencia
+`F3-A01`. Con lecturas sostenidas de extracto, el proceso **se caía por desbordamiento del heap de
+V8**. Con 500 pagos de historial murió tras **4.761 lecturas**, exit 139, y perdió todo el estado.
+La memoria no se liberaba nunca.
 
-Analyst concede un único permiso de escritura temporal en el checkout de resultados. El propietario publica commit completo y devuelve el permiso. Nunca se hacen checkouts, commits o staging simultáneos en ese checkout. El implementer es el único escritor de `stage-N/`; los otros seats trabajan en sus áreas documentales o en clones separados.
+Lo que ese mismo candidato ya había pasado, todo reproducido por el auditor en contenedores nuevos:
 
-Al publicar candidato se congela su árbol de producto. Adversary y auditor clonan el repo en ubicaciones externas distintas, extraen el commit exacto y levantan procesos nuevos. Los scripts de verificación también quedan versionados. El informe registra por separado revisión del producto, revisión de los tests y revisión que incorpora la evidencia: no intenta introducir el hash de un commit dentro de ese mismo commit.
+| Comprobación | Resultado |
+|---|---|
+| Harness oficial `--stage 3`, modo host **y aislado** | 147 + 35 + 6, **0 omitidos** |
+| Regresión de stage 1 y 2 sobre `stage-3/`, API e interfaz a 375 px y 1280 px | **150/150** |
+| Probe de stage 3 con historial calculado a mano | 33/33 |
+| Migraciones 1→3 y 2→3 en contenedores nuevos | 14/14 |
 
-Un cambio en el producto exige nueva revisión. Un commit posterior que solo añade evidencia no modifica la aceptación del árbol del producto: auditor compara `stage-N/` entre ambos commits y registra ese resultado. No se modifica historial mediante amend, rebase o squash. Las salidas grandes quedan identificadas y se conservan; nunca se reemplaza un directorio de run fallido.
+Todo verde, y el servicio no aguantaba que lo usaran. La suite entregada nunca leía suficientes
+extractos para enterarse. En el mismo veredicto viajó un segundo defecto: `F3-01`, una retención
+cerrada vista a través de un `known_at` anterior no expiraba nunca en su fecha límite — `held` se
+quedaba en 1000 en `expires_at` + 1 ms, y seguía ahí en el año 2099.
 
-## Puertas internas
+La reparación se enrutó junto con la obligación incumplida, se reconstruyó y se reauditó contra un
+commit nuevo. `stage-3/test/perf/statement_memory.js` existe por esto.
 
-1. **Contrato:** obligaciones de todas las secciones, supuestos explícitos y crítica de cobertura.
-2. **Candidato:** árbol limpio y completo, Dockerfile y RUN reproducibles, alcance correcto.
-3. **Challenge:** checks públicos y pruebas propias derivadas de la spec, con resultados reales.
-4. **Auditoría:** reproducción en entorno nuevo del mismo candidato; ningún fallo bloqueante o vacío de evidencia.
-5. **Entrega:** evidencia indexada y correspondencia comprobada entre producto aceptado y commit publicado.
+### Stage 2 — pequeño, y aun así bloqueó
 
-La política interna exige comprobar todas las obligaciones y resolver todos los fallos aplicables; no optimiza para el umbral mínimo del evento. El probe del stage siguiente se interpreta según la guía: su fallo esperado por funcionalidad posterior no implementada no bloquea el stage actual. Nunca se introduce una rotura deliberada para engañar ese probe.
+`F2-01`. Un capture rechazado no conservaba el importe tecleado: prellenado `20.00`, tecleado
+`25.00`, se muestra el rechazo, y el campo volvía sin avisar a `20.00`. No se movía dinero;
+severidad baja. El analyst había dictaminado que la fila del registro vincula, así que el candidato
+no se podía aceptar con ella abierta.
 
-## Correspondencia con la rúbrica
+Lo dejamos escrito porque lo interesante es lo que **no** pasó: nadie negoció la severidad a la baja
+para entregar a tiempo.
 
-Factory (50%): montaje reutilizable, alcance realmente alcanzado, decisiones y costes medidos. App (25%): calidad de la aplicación y, a partir de Stage 2, experiencia de uso. Agent Teamwork (25%): trabajo distribuido, handoffs completos, revisión con efecto real cuando procede y autonomía demostrada por room e historial. Tener cuatro seats o muchos mensajes no prueba esos resultados.
+## Lo que costó
 
-## Decisiones y costes de diseño
+Estimado a precios de catálogo del proveedor a partir de los recuentos de tokens del runtime.
+**Esto no es una factura**, y la atribución de BAND no es estable entre reinicios, así que trátese
+como un orden de magnitud.
 
-- Cuatro roles permiten separar interpretación, escritura, challenge y aceptación. El coste es más comunicación y arranques de verificación.
-- Un escritor de producción facilita atribución y evita conflictos. Puede convertirse en cuello de botella: los otros seats tienen trabajo sustantivo en obligaciones, tests y auditoría, no son simples aprobadores.
-- El auditor repite comprobaciones en entornos nuevos. Aumenta tiempo y coste de infraestructura, pero detecta evidencia desactualizada o dependiente de estado compartido.
-- Los handoffs completos consumen contexto. Se prefieren a referencias incompletas porque cada revisión necesita conocer íntegro el contrato.
-- El ledger facilita navegar de un fallo a su reparación; requiere disciplina y no sustituye el log auténtico de BAND ni el historial Git.
-
-## Fallos, recuperación y límites
-
-Valores de partida: 5 ciclos de reparación por stage, 2 reintentos de infraestructura por comando, 180 minutos por stage y 720 minutos totales, incluyendo 30 minutos reservados para verificación global e informe. Se fijan antes del dispatch; el presupuesto monetario lo fija el participante para el run completo y no se reinicia entre etapas. Son techos de operación de esta factory, no estimaciones ni reglas oficiales. Un límite financiero solo se considera controlado si existe medición fiable o límite duro en el proveedor; en caso contrario declarar esa limitación y apoyarse en los límites verificables. Una reparación de una etapa anterior consume su presupuesto restante original; invalida y exige revisar la evidencia afectada de las etapas posteriores.
-
-Un defecto de producto vuelve al implementer con reproducción y obligación incumplida. Un defecto de test vuelve a adversary y obliga a repetir el resultado. Un error de entorno no cuenta como test pasado; los reintentos usan nuevos directorios y quedan registrados. Agotar límites produce un resultado parcial o BLOCKED, sin solicitar al humano un rerun. No se fabrica un fallo para el vídeo; aceptar correctamente a la primera es válido.
-
-## Resultados reales — completar después
-
-| Medida | Valor inicial | Evidencia que debe respaldarla |
+| Asiento | Tokens | Estimación |
 |---|---|---|
-| Inicio y fin UTC por stage | NO MEDIDO | eventos de room |
-| Tiempo de pared y tiempo de checks | NO MEDIDO | marcas temporales / logs |
-| Modelo y tokens por seat | NO MEDIDO | datos del runtime/proveedor |
-| Gasto por seat, moneda y total | NO MEDIDO | usage/billing; indicar estimación si aplica |
-| Ciclos de reparación | NO EJECUTADO | ledger + mensajes |
-| Stages internos aceptados | NINGUNO | veredictos auditor |
-| Stages reclamados por harness público | NO EJECUTADO | report.json aislado |
-| Resultado oficial | DESCONOCIDO | evaluación del organizador |
+| auditor | 130.989.459 | 38,50 $ |
+| adversary | 125.995.041 | 38,30 $ |
+| implementer | 107.065.994 | 32,81 $ |
+| analyst | 92.935.707 | 26,31 $ |
+| **Total** | **456.986.201** | **~136 $** |
 
-Documentar qué se probó durante el desarrollo de la factory, qué falló y qué cambio produjo, separándolo del run evaluado. Para un fallo real del run: requisito -> commit rechazado -> prueba -> mensaje -> reparación -> commit nuevo -> reproducción -> decisión. Si no hubo fallo reproducible, indicarlo sin inventarlo. Nunca convertir falta de datos de coste en cero euros.
+El gasto es casi plano entre los cuatro asientos, y los dos de verificación juntos cuestan más que
+el que construye. Eso es el diseño apareciendo en la factura: la mayor parte del dinero se va en
+decidir si el trabajo se sostiene, no en producirlo.
 
-La guía pide que el participante redacte README y FACTORY: este documento es una base que debe revisar, completar y hacer propia con su configuración y experiencia real antes de entregar. Fuente: https://github.com/band-ai/dark-factory-wearedevs/blob/main/docs/participant-guide.md
+No había tope duro configurado en el proveedor, así que durante la tirada no se podía imponer ningún
+techo económico. Los límites exigibles eran de reloj: 360 minutos por stage y 1440 en total. La
+tirada usó 254.
+
+## Cronología
+
+Horas UTC, del 2026-09-28 al 2026-09-29.
+
+| | |
+|---|---|
+| 20:40 | Despacho. Un mensaje, cuatro stages autorizados |
+| 21:35 | Stage 1 **ACEPTADO**, sin ciclo de reparación |
+| 21:39 | El analyst abre el stage 2 por su cuenta, handoff en 10 partes, sin intervención humana |
+| 22:22 | Candidato 1 del stage 2 **RECHAZADO** (`F2-01`) |
+| 22:45 | Stage 2 **ACEPTADO**, migración 1→2 verificada |
+| 23:41 | Candidato 1 del stage 3 **RECHAZADO** (`F3-A01` heap OOM, y `F3-01`) |
+| 00:07 | Stage 3 **ACEPTADO**, migraciones 1→3 y 2→3 |
+| 00:42 | Stage 4 **ACEPTADO**, migraciones 1→4, 2→4, 3→4 |
+| 00:54 | Verificación global **PASS** sobre un clon nuevo; informe final del analyst |
+| 00:55 | El auditor verifica el informe final de forma independiente |
+
+Cuatro minutos entre aceptar un stage y despachar el siguiente, todas las veces, sin nadie mirando.
+
+## Cómo se levanta
+
+1. Crear una sala que todos los asientos puedan leer y escribir.
+2. **Conceder todos los permisos que un mandato obliga a usar, antes de la primera tarea.** Un
+   asiento que debe arrancar un contenedor y tiene que pedir permiso es un asiento parado ante un
+   diálogo que nadie mira, y un permiso concedido a mitad de tirada es una segunda intervención
+   humana en una tirada que debía tener una.
+3. Dar a cada sesión un solo fichero de `mandates/` y nada más sobre el problema. Nombrar la sesión
+   como su asiento, para que en el export cada mensaje sea atribuible.
+4. **Decirle a cada asiento cómo se habla en la sala.** Este es el paso que hicimos mal, y costó una
+   ida y vuelta: los mandatos exigen handoffs dirigidos a un `@handle` resuelto, pero ninguno dice
+   que la ventana de un asiento no es la sala. Dos de los cuatro contestaron en su ventana y se
+   quedaron esperando a que les dijeran que adoptaran el mandato. Una sala cuyos asientos responden
+   en sus ventanas se exporta como llamadas a herramienta y ninguna conversación.
+5. Confirmar **desde fuera** de las sesiones que cada asiento escribe y lee, antes de despachar. Que
+   escribe se prueba con un mensaje suyo en la sala; que lee, con la cola vacía.
+6. Despachar una vez. Y luego no hacer nada.
+
+### Lo que le diríamos al siguiente equipo
+
+**El receptor de 30 minutos es un límite del host, no un error.** Nuestros mandatos piden un
+receptor armado de forma persistente y sin timeout. En este host el clasificador de tareas de fondo
+corta cualquier vigía a 1800 segundos, así que cada asiento se rearma cada media hora mientras vive.
+Los asientos lo gestionaron bien y lo dijeron:
+
+> The mandate asks for a receiver with no timeout, but this host stops a watcher after 30 minutes at
+> most. I'll restart it with the same lease each time it expires.
+
+Conviene escribir el mandato contando con eso, en vez de prohibirlo.
+
+**Poner el fichero de permisos donde los asientos trabajan de verdad.** El nuestro estaba un
+directorio por debajo de su directorio de trabajo y no sirvió absolutamente de nada hasta que se
+movió.
+
+**Denegar unas pocas cosas de forma explícita.** Un agente con una shell durante doce horas sin
+vigilancia no debería poder borrar su propia identidad, soltar el lease de su sala, empujar a un
+remoto ni purgar Docker. Son cuatro líneas y no cuestan nada.
+
+## Límites honestos
+
+**Dos rechazos no son muchos.** Son reales y los dos se reprodujeron, pero desde dentro de la tirada
+no podemos saber si existe un tercer defecto que los cuatro filtros dejaron pasar. Los dos los
+encontraron las sondas del propio auditor, lo que significa que el techo de este diseño es la
+imaginación de un solo asiento.
+
+**Una tirada es un solo dato.** Nada de esto demuestra que la fábrica sea repetible a esta velocidad
+contra otra especificación, y esta la publicaron los organizadores, así que un modelo pudo llegar
+con ventaja sobre el dominio.
+
+**El auditor no hace mutación.** Una puerta más exigente rompería, para cada criterio, el
+comportamiento que ese criterio describe en una copia privada, y confirmaría que el check mapeado es
+el que falla. Esta fábrica reproduce en vez de eso. Reproducir cazó una caída de heap que ninguna
+suite vio, así que no es poco — pero un check que pasara contra código roto a propósito seguiría
+pareciendo correcto aquí.
+
+**Las cifras de coste son estimaciones**, sacadas de recuentos de tokens a precios de catálogo, y la
+atribución por agente de BAND se mueve entre reinicios. Son honestas en orden de magnitud y no más
+allá.
