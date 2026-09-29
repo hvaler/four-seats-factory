@@ -185,7 +185,8 @@ All times UTC, 2026-09-28 into 2026-09-29.
 | 00:08:00 | Stage 3 **ACCEPTED**, upgrades 1 to 3 and 2 to 3 (`11dbc577`) |
 | 00:10:43 | Analyst opens stage 4 |
 | 00:42:52 | Stage 4 **ACCEPTED**, upgrades 1 to 4, 2 to 4, 3 to 4 (`10381cd3`) |
-| 00:54 | All-stage verification **PASS** on a fresh clone; analyst final report |
+| 00:52:42 | All-stage verification **PASS** on a fresh clone (`06de0f65`) |
+| 00:54:48 | Analyst's final report (`e245b5ab`) |
 | 00:55:10 | Auditor verifies the final report independently (`d828d505`) |
 
 The ids are message ids in `room.json`. The analyst opened every next stage without any human input.

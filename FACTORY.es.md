@@ -192,7 +192,8 @@ Horas UTC, del 2026-09-28 al 2026-09-29.
 | 00:08:00 | Stage 3 **ACEPTADO**, migraciones 1→3 y 2→3 (`11dbc577`) |
 | 00:10:43 | El analyst abre el stage 4 |
 | 00:42:52 | Stage 4 **ACEPTADO**, migraciones 1→4, 2→4, 3→4 (`10381cd3`) |
-| 00:54 | Verificación global **PASS** sobre un clon nuevo; informe final del analyst |
+| 00:52:42 | Verificación global **PASS** sobre un clon nuevo (`06de0f65`) |
+| 00:54:48 | Informe final del analyst (`e245b5ab`) |
 | 00:55:10 | El auditor verifica el informe final de forma independiente (`d828d505`) |
 
 Los ids son ids de mensaje de `room.json`. El analyst abrió cada stage siguiente sin ninguna
