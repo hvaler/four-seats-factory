@@ -76,9 +76,26 @@ def main():
                 s2, afull, _ = call("GET", "/statement?snapshot=%s&limit=200" % s0["snapshot"], token=t["aa"], base=tgt)
                 rv_t = call("GET", "/payments/%s/revisions" % p1["payment_id"], token=t["aa"], base=tgt)[1]
                 same_hist = [{kk: v for kk, v in r.items() if kk != "correction_batch_id"} for r in rv_t["revisions"][:2]] == revs_src["revisions"]
-                record("S4-050/S4-043 3->4", "stage-3 snapshot token pages identically after import; revision history preserved",
-                       s == 200 and a0["entries"] == s0["entries"] and afull["entries"] == sfull["entries"] and afull["closing_balance"] == sfull["closing_balance"] and same_hist,
-                       {"s": [s, s2], "hist_same": same_hist})
+                NEW = {"refund_of", "correction_batch_id"}      # stage-4 additions to representations
+
+                def proj(ents, ref):   # project target entries onto the source field set (recursively for the payment object)
+                    out = []
+                    for e, r in zip(ents, ref):
+                        pe = {kk: e.get(kk) for kk in r}
+                        if isinstance(r.get("payment"), dict):
+                            pe["payment"] = {kk: e["payment"].get(kk) for kk in r["payment"]}
+                        out.append(pe)
+                    return out
+                extra_fields = set()
+                for e in afull.get("entries", []):
+                    extra_fields |= set(e.get("payment", {})) - set(sfull["entries"][0]["payment"])
+                superset_ok = (s == 200 and len(afull["entries"]) == len(sfull["entries"]) and proj(afull["entries"], sfull["entries"]) == sfull["entries"]
+                               and proj(a0["entries"], s0["entries"]) == s0["entries"] and afull["closing_balance"] == sfull["closing_balance"]
+                               and afull["opening_balance"] == sfull["opening_balance"] and extra_fields <= NEW)
+                record("S4-050/S4-043 3->4", "stage-3 snapshot pages the same entries after import (every stage-3 field equal; only stage-4 fields added); revision history preserved",
+                       superset_ok and same_hist, {"s": [s, s2], "hist_same": same_hist, "added_fields": sorted(extra_fields)})
+                record("OBS 3->4", "snapshot entries byte-equal including new fields (observation, not asserted)", True,
+                       {"exact_equal": afull.get("entries") == sfull["entries"]})
         except Exception as e:
             import traceback
             record("ERROR", tag, False, {"exception": repr(e)[:300], "at": traceback.format_exc().splitlines()[-3][:200]})
