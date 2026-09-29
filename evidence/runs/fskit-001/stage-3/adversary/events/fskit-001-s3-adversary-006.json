@@ -1,0 +1,100 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-adversary-006",
+ "sequence": 6,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:40:21Z",
+ "event_type": "DEFECT_REPRO",
+ "requirement": {
+  "id": "S1-013,S1-058",
+  "spec_path": "pocketful/spec/stage-3.md",
+  "spec_sha256": "2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "section": null,
+  "obligation": "S1-013,S1-058"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "F3-02 snapshot-memory risk probe (analyst 88e934d1), 2 runs",
+ "candidate_commit": "e4d35083b81b277b008b2761002d260243e6a59d",
+ "candidate_product_tree": "bfd2229fdeffecf26ab28cd3e9a24a640f983838",
+ "test_commit": null,
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "bash probe_snapshot_memory.sh; bash probe_snapshot_memory_r2.sh",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s3-1 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:36:14Z",
+  "finished_utc": "2026-09-28T23:40:21Z",
+  "exit_code": 1,
+  "counts": {
+   "passed": 0,
+   "failed": 2,
+   "skipped": 0,
+   "collected": 2
+  }
+ },
+ "expected": "no 5xx, no timeout, no crash within 2 GiB",
+ "observed": "both runs: the Node process died (V8 heap limit ~1 GiB, exit 139, not a cgroup OOM) after ~4000 of 5000 statement reads over 500 payments; p99 0.268 s / 0.297 s; 2 and 3 requests over 5 s",
+ "result": "FAIL",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory.log",
+   "sha256": "2d47870eded1c293d90a55cf24a811cc62a4fe254b9dc237ee37a8ef65a6e862"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory.py",
+   "sha256": "7aeb3e5eefd2cb4b2479104c4e66559ae8a698bb87f1866af55b5dd0cfe4ba3f"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory.sh",
+   "sha256": "b134e82f2797c95f4e6a74edbfadfc7d02f425c0bfc2bebcf0ed13d312287642"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory_r2.log",
+   "sha256": "1581be84592e293f7b6d50809bf98e88a66626c7ba733a7584da5d237654c6f9"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory_r2.sh",
+   "sha256": "f907bbc0f507bb92737d03b9468e338b00cd31f45ae5e3bbe4269c00e0be3211"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory_r2/container.log",
+   "sha256": "d1027751c4413da8746d494ddb46ba6390bbb132b8628ff6e83b9496a9ff93fb"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/probe_snapshot_memory_r2/mem_series.txt",
+   "sha256": "d7fcb308d6abe88df6ae165ebf01f4219a6fcab384dcb88b84fcf01c62c6b0f9"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": "risk probe that exposed a \u00a72/\u00a75 defect"
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "bed91c66-1163-45f0-a4c2-0d93e92267dc",
+  "b54ef61d-bff2-4f21-b260-69ecd0c4692d"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [],
+ "reason": null
+}

@@ -1,0 +1,9 @@
+Mon Sep 28 23:34:52 UTC 2026
+created_at 2026-09-28T23:34:57.705+00:00 expires_at 2026-09-28T23:44:57.705+00:00 before_void 2026-09-28T23:34:57.738+00:00 closed_at 2026-09-28T23:34:57.770+00:00
+A: as_of=exp-1ms known<void {'total': 10000, 'held': 1000, 'available': 9000, 'as_of': '2026-09-28T23:44:57.704+00:00', 'known_at': '2026-09-28T23:34:57.738+00:00'}
+B: as_of=exp+1ms known<void {'total': 10000, 'held': 1000, 'available': 9000, 'as_of': '2026-09-28T23:44:57.706+00:00', 'known_at': '2026-09-28T23:34:57.738+00:00'}
+C: as_of=2099 known<void {'total': 10000, 'held': 1000, 'available': 9000, 'as_of': '2099-01-01T00:00:00.000+00:00', 'known_at': '2026-09-28T23:34:57.738+00:00'}
+D: as_of=2099 known=now {'total': 10000, 'held': 0, 'available': 10000, 'as_of': '2099-01-01T00:00:00.000+00:00', 'known_at': '2026-09-28T23:34:57.772+00:00'}
+E: as_of=2099 no known_at {'total': 10000, 'held': 0, 'available': 10000, 'as_of': '2099-01-01T00:00:00.000+00:00', 'known_at': None}
+F: open hold, as_of=exp+1ms {'total': 10000, 'held': 0, 'available': 10000}
+G: open hold, as_of=exp+1ms, known_at=now {'total': 10000, 'held': 0, 'available': 10000}

@@ -1,0 +1,28 @@
+......................................F...........                       [100%]
+=================================== FAILURES ===================================
+___________________ test_void_unknown_before_its_event_time ____________________
+
+w = <adv3.W3 object at 0x797d83b7dac0>
+
+    @pytest.mark.obl("S3-081")
+    def test_void_unknown_before_its_event_time(w):
+        a = w.authorize("ada", "bob", 1000).json
+        tick(30)
+        before_void = now_iso()
+        tick(30)
+        v = w.void("ada", a["authorization_id"]).json
+        far = "2099-01-01T00:00:00.000+00:00"
+        # known before the void: the hold is still open, so at a far future as_of it has expired at its deadline
+        m = w.me_at("ada", as_of=plus_ms(a["expires_at"], -1), known_at=before_void).json
+        assert m["held"] == 1000, m
+        m = w.me_at("ada", as_of=plus_ms(a["expires_at"], -1), known_at=v["closed_at"]).json
+        assert m["held"] == 0, m
+        m = w.me_at("ada", as_of=far, known_at=before_void).json
+>       assert m["held"] == 0 and m["available"] == m["total"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s3_api.py:528: AssertionError
+=========================== short test summary info ============================
+FAILED test_s3_api.py::test_void_unknown_before_its_event_time - AssertionError
+1 failed, 49 passed in 21.75s

@@ -1,0 +1,77 @@
+[
+ {
+  "test": "test_s3_conc.py::test_same_expected_revision_only_one_wins[0]",
+  "obligations": [
+   "S3-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.403,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_same_expected_revision_only_one_wins[1]",
+  "obligations": [
+   "S3-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.386,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_same_expected_revision_only_one_wins[2]",
+  "obligations": [
+   "S3-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.394,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_recorded_at_strictly_increases_back_to_back",
+  "obligations": [
+   "S3-045"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.036,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_snapshot_stable_under_concurrent_writes",
+  "obligations": [
+   "S3-065",
+   "S3-061",
+   "S3-084"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.252,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_mixed_concurrent_invariants",
+  "obligations": [
+   "S3-085",
+   "S3-050"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 3.798,
+  "error": null
+ }
+]

@@ -1,0 +1,23 @@
+== adversary stage-3 run 2026-09-28T23:45:33Z
+candidate_sha=e4d35083b81b277b008b2761002d260243e6a59d clone_head=e4d35083b81b277b008b2761002d260243e6a59d
+trees stage3=bfd2229fdeffecf26ab28cd3e9a24a640f983838 stage2=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 stage1=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_begin
+clone_status_end
+s1_source=beeaec72ff53fa75469c5f09236a786632f21fd8 tree=347efba502629e5b5bbd730f35c34bdfe208c478
+s2_source=68583038e7ea52429b062af0f775d3cbfd96b7c3 tree=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2
+test_rev=9e49497e2a2334ea381347bf33162cb2387010f8 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+build stage-3 exit=0 seconds=3
+build stage-1 exit=0 seconds=5
+build stage-2 exit=0 seconds=4
+stage3_a port=59440 health_s=1
+stage3_b port=59442 health_s=1
+stage1_accepted port=59443 health_s=1
+stage2_accepted port=59445 health_s=0
+stage3_c(PORT unset) port=59447 health_s=1 body={"status":"ok"}
+suite_stage3 exit=0 seconds=9 6 passed, 44 deselected in 8.21s
+stats adv3-a-692357 cpu=0.02% mem=18.77MiB / 2GiB
+stats adv3-b-692357 cpu=0.00% mem=10.77MiB / 2GiB
+stage3_a restarts=0 oom=false running=true
+== done 2026-09-28T23:46:12Z

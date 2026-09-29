@@ -1,0 +1,51 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 506B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 68B 0.1s done
+#3 DONE 0.1s
+
+#4 [1/5] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#4 resolve docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 0.0s done
+#4 DONE 0.0s
+
+#5 [2/5] WORKDIR /app
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 130.73kB 0.2s done
+#6 DONE 0.2s
+
+#7 [3/5] COPY package.json package-lock.json ./
+#7 DONE 0.0s
+
+#8 [4/5] RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
+#8 0.782 
+#8 0.782 up to date, audited 1 package in 532ms
+#8 0.787 
+#8 0.787 found 0 vulnerabilities
+#8 0.941 npm warn using --force Recommended protections disabled.
+#8 DONE 1.1s
+
+#9 [5/5] COPY src ./src
+#9 DONE 0.0s
+
+#10 exporting to image
+#10 exporting layers
+#10 exporting layers 0.2s done
+#10 exporting manifest sha256:6366dcfd1bfc089b3a9c54bd678be2ecff04ca4def42b442540af7b8acbd951b 0.0s done
+#10 exporting config sha256:9efb0aed80813b70c3e871d58dd614e4ac38b6089134ca7a2456ee5acec089b5 0.0s done
+#10 exporting attestation manifest sha256:a44bfc433b9a3196d51f976228d3e60b3bc39f7411f4fb263bd57ff4b4fac779 0.0s done
+#10 exporting manifest list sha256:b0c7471d43dd189bcbb5f9ea5da400eb7cafb8c5ccf325d05a0082f81a5baa3a 0.0s done
+#10 naming to docker.io/library/adv-s3-e4d35083b81b-690509:latest done
+#10 unpacking to docker.io/library/adv-s3-e4d35083b81b-690509:latest 0.1s done
+#10 DONE 0.4s
