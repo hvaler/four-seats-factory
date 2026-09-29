@@ -9,7 +9,7 @@
 
 *[Leer en español](README.es.md)*
 
-**Track:** Pocketful · **Team:** four-seats · **Licence:** MIT
+**Track:** Pocketful · **Team:** four-seats (on lablab: *No Seat Accepts Its Own Work*) · **Licence:** MIT
 
 **[Video (3 min)](https://youtu.be/oiodvnGptt0)** · **[Live demo](https://four-seats-factory.onrender.com/login)** ·
 **[Presentation (PDF)](docs/presentation/four-seats-factory.pdf)** ·
