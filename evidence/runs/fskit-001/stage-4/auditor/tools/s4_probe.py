@@ -103,11 +103,16 @@ def refunds_probe():
     with ThreadPoolExecutor(20) as ex:
         rs = list(ex.map(lambda i: refund(tc, p4["payment_id"], 150), range(20)))
     n = [r[0] for r in rs].count(201)
+    s, p5, _ = call("POST", "/payments", {"to_handle": "cc", "amount": 500}, token=ta, key=k())
     key = k()
     with ThreadPoolExecutor(15) as ex:
-        rs2 = list(ex.map(lambda i: refund(tc, p2["payment_id"] if False else p4["payment_id"], 10, key=key), range(15)))
-    record("S4-023/E1", "20 concurrent refunds of 150 on 1000 -> at most 6 succeed; same-key x15 -> one 201", n == 6 and all(r[0] in (201, 422) for r in rs)
-           and [r[0] for r in rs2].count(201) <= 1 and total(tk) == TOT, {"ok": n, "same_key": sorted(set(r[0] for r in rs2)), "total_ok": total(tk) == TOT})
+        rs2 = list(ex.map(lambda i: refund(tc, p5["payment_id"], 10, key=key), range(15)))
+    st2 = [r[0] for r in rs2]
+    same = len({json.dumps(r[1], sort_keys=True) for r in rs2}) == 1
+    refunded = sum(1 for p in call("GET", "/activity?limit=200", token=tc)[1]["payments"] if p.get("refund_of") == p5["payment_id"])
+    record("S4-023/S4-024", "20 concurrent refunds of 150 on 1000 -> exactly 6; same-key x15 -> one 201 + 14x200 identical, effect once",
+           n == 6 and all(r[0] in (201, 422) for r in rs) and st2.count(201) == 1 and st2.count(200) == 14 and same and refunded == 1 and total(tk) == TOT,
+           {"ok": n, "same_key": {x: st2.count(x) for x in set(st2)}, "identical": same, "refunds_made": refunded})
     # history: refund counts at its own created_at
     hist = call("GET", "/me?as_of=%s" % urllib.parse.quote(r1["created_at"], safe=""), token=tb)[1]["balance"]
     before = call("GET", "/me?as_of=%s" % urllib.parse.quote((dt.datetime.fromisoformat(r1["created_at"]) - dt.timedelta(milliseconds=1)).isoformat(timespec="milliseconds"), safe=""),
@@ -204,6 +209,15 @@ def batch_probe():
     ok_n = [r[0] for r in rs].count(201)
     record("S4-046", "12 concurrent batch/single corrections on one revision -> exactly one 201, rest 409 stale", ok_n == 1 and all(r[0] in (201, 409) for r in rs),
            {"outcomes": sorted(set(str((r[0], code(r[1]))) for r in rs))})
+    # S4-024: 15 concurrent same-key batches
+    s, y, _ = call("POST", "/payments", {"to_handle": "bb", "amount": 20}, token=ta, key=k())
+    bk2 = k()
+    with ThreadPoolExecutor(15) as ex:
+        rsb = list(ex.map(lambda i: batch(to, [item(y["payment_id"], 1, 15, y["created_at"])], key=bk2), range(15)))
+    stb = [r[0] for r in rsb]
+    nrev = len(call("GET", "/payments/%s/revisions" % y["payment_id"], token=ta)[1]["revisions"])
+    record("S4-024", "15 concurrent same-key batches -> one 201 + 14x200 identical; one revision appended",
+           stb.count(201) == 1 and stb.count(200) == 14 and len({json.dumps(r[1], sort_keys=True) for r in rsb}) == 1 and nrev == 2, {"st": {x: stb.count(x) for x in set(stb)}, "revs": nrev})
     grid = [total_view for total_view in [sum(call("GET", "/me?as_of=%s" % urllib.parse.quote(a, safe=""), token=t)[1]["total"] for t in tk.values())
                                           for a in (T1, T2, eff, "2099-01-01T00:00:00+00:00")]]
     record("S4-047", "conservation in historical views after batches", all(g == TOT for g in grid) and total(tk) == TOT, {"grid": grid, "TOT": TOT})
