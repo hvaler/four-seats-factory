@@ -1,0 +1,26 @@
+== adversary stage-3 run 2026-09-28T23:27:21Z
+candidate_sha=e4d35083b81b277b008b2761002d260243e6a59d clone_head=e4d35083b81b277b008b2761002d260243e6a59d
+trees stage3=bfd2229fdeffecf26ab28cd3e9a24a640f983838 stage2=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 stage1=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_begin
+fatal: unable to get current working directory: No such file or directory
+clone_status_end
+s1_source=beeaec72ff53fa75469c5f09236a786632f21fd8 tree=347efba502629e5b5bbd730f35c34bdfe208c478
+s2_source=68583038e7ea52429b062af0f775d3cbfd96b7c3 tree=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2
+test_rev=079cb56dedd95ac4a94a9d7b1a2f1a3646d99f3d test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+build stage-3 exit=0 seconds=3
+build stage-1 exit=0 seconds=7
+build stage-2 exit=0 seconds=5
+stage3_a port=54297 health_s=0
+stage3_b port=54298 health_s=2
+stage1_accepted port=54299 health_s=0
+stage2_accepted port=54301 health_s=1
+stage3_c(PORT unset) port=54302 health_s=2 body={"status":"ok"}
+suite_stage1 exit=0 seconds=74 325 passed, 1 warning in 72.52s (0:01:12)
+suite_stage2 exit=0 seconds=265 148 passed, 3 warnings in 264.63s (0:04:24)
+suite_stage3 exit=1 seconds=18 2 failed, 48 passed in 17.34s
+stats adv3-a-679300 cpu=0.01% mem=24.89MiB / 2GiB
+stats adv3-b-679300 cpu=0.00% mem=12.42MiB / 2GiB
+stage3_a restarts=0 oom=false running=true
+== done 2026-09-28T23:33:59Z

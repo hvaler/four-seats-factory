@@ -1,0 +1,30 @@
+start 2026-09-28T23:38:20Z candidate=e4d35083b81b277b008b2761002d260243e6a59d image=sha256:9010e1be8b4273c9b93a5e845fa3dd1f684b32eb57c372e093c879a00d3ef3f7
+payments_created 500
+reads=5000 wall_s=112.3 codes={200: 4860, 'EXC:RemoteProtocolError': 36, 'EXC:ReadError': 80, 'EXC:ReadTimeout': 1, 'EXC:ConnectError': 23}
+latency_s p50=0.082 p95=0.186 p99=0.297 max=30.033 mean=0.114
+over_5s=3
+httpcore.ConnectError: [Errno 111] Connection refused
+httpx.ConnectError: [Errno 111] Connection refused
+state running=false exit_code=139 oom=false error= finished=2026-09-28T23:39:46.413682734Z
+container_log_tail:
+pocketful stage-1 listening on 0.0.0.0:9781
+
+<--- Last few GCs --->
+
+[1:0x763c74dc2000]    57245 ms: Scavenge 1016.4 (1042.5) -> 1011.8 (1041.7) MB, pooled: 3 MB, 14.75 / 0.00 ms  (average mu = 0.637, current mu = 0.798) allocation failure; 
+[1:0x763c74dc2000]    57266 ms: Scavenge 1016.3 (1042.3) -> 1012.1 (1049.9) MB, pooled: 0 MB, 15.91 / 0.00 ms  (average mu = 0.637, current mu = 0.798) allocation failure; 
+
+
+<--- JS stacktrace --->
+
+FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+----- Native stack trace -----
+
+mem_series_tail:
+23:39:29 1.066GiB / 2GiB cpu=19.96%
+23:39:33 1.066GiB / 2GiB cpu=12.03%
+23:39:36 1.067GiB / 2GiB cpu=9.44%
+23:39:40 1.066GiB / 2GiB cpu=23.32%
+23:39:43 1.067GiB / 2GiB cpu=17.92%
+23:39:46 0B / 0B cpu=0.00%
+end 2026-09-28T23:40:21Z

@@ -1,0 +1,77 @@
+......................................F.........F.                       [100%]
+=================================== FAILURES ===================================
+___________________ test_void_unknown_before_its_event_time ____________________
+
+w = <adv3.W3 object at 0x7e3d8943f740>
+
+    @pytest.mark.obl("S3-081")
+    def test_void_unknown_before_its_event_time(w):
+        a = w.authorize("ada", "bob", 1000).json
+        tick(30)
+        before_void = now_iso()
+        tick(30)
+        v = w.void("ada", a["authorization_id"]).json
+        far = "2099-01-01T00:00:00.000+00:00"
+        # known before the void: the hold is still open, so at a far future as_of it has expired at its deadline
+        m = w.me_at("ada", as_of=plus_ms(a["expires_at"], -1), known_at=before_void).json
+        assert m["held"] == 1000, m
+        m = w.me_at("ada", as_of=plus_ms(a["expires_at"], -1), known_at=v["closed_at"]).json
+        assert m["held"] == 0, m
+        m = w.me_at("ada", as_of=far, known_at=before_void).json
+>       assert m["held"] == 0 and m["available"] == m["total"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+test_s3_api.py:528: AssertionError
+_____________________________ test_upgrade_1_to_3 ______________________________
+
+api_s1 = <advlib.Api object at 0x7e3d89468560>
+api = <advlib.Api object at 0x7e3d89468860>
+
+    @pytest.mark.obl("S3-071", "S3-072", "S3-902", "S2-040")
+    @pytest.mark.decision("D3-13", "D2-13")
+    def test_upgrade_1_to_3(api_s1, api):
+>       run(api_s1, api, 1)
+
+test_s3_upgrade.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = <advlib.Api object at 0x7e3d89468560>
+dst = <advlib.Api object at 0x7e3d89468860>, stage = 1
+
+    def run(src, dst, stage):
+        rec = populate(src, stage)
+        tok = rec["tok"]
+        exp = src.call("GET", "/_test/export")
+        assert exp.status == 200
+        dst.reset(fx2())
+        t_import = datetime.now(timezone.utc)
+        assert dst.call("POST", "/_test/import", raw=exp.raw).status == 204
+        w = W3.__new__(W3)
+        w.api, w.fx, w.tok = dst, rec["fx"], tok
+        # sessions, balances, receipts
+        for h, b in rec["balances"].items():
+            assert dst.balance(tok[h]) == b, h
+        rp = dst.pay(tok["ada"], "bob", 321, key=rec["k_pay"], note="pre-upgrade")
+        assert rp.status == 200 and rp.raw == rec["pay"].raw
+        assert dst.pay(tok["cy"], "ada", 1, key=rec["failed_key"]).status == 201
+        if stage == 2:
+            r = dst.call("POST", "/authorizations", {"to_handle": "bob", "amount": 1000}, token=tok["ada"], key=rec["k_auth"])
+            assert r.status == 200 and r.raw == rec["auth_open"].raw
+            r = dst.call("POST", f"/authorizations/{rec['a2']}/capture", {"amount": 200, "final": False}, token=tok["cy"], key=rec["k_cap"])
+            assert r.status == 200 and r.raw == rec["cap"].raw
+        # imported history: revision 1 per payment, statement consistent with a reference ledger
+        p = rec["pay"].json
+        revs = w.revisions("ada", p["payment_id"]).json["revisions"]
+        assert len(revs) == 1 and revs[0]["amount"] == 321 and parse_ts(revs[0]["effective_at"]) == parse_ts(p["created_at"])
+        m = dst.call("GET", "/me", token=tok["ada"], params={"as_of": plus_ms(p["created_at"], -1)}).json
+        open_ada = rec["fx"]["users"][0]["balance"]
+>       assert m["balance"] == open_ada, m
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: {'user_id': 'u_ada', 'display_name': 'Ada', 'handle': 'ada', 'balance': 10500, 'total': 10500, 'available': 10500, 'held': 0, 'currency': 'EUR', 'minor_units': 2, 'as_of': '2026-09-28T23:33:56.999+00:00'}
+
+test_s3_upgrade.py:65: AssertionError
+=========================== short test summary info ============================
+FAILED test_s3_api.py::test_void_unknown_before_its_event_time - AssertionError
+FAILED test_s3_upgrade.py::test_upgrade_1_to_3 - AssertionError: {'user_id': ...
+2 failed, 48 passed in 17.34s

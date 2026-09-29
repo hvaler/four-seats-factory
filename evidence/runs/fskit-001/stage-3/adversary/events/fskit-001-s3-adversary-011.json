@@ -1,0 +1,158 @@
+{
+ "schema_version": 1,
+ "event_id": "fskit-001-s3-adversary-011",
+ "sequence": 11,
+ "run_id": "fskit-001",
+ "stage": 3,
+ "timestamp_utc": "2026-09-28T23:59:11Z",
+ "event_type": "CHALLENGE_RUN",
+ "requirement": {
+  "id": "S3-904,S3-901,S3-010..S3-085",
+  "spec_path": "pocketful/spec/stage-3.md",
+  "spec_sha256": "2255d3f2181c22dc6eac6919bf7712197d812248bd9de8a7e59260ede6056e54",
+  "section": null,
+  "obligation": "S3-904,S3-901,S3-010..S3-085"
+ },
+ "actor": {
+  "role": "adversary",
+  "seat_id": "f603ac21-88ea-434a-844e-bb621f8da63e",
+  "handle": "hugo.valer/adversary-thgz"
+ },
+ "claim": "all three adversary suites on candidate 2",
+ "candidate_commit": "51a0bdd1c48207fb3e22fb163d1fd7972123aa3d",
+ "candidate_product_tree": "f586c4995f31122e887e462d54590b955f6b45a2",
+ "test_commit": "9e49497e2a2334ea381347bf33162cb2387010f8",
+ "evidence_commit": null,
+ "execution": {
+  "cwd": null,
+  "command": "stage-3/run.sh ... c2-run1",
+  "environment": "WSL2 Ubuntu on Windows 11; Docker Desktop 29.8.0; containers --cpus 2 --memory 2g",
+  "tool_versions": {
+   "python": "3.12.3",
+   "pytest": "9.1.1",
+   "httpx": "0.28.1",
+   "playwright": "1.63.0",
+   "chromium": "153.0.8010.12",
+   "docker": "29.8.0",
+   "model": "claude-opus-5-5"
+  },
+  "container_image_digest": null,
+  "mode": "host",
+  "input_artifact": "clones/adversary-s3-2 (fresh clone detached at candidate); clones/adversary-s1-1 @beeaec72 for the stage-1 source",
+  "random_seed": null,
+  "concurrency": null,
+  "started_utc": "2026-09-28T23:52:07Z",
+  "finished_utc": "2026-09-28T23:59:11Z",
+  "exit_code": 0,
+  "counts": {
+   "passed": 523,
+   "failed": 0,
+   "skipped": 0,
+   "collected": 523
+  }
+ },
+ "expected": "all pass",
+ "observed": "stage-1 325/325, stage-2 148/148 (UI 375/1280, D2-18 into stage 3), stage-3 50/50 incl. the F3-01 test",
+ "result": "PASS",
+ "artifacts": [
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/build-stage-1.log",
+   "sha256": "798ae44fc4bd90d1ec85516ba90bcb3e73f1135caa8397ef80c2f577839d14be"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/build-stage-2.log",
+   "sha256": "d032a5f81d51efcc4978a1cdc11acb44085a93475311dcb5cd7eb9ac488c6806"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/build-stage-3.log",
+   "sha256": "a2197b6b883af3ae47c472b77af3415c88e1e19194099be8b79c2c943b21f29e"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/container-adv3-a.log",
+   "sha256": "37510d9fb6c15d937389a3422faf33945247d0728547a1e2dd1e52e1bbba770a"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/container-adv3-b.log",
+   "sha256": "282548efed057cc1d58dbbc8547e5feac52c81dc8a1fbcd4723e91cd833a2925"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/container-adv3-c.log",
+   "sha256": "7ce07251eadde90c7976bb9c085562046392cf84d62529e3fbc66661fcb83abe"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/container-adv3-s1.log",
+   "sha256": "8881a48f53b07db6bfaa79eadc7002c319a4ad068b64efa52b586bff477bf807"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/container-adv3-s2.log",
+   "sha256": "712901b0851e702a83c161128b4a51a17fe7da1bc0794c74edf3ed8ae996ecd9"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/junit-stage1.xml",
+   "sha256": "b9c24e0bba15ff189a40a95f50f0d636efdc53f5cfa07719a250595666466a55"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/junit-stage2.xml",
+   "sha256": "08a5505f9158b177b8d337f3e9e6b2ee43fdaeb50cea21754fa4c6ce0ba002e7"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/junit-stage3.xml",
+   "sha256": "1abdf476037811e4692457e6a9fb9008f4792ca1219c4d41ad743f667be3dc2b"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/pytest-stage1.log",
+   "sha256": "874453218438f7de1646bcf5dc6f059530dfc01346d8346725698c1a62d11224"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/pytest-stage2.log",
+   "sha256": "15d6e56aa803d36843bca0848d263df4fdd971f76dd6030009be08d3a4e9b0d7"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/pytest-stage3.log",
+   "sha256": "fb808ce95cb366682af859432aa74d9138832aa53f812a320f70ba747ec9bdc4"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/results-stage1.json",
+   "sha256": "a9b220f9e681760db69cabbdf595243b6da600eb44d1bf80414c2fb450b21dc7"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/results-stage2.json",
+   "sha256": "941fbb99382b9e5cb76b7423d56d81bb710bfe244be4b3075634a7666a72c2aa"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/results-stage3.json",
+   "sha256": "c56e525120952c837cd21ddd9768a3fcd6b601c92defe298c4a38c7722779fdc"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/runner.log",
+   "sha256": "8ccb96356eb5c6658399b2477eb9b9587dac59f305b060cf2b853ac251f505f5"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/summary-stage1.md",
+   "sha256": "f5f89295f84d5da991aad3aca4174765bf205e6d583a5faf0e5cc7e8aa2bb89e"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/summary-stage2.md",
+   "sha256": "69646b8d4db43353d824eaa88cc681492b4b4099e8f400220bd4960767207604"
+  },
+  {
+   "path": "wt/adversary/evidence/runs/fskit-001/stage-3/adversary/c2-run1/summary-stage3.md",
+   "sha256": "468a07566d3665cf35cb2ac2af08e336d0f8b3c68ce79ac894afee0f3b03128e"
+  }
+ ],
+ "audit": {
+  "reproduced": null,
+  "reproduction_event_id": null,
+  "limitations": ""
+ },
+ "state": "CHALLENGED",
+ "room_message_ids": [
+  "47a2a349-2c9e-4087-acd1-e70a94c2cc07",
+  "d1bfb6b1-fb50-4840-b0e6-25b3a66979ec"
+ ],
+ "supersedes_event_id": null,
+ "related_event_ids": [
+  "fskit-001-s3-adversary-004"
+ ],
+ "reason": null
+}

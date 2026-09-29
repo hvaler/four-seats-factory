@@ -1,0 +1,682 @@
+[
+ {
+  "test": "test_s3_api.py::test_seeded_created_at",
+  "obligations": [
+   "S3-010",
+   "S3-011",
+   "S3-012"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.086,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_future_seeded_created_at_rejected",
+  "obligations": [
+   "S3-011"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.072,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_as_of_invalid[2026-09-24T13:20:00]",
+  "obligations": [
+   "S3-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.001,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_as_of_invalid[2026-09-24]",
+  "obligations": [
+   "S3-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_as_of_invalid[]",
+  "obligations": [
+   "S3-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.001,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_as_of_invalid[yesterday]",
+  "obligations": [
+   "S3-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_as_of_invalid[2026-13-01T00:00:00+00:00]",
+  "obligations": [
+   "S3-020"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.003,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_as_of_inclusive_opening_current_and_echo",
+  "obligations": [
+   "S3-021",
+   "S3-022"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.058,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_window_order_balances",
+  "obligations": [
+   "S3-030",
+   "S3-031",
+   "S3-032",
+   "S3-033",
+   "S3-034",
+   "S3-036"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.174,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_pagination_invariant",
+  "obligations": [
+   "S3-035",
+   "S3-064",
+   "S3-030"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.179,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[2026-09-24T13:20:00-from]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.004,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[2026-09-24T13:20:00-to]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.005,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[2026-09-24T13:20:00-known_at]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[2026-09-24-from]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[2026-09-24-to]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[2026-09-24-known_at]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.002,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[-from]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.036,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[-to]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.014,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_bad_instants[-known_at]",
+  "obligations": [
+   "S3-030",
+   "S3-053"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.006,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_from_after_to",
+  "obligations": [
+   "S3-030"
+  ],
+  "decisions": [
+   "D3-08"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.015,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_tie_order_by_id_bytes",
+  "obligations": [
+   "S3-032"
+  ],
+  "decisions": [
+   "D3-19"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.147,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_correction_access_and_validation",
+  "obligations": [
+   "S3-042",
+   "S3-043"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.06,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_correction_wrong_types_are_422",
+  "obligations": [
+   "S3-043"
+  ],
+  "decisions": [
+   "D3-02"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.073,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_correction_moves_difference_and_keeps_original",
+  "obligations": [
+   "S3-044",
+   "S3-045",
+   "S3-048",
+   "S3-051",
+   "S3-052",
+   "S3-040"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.168,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_revisions_access",
+  "obligations": [
+   "S3-052"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.046,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_stale_replay_and_key_rules",
+  "obligations": [
+   "S3-046",
+   "S3-047",
+   "S3-049"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.03,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_insufficient_funds_on_increase_and_decrease",
+  "obligations": [
+   "S3-049"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.291,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_historical_overdraft_receiver_spent_earlier",
+  "obligations": [
+   "S3-049",
+   "S3-083"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.072,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_historical_overdraft_time_move_sender",
+  "obligations": [
+   "S3-049",
+   "S3-055"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.063,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_historical_overdraft_via_available_and_holds",
+  "obligations": [
+   "S3-083"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.182,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_same_amount_time_move_changes_history_only",
+  "obligations": [
+   "S3-055",
+   "S3-021",
+   "S3-032"
+  ],
+  "decisions": [
+   "D3-03",
+   "D3-04"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.122,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_zero_amount_revision_and_selected_amount",
+  "obligations": [
+   "S3-054"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.058,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_known_at_selection_and_conservation_grid",
+  "obligations": [
+   "S3-053",
+   "S3-050"
+  ],
+  "decisions": [
+   "D3-07",
+   "D3-14"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.736,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_snapshot_is_frozen",
+  "obligations": [
+   "S3-060",
+   "S3-061",
+   "S3-062",
+   "S3-063",
+   "S3-064",
+   "S3-065"
+  ],
+  "decisions": [
+   "D3-09"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.162,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_linked_payments_immutable",
+  "obligations": [
+   "S3-070",
+   "S3-071"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.023,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_request_payment_correctable_zero_upward",
+  "obligations": [
+   "S3-042",
+   "S3-070"
+  ],
+  "decisions": [
+   "D3-05"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.042,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_hold_lifecycle_in_history",
+  "obligations": [
+   "S3-080",
+   "S3-082",
+   "S3-023"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.075,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_expiry_in_history_and_future",
+  "obligations": [
+   "S3-080",
+   "S3-081",
+   "S3-082"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 2.601,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_void_unknown_before_its_event_time",
+  "obligations": [
+   "S3-081"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.068,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_statement_money_only",
+  "obligations": [
+   "S3-084"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.007,
+  "error": null
+ },
+ {
+  "test": "test_s3_api.py::test_seeded_hold_created_at_default_and_supplied",
+  "obligations": [
+   "S2-058",
+   "S3-082"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.086,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_same_expected_revision_only_one_wins[0]",
+  "obligations": [
+   "S3-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.395,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_same_expected_revision_only_one_wins[1]",
+  "obligations": [
+   "S3-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.372,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_same_expected_revision_only_one_wins[2]",
+  "obligations": [
+   "S3-065"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.488,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_recorded_at_strictly_increases_back_to_back",
+  "obligations": [
+   "S3-045"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.025,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_snapshot_stable_under_concurrent_writes",
+  "obligations": [
+   "S3-065",
+   "S3-061",
+   "S3-084"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 1.389,
+  "error": null
+ },
+ {
+  "test": "test_s3_conc.py::test_mixed_concurrent_invariants",
+  "obligations": [
+   "S3-085",
+   "S3-050"
+  ],
+  "decisions": [],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 4.321,
+  "error": null
+ },
+ {
+  "test": "test_s3_upgrade.py::test_imported_void_artifact_does_not_block_unrelated_correction",
+  "obligations": [
+   "S3-058",
+   "S3-083"
+  ],
+  "decisions": [
+   "D3-18",
+   "D3-21"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.144,
+  "error": null
+ },
+ {
+  "test": "test_s3_upgrade.py::test_upgrade_1_to_3",
+  "obligations": [
+   "S3-071",
+   "S3-072",
+   "S3-902",
+   "S2-040"
+  ],
+  "decisions": [
+   "D3-13",
+   "D2-13"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.15,
+  "error": null
+ },
+ {
+  "test": "test_s3_upgrade.py::test_upgrade_2_to_3",
+  "obligations": [
+   "S3-071",
+   "S3-072",
+   "S3-902",
+   "S3-058"
+  ],
+  "decisions": [
+   "D3-13",
+   "D3-18",
+   "D2-13"
+  ],
+  "risk": false,
+  "phase": "call",
+  "outcome": "passed",
+  "duration_s": 0.247,
+  "error": null
+ }
+]
