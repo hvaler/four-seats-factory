@@ -156,3 +156,9 @@ Sources: the auditor's coverage review 21e98727-082c-4495-9a8a-beedbeeab052 (E1â
 |---|---|---|
 | D4-09 (extended) | A capture may be refunded while its authorization is still open (after a partial non-final capture). The refund comes from the receiver's available funds, and the authorization's remaining_amount and held are unchanged | R4-10 |
 | D4-12 | In a batch, each revision's effective_at is stored and echoed exactly as supplied for that item. Comparisons, including the identical-instant rule for members, use instants. The tests compare instants only | R4-09 |
+
+## Decision added after r2
+
+| ID | Decision | Origin |
+|---|---|---|
+| D4-13 | After a 3â†’4 import, a stage-3 snapshot token pages the same entries, in the same order, with identical values for every field it had on stage 3. Added fields (for example refund_of: null) are permitted. Byte-exact page equality is an observation only. Receipt replays stay byte-identical (D2-13) | adversary c05123d6; analyst reply |
