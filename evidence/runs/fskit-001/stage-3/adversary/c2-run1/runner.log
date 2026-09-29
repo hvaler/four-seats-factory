@@ -1,0 +1,25 @@
+== adversary stage-3 run 2026-09-28T23:52:07Z
+candidate_sha=51a0bdd1c48207fb3e22fb163d1fd7972123aa3d clone_head=51a0bdd1c48207fb3e22fb163d1fd7972123aa3d
+trees stage3=f586c4995f31122e887e462d54590b955f6b45a2 stage2=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2 stage1=347efba502629e5b5bbd730f35c34bdfe208c478
+clone_status_begin
+clone_status_end
+s1_source=beeaec72ff53fa75469c5f09236a786632f21fd8 tree=347efba502629e5b5bbd730f35c34bdfe208c478
+s2_source=68583038e7ea52429b062af0f775d3cbfd96b7c3 tree=a8e6178d7b9d5ba4dde4999e78730fa99ff80fe2
+test_rev=9e49497e2a2334ea381347bf33162cb2387010f8 test_dirty=clean
+docker client=29.8.0 server=29.8.0
+Python 3.12.3
+build stage-3 exit=0 seconds=3
+build stage-1 exit=0 seconds=7
+build stage-2 exit=0 seconds=4
+stage3_a port=59787 health_s=2
+stage3_b port=59789 health_s=1
+stage1_accepted port=59791 health_s=1
+stage2_accepted port=59792 health_s=1
+stage3_c(PORT unset) port=59793 health_s=1 body={"status":"ok"}
+suite_stage1 exit=0 seconds=86 325 passed, 1 warning in 84.50s (0:01:24)
+suite_stage2 exit=0 seconds=281 148 passed, 3 warnings in 280.08s (0:04:40)
+suite_stage3 exit=0 seconds=23 50 passed in 22.71s
+stats adv3-a-698658 cpu=0.01% mem=24.77MiB / 2GiB
+stats adv3-b-698658 cpu=0.00% mem=20.39MiB / 2GiB
+stage3_a restarts=0 oom=false running=true
+== done 2026-09-28T23:59:11Z

@@ -1,0 +1,33 @@
+candidate=51a0bdd1c48207fb3e22fb163d1fd7972123aa3d stage3_tree=f586c4995f31122e887e462d54590b955f6b45a2 image=sha256:b37154bb32d9bcdcf544c914a1f61a76221b719f7e7b49eae05b6be8d5594e00
+== mem20k N=20000 TH=20 start 2026-09-29T00:00:08Z mem_before=12.64MiB / 2GiB
+payments_created 500
+reads=20000 wall_s=90.9 codes={200: 20000}
+latency_s p50=0.080 p95=0.150 p99=0.210 max=0.666 mean=0.086
+over_5s=0
+health_after 200
+peak_mem=52.17MiB samples=31
+state running=true exit=0 oom=false restarts=0
+end 2026-09-29T00:01:49Z
+== mem5k N=5000 TH=10 start 2026-09-29T00:01:50Z mem_before=12.58MiB / 2GiB
+payments_created 500
+reads=5000 wall_s=27.8 codes={200: 5000}
+latency_s p50=0.045 p95=0.097 p99=0.131 max=0.284 mean=0.050
+over_5s=0
+health_after 200
+peak_mem=38.67MiB samples=10
+state running=true exit=0 oom=false restarts=0
+end 2026-09-29T00:02:25Z
+== F3-01 repro 2026-09-29T00:02:26Z
+created_at 2026-09-29T00:02:28.766+00:00 expires_at 2026-09-29T00:12:28.766+00:00 before_void 2026-09-29T00:02:28.799+00:00 closed_at 2026-09-29T00:02:28.831+00:00
+A: as_of=exp-1ms known<void {'total': 10000, 'held': 1000, 'available': 9000, 'as_of': '2026-09-29T00:12:28.765+00:00', 'known_at': '2026-09-29T00:02:28.799+00:00'}
+B: as_of=exp+1ms known<void {'total': 10000, 'held': 0, 'available': 10000, 'as_of': '2026-09-29T00:12:28.767+00:00', 'known_at': '2026-09-29T00:02:28.799+00:00'}
+C: as_of=2099 known<void {'total': 10000, 'held': 0, 'available': 10000, 'as_of': '2099-01-01T00:00:00.000+00:00', 'known_at': '2026-09-29T00:02:28.799+00:00'}
+D: as_of=2099 known=now {'total': 10000, 'held': 0, 'available': 10000, 'as_of': '2099-01-01T00:00:00.000+00:00', 'known_at': '2026-09-29T00:02:28.833+00:00'}
+E: as_of=2099 no known_at {'total': 10000, 'held': 0, 'available': 10000, 'as_of': '2099-01-01T00:00:00.000+00:00', 'known_at': None}
+F: open hold, as_of=exp+1ms {'total': 10000, 'held': 0, 'available': 10000}
+G: open hold, as_of=exp+1ms, known_at=now {'total': 10000, 'held': 0, 'available': 10000}
+== D3-11 overdraft at expiry 2026-09-29T00:02:28Z
+hold created 2026-09-29T00:02:30.327+00:00 expires 2026-09-29T00:02:32.327+00:00 payment 2026-09-29T00:02:32.929+00:00
+effective inside hold window -> 409 historical_overdraft (expected 409 historical_overdraft)
+effective after expires_at -> 201 None (expected 201)
+dee now {'user_id': 'u_dee', 'display_name': 'Dee', 'handle': 'dee', 'balance': 0, 'total': 0, 'available': 0, 'held': 0, 'currency': 'EUR', 'minor_units': 2} revisions 2

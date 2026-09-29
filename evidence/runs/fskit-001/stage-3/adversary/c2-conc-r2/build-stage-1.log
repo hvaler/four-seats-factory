@@ -1,0 +1,54 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 506B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 68B 0.1s done
+#3 DONE 0.1s
+
+#4 [1/5] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#4 resolve docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 0.1s done
+#4 DONE 0.1s
+
+#5 [2/5] WORKDIR /app
+#5 CACHED
+
+#6 [internal] load build context
+#6 transferring context: 319B 0.2s done
+#6 DONE 0.2s
+
+#7 [3/5] COPY package.json package-lock.json ./
+#7 DONE 0.1s
+
+#8 [4/5] RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
+#8 1.013 
+#8 1.013 up to date, audited 1 package in 684ms
+#8 1.015 
+#8 1.015 found 0 vulnerabilities
+#8 1.236 npm warn using --force Recommended protections disabled.
+#8 DONE 1.5s
+
+#9 [5/5] COPY src ./src
+#9 DONE 0.0s
+
+#10 exporting to image
+#10 exporting layers
+#10 exporting layers 0.5s done
+#10 exporting manifest sha256:36da92b337058725ffcc49804e52e26e0c531d5e42166e67585d0dc22567d4f0
+#10 exporting manifest sha256:36da92b337058725ffcc49804e52e26e0c531d5e42166e67585d0dc22567d4f0 0.3s done
+#10 exporting config sha256:1642e124ba21cbdc156d13038ef9c6207101810925c6dfd85717fe244d90ec45
+#10 exporting config sha256:1642e124ba21cbdc156d13038ef9c6207101810925c6dfd85717fe244d90ec45 0.3s done
+#10 exporting attestation manifest sha256:4521a78936dd5e596a39ed13dbe1bd4e13d19337dbaa8cb7731166fe39859abd
+#10 exporting attestation manifest sha256:4521a78936dd5e596a39ed13dbe1bd4e13d19337dbaa8cb7731166fe39859abd 0.3s done
+#10 exporting manifest list sha256:fa20bff724c7d493bb4949a2e9efa96346870da552f88aeae58ea6a421f3205d
+#10 exporting manifest list sha256:fa20bff724c7d493bb4949a2e9efa96346870da552f88aeae58ea6a421f3205d 0.0s done
+#10 naming to docker.io/library/adv-s3base1-709254:latest
+#10 naming to docker.io/library/adv-s3base1-709254:latest 0.3s done
+#10 unpacking to docker.io/library/adv-s3base1-709254:latest
+#10 unpacking to docker.io/library/adv-s3base1-709254:latest 0.3s done
+#10 DONE 2.4s
