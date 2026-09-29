@@ -32,10 +32,26 @@ sonda hizo que el servicio **se cayera con un desbordamiento de heap tras 4.761 
 extracto** y perdiera todo el estado. Tras la reparación, 20.000 lecturas devolvieron 200 y el
 contenedor se quedó en 39,7 MiB. `FACTORY.es.md` cuenta los tres hallazgos enteros.
 
+## Qué construyó
+
+Un servicio de monedero: la gente se envía dinero por handle, lo pide de vuelta, divide cuentas,
+reserva dinero para que otro lo cobre más tarde, consulta su saldo en cualquier instante pasado,
+corrige pagos sin reescribir la historia y los reembolsa. Un solo proceso Node.js, sin dependencias, y
+cada importe un entero exacto.
+
+![El monedero del stage 4, con la sesión de Ada de seed.json](docs/product/screenshots/wallet-desktop.png)
+
+*Una captura real de `stage-4/` sembrado con [`seed.json`](seed.json): disponible, total y retenido
+por separado, y el feed de actividad.* Más en [`docs/product/`](docs/product/), en inglés:
+[`FEATURES.md`](docs/product/FEATURES.md) con lo que añadió cada stage, pantallas y peticiones reales
+del stage 4, y [`ARCHITECTURE.md`](docs/product/ARCHITECTURE.md) con cómo está construido.
+
 ## Mapa
 
 - **`FACTORY.es.md`** — el diseño, los resultados medidos, los dos rechazos, lo que costó y lo que le
   diríamos al siguiente equipo. Empieza por ahí.
+- [`docs/product/`](docs/product/) — el servicio en sí: arquitectura, funcionalidades por stage y
+  capturas. Escrito después de la tirada a partir del código aceptado.
 - **[`EVIDENCE-INDEX.md`](EVIDENCE-INDEX.md)** — cada afirmación de este README, con el fichero que la
   respalda y el comando que la reproduce (en inglés).
 - **[`RUNBOOK.es.md`](RUNBOOK.es.md)** y `setup/` — cómo volver a levantar la fábrica y apuntarla a
@@ -66,6 +82,18 @@ python -m harness run --track pocketful --repo <este repo> --stage 1 --mode isol
 
 `--stage 2`, `3` y `4` hacen lo mismo con las carpetas posteriores, y `--all` verifica la cadena
 entera. Los stages 2 a 4 sirven una interfaz de navegador; el harness la recorre a 375 px y 1280 px.
+
+Para probar el producto a mano:
+
+```
+cd stage-4
+docker build -t pocketful-stage-4 . && docker run --rm -p 8080:8080 pocketful-stage-4
+curl -X POST http://127.0.0.1:8080/_test/reset -H "Content-Type: application/json" --data-binary @../seed.json
+```
+
+Luego abre <http://127.0.0.1:8080/login> y entra como `ada@example.com`, `bob@example.com` o
+`cy@example.com`, todos con la contraseña `correct horse`. El estado vive en memoria, como permite la
+especificación: un reinicio lo vacía, y el mismo `curl` lo restaura.
 
 ## Licencia
 

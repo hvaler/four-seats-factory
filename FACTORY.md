@@ -231,7 +231,7 @@ The evaluated run took place in BAND with four seats on Claude Code and `claude-
 human message authorised all four stages; everything after it — implementation, review, repair and
 acceptance — happened inside the band.
 
-After the run, the operator wrote this documentation, `RUNBOOK`, `EVIDENCE-INDEX` and `REDACTION`
+After the run, the operator wrote this documentation, `RUNBOOK`, `EVIDENCE-INDEX`, `REDACTION` and `docs/product/`
 with the assistance of Claude Code, and commissioned an external audit of the repository with the
 assistance of GPT‑6 Sol. Its recommendations were applied to documentation and evidence only; no
 product tree changed after acceptance.

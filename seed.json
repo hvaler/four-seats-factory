@@ -24,6 +24,6 @@
   "authorizations": [
     { "id": "au_1", "from_user_id": "u_ada", "to_user_id": "u_cy",
       "amount": 3000, "note": "deposit", "visibility": "public",
-      "status": "active", "captured_amount": 0 }
+      "status": "open", "expires_at": "2027-12-31T23:59:59.000Z" }
   ]
 }

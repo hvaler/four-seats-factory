@@ -241,8 +241,8 @@ La ejecución evaluada se hizo en BAND con cuatro asientos en Claude Code y `cla
 mensaje humano autorizó los cuatro stages; la implementación, revisión, reparación y aceptación
 posteriores ocurrieron dentro de la banda.
 
-Después de la ejecución, el operador redactó esta documentación, `RUNBOOK`, `EVIDENCE-INDEX` y
-`REDACTION` con asistencia de Claude Code, y encargó una auditoría externa del repositorio con
+Después de la ejecución, el operador redactó esta documentación, `RUNBOOK`, `EVIDENCE-INDEX`,
+`REDACTION` y `docs/product/` con asistencia de Claude Code, y encargó una auditoría externa del repositorio con
 asistencia de GPT‑6 Sol. Sus recomendaciones se aplicaron solo a documentación y evidencia; ningún
 árbol de producto cambió tras la aceptación.
 

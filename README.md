@@ -32,10 +32,25 @@ made the service **crash with a heap out-of-memory after 4,761 statement reads**
 After the repair, 20,000 reads returned 200 and the container sat at 39.7 MiB. `FACTORY.md` has all
 three findings in full.
 
+## What it built
+
+A wallet service: people send money by handle, ask for it back, split bills, reserve money to be
+collected later, see their balance at any past instant, correct payments without rewriting history,
+and refund them. One Node.js process, no dependencies, every amount an exact integer.
+
+![The stage-4 wallet, signed in as Ada from seed.json](docs/product/screenshots/wallet-desktop.png)
+
+*A real capture of `stage-4/` seeded with [`seed.json`](seed.json): available, total and held shown
+apart, and the activity feed.* More in [`docs/product/`](docs/product/):
+[`FEATURES.md`](docs/product/FEATURES.md) for what each stage added, with screens and real stage-4
+requests, and [`ARCHITECTURE.md`](docs/product/ARCHITECTURE.md) for how it is built.
+
 ## Map
 
 - **`FACTORY.md`** — the design, the measured results, both rejections, what it cost, and what we
   would tell the next team. Start here.
+- [`docs/product/`](docs/product/) — the service itself: architecture, features by stage, screenshots.
+  Written after the run from the accepted code.
 - **[`EVIDENCE-INDEX.md`](EVIDENCE-INDEX.md)** — every claim in this README, with the file that backs
   it and the command that reproduces it.
 - **[`RUNBOOK.md`](RUNBOOK.md)** and `setup/` — how to stand the factory up again and point it at a
@@ -66,6 +81,18 @@ python -m harness run --track pocketful --repo <this repo> --stage 1 --mode isol
 
 `--stage 2`, `3` and `4` do the same for the later folders, and `--all` verifies the whole chain.
 Stages 2 to 4 serve a browser UI; the harness exercises it at 375 px and 1280 px.
+
+To try the product by hand:
+
+```
+cd stage-4
+docker build -t pocketful-stage-4 . && docker run --rm -p 8080:8080 pocketful-stage-4
+curl -X POST http://127.0.0.1:8080/_test/reset -H "Content-Type: application/json" --data-binary @../seed.json
+```
+
+Then open <http://127.0.0.1:8080/login> and sign in as `ada@example.com`, `bob@example.com` or
+`cy@example.com`, all with the password `correct horse`. State lives in memory, as the specification
+allows: a restart empties it, and the same `curl` restores it.
 
 ## Licence
 
